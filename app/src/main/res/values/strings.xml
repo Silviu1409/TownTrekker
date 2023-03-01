@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Licenta</string>
+
+    <string name="titlu_home">Pagina Home</string>
+
+    <string name="titlu_pag2">Pagina 2</string>
+
+    <string name="titlu_pag3">Pagina 3</string>
+</resources>
