@@ -2,8 +2,10 @@
     <string name="app_name">Licenta</string>
 
     <string name="titlu_home">Pagina Home</string>
-
     <string name="titlu_pag2">Pagina 2</string>
-
     <string name="titlu_pag3">Pagina 3</string>
+
+    <string name="nav_meniu_home">Home</string>
+    <string name="nav_meniu_pag2">Pag 2</string>
+    <string name="nav_meniu_pag3">Pag 3</string>
 </resources>
