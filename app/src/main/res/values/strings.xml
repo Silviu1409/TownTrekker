@@ -8,4 +8,7 @@
     <string name="nav_meniu_home">Home</string>
     <string name="nav_meniu_pag2">Pag 2</string>
     <string name="nav_meniu_pag3">Pag 3</string>
+
+    <string name="auth_buton_login">Logare</string>
+    <string name="auth_titlu">Pagina autentificare</string>
 </resources>
