@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_login_to_auth"
             app:destination="@id/auth" />
+        <action
+            android:id="@+id/action_login_to_reset"
+            app:destination="@id/reset" />
     </fragment>
 
     <fragment
@@ -22,6 +25,22 @@
         tools:layout="@layout/pagina_autentificare" >
         <action
             android:id="@+id/action_auth_to_login"
+            app:destination="@id/login" />
+        <action
+            android:id="@+id/action_auth_to_reset"
+            app:destination="@id/reset" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/reset"
+        android:name="com.example.licenta.pagini.Resetare"
+        android:label="@string/resetare_titlu"
+        tools:layout="@layout/pagina_resetare" >
+        <action
+            android:id="@+id/action_reset_to_auth"
+            app:destination="@id/auth" />
+        <action
+            android:id="@+id/action_reset_to_login"
             app:destination="@id/login" />
     </fragment>
 </navigation>

@@ -88,6 +88,10 @@ class Logare : Fragment() {
         binding.LoginToAuth.setOnClickListener{
             findNavController().navigate(R.id.action_login_to_auth)
         }
+
+        binding.LoginToReset.setOnClickListener{
+            findNavController().navigate(R.id.action_login_to_reset)
+        }
     }
 
     override fun onDestroyView() {

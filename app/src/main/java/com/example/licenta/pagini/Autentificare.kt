@@ -93,6 +93,10 @@ class Autentificare : Fragment() {
             findNavController().navigate(R.id.action_auth_to_login)
         }
 
+        binding.AuthToReset.setOnClickListener{
+            findNavController().navigate(R.id.action_auth_to_reset)
+        }
+
     }
 
     override fun onDestroyView() {

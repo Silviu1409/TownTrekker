@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Licenta</string>
+    <string name="app_name">Licență</string>
 
     <string name="titlu_home">Pagina Home</string>
     <string name="titlu_pag2">Pagina 2</string>
@@ -12,11 +12,15 @@
     <string name="auth_titlu">Autentificare</string>
     <string name="auth_buton">Sign up</string>
     <string name="auth_alias">Alias</string>
-    <string name="auth_to_login"><u>Ai deja cont? Loghează-te aici.</u></string>
+    <string name="to_auth"><u>Nu ai cont? Înregistrează-te aici.</u></string>
 
     <string name="logare_titlu">Logare</string>
     <string name="logare_buton">Log in</string>
-    <string name="login_to_auth"><u>Nu ai cont? Înregistrează-te aici.</u></string>
+    <string name="to_login"><u>Ai deja cont? Loghează-te aici.</u></string>
+
+    <string name="resetare_titlu">Resetare parolă</string>
+    <string name="resetare_buton">Submit</string>
+    <string name="resetare_parola"><u>Ai uitat parola?</u></string>
 
     <string name="hint_email">Email</string>
     <string name="hint_parola">Parolă</string>
