@@ -6,11 +6,11 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/Auth_Titlu"
+        android:id="@+id/Login_Titlu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
-        android:text="@string/auth_titlu"
+        android:layout_marginTop="175dp"
+        android:text="@string/logare_titlu"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -18,18 +18,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/Auth_to_Login"
+        android:id="@+id/Login_to_Auth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="175dp"
-        android:text="@string/auth_to_login"
+        android:layout_marginBottom="200dp"
+        android:text="@string/login_to_auth"
         android:textColor="@android:color/system_neutral1_500"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/Auth_Email"
+        android:id="@+id/Login_Email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
@@ -39,10 +39,10 @@
         android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Auth_Titlu" />
+        app:layout_constraintTop_toBottomOf="@+id/Login_Titlu" />
 
     <EditText
-        android:id="@+id/Auth_Parola"
+        android:id="@+id/Login_Parola"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="25dp"
@@ -52,29 +52,16 @@
         android:minHeight="50dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Auth_Email" />
-
-    <EditText
-        android:id="@+id/Auth_Alias"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:ems="10"
-        android:hint="@string/auth_alias"
-        android:inputType="text"
-        android:minHeight="50dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Auth_Parola" />
+        app:layout_constraintTop_toBottomOf="@+id/Login_Email" />
 
     <Button
-        android:id="@+id/Auth_Buton"
+        android:id="@+id/Login_Buton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="50dp"
         android:background="#1B5E20"
-        android:text="@string/auth_buton"
+        android:text="@string/logare_buton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Auth_Alias" />
+        app:layout_constraintTop_toBottomOf="@+id/Login_Parola" />
 </androidx.constraintlayout.widget.ConstraintLayout>

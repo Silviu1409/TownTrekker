@@ -8,10 +8,12 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.licenta.databinding.ActivityMainBinding
+import com.example.licenta.datatypes.User
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ActivityMain : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private lateinit var user: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +34,8 @@ class ActivityMain : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         supportActionBar?.hide()    //ascundere ActionBar
+
+        user = intent.getSerializableExtra("user") as User
     }
 
     //suprascriere a metodei ce este apelată în momentul în care utilizatorul apasă pe butonul "back" din bara de navigație

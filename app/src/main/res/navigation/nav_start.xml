@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_start"
+    app:startDestination="@+id/login">
+
+    <fragment
+        android:id="@+id/login"
+        android:name="com.example.licenta.pagini.Logare"
+        android:label="@string/logare_titlu"
+        tools:layout="@layout/pagina_logare" >
+        <action
+            android:id="@+id/action_login_to_auth"
+            app:destination="@id/auth" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/auth"
+        android:name="com.example.licenta.pagini.Autentificare"
+        android:label="@string/auth_titlu"
+        tools:layout="@layout/pagina_autentificare" >
+        <action
+            android:id="@+id/action_auth_to_login"
+            app:destination="@id/login" />
+    </fragment>
+</navigation>

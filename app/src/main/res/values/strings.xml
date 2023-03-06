@@ -9,6 +9,15 @@
     <string name="nav_meniu_pag2">Pag 2</string>
     <string name="nav_meniu_pag3">Pag 3</string>
 
-    <string name="auth_buton_login">Logare</string>
-    <string name="auth_titlu">Pagina autentificare</string>
+    <string name="auth_titlu">Autentificare</string>
+    <string name="auth_buton">Sign up</string>
+    <string name="auth_alias">Alias</string>
+    <string name="auth_to_login"><u>Ai deja cont? Loghează-te aici.</u></string>
+
+    <string name="logare_titlu">Logare</string>
+    <string name="logare_buton">Log in</string>
+    <string name="login_to_auth"><u>Nu ai cont? Înregistrează-te aici.</u></string>
+
+    <string name="hint_email">Email</string>
+    <string name="hint_parola">Parolă</string>
 </resources>
