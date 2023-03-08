@@ -24,4 +24,7 @@
 
     <string name="hint_email">Email</string>
     <string name="hint_parola">Parolă</string>
+
+    <string name="img_splash">Logo SplashScreen</string>
+    <string name="label_splash">SplashScreen</string>
 </resources>
