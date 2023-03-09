@@ -18,8 +18,8 @@
         tools:layout="@layout/pagina_2" />
 
     <fragment
-        android:id="@+id/nav_pag3"
-        android:name="com.example.licenta.pagini.Pagina3"
-        android:label="@string/titlu_pag3"
-        tools:layout="@layout/pagina_3" />
+        android:id="@+id/nav_profil"
+        android:name="com.example.licenta.pagini.Profil"
+        android:label="@string/titlu_profil"
+        tools:layout="@layout/pagina_profil" />
 </navigation>

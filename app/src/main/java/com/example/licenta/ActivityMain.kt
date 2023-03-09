@@ -24,10 +24,10 @@ class ActivityMain : AppCompatActivity() {
         //configurare navigare pentru secțiunea principală din cadrul aplicației
         val navView: BottomNavigationView = binding.navMeniu
 
-        val navController = findNavController(R.id.nav_host_fragment_activity_main)
+        val navController = findNavController(R.id.activity_main)
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_pag2, R.id.nav_pag3
+                R.id.nav_home, R.id.nav_pag2, R.id.nav_profil
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -51,5 +51,9 @@ class ActivityMain : AppCompatActivity() {
             .setPositiveButton("Da") { _, _ -> finishAffinity() }
             .setNegativeButton("Nu", null)
             .show()
+    }
+
+    fun getUser(): User {
+        return user
     }
 }

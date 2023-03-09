@@ -3,11 +3,11 @@
 
     <string name="titlu_home">Pagina Home</string>
     <string name="titlu_pag2">Pagina 2</string>
-    <string name="titlu_pag3">Pagina 3</string>
+    <string name="titlu_profil">Profil</string>
 
     <string name="nav_meniu_home">Home</string>
     <string name="nav_meniu_pag2">Pag 2</string>
-    <string name="nav_meniu_pag3">Pag 3</string>
+    <string name="nav_meniu_profil">Profil</string>
 
     <string name="auth_titlu">Autentificare</string>
     <string name="auth_buton">Sign up</string>
@@ -27,4 +27,11 @@
 
     <string name="img_splash">Logo SplashScreen</string>
     <string name="label_splash">SplashScreen</string>
+
+    <string name="email_profil">Email: </string>
+    <string name="alias_profil">Alias: </string>
+    <string name="logout_profil">Log out </string>
+
+    <string name="email_profil_user">Email: %1$s</string>
+    <string name="alias_profil_user">Alias: %1$s</string>
 </resources>
