@@ -2,6 +2,7 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'com.google.gms.google-services'
+    id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
 }
 
 android {
@@ -16,6 +17,13 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        Properties prop = new Properties()
+        prop.load(project.rootProject.file("local.properties").newDataInputStream())
+
+        buildConfigField "String", "MAPS_API_KEY", "\"${prop.getProperty("MAPS_API_KEY")}\""
+
+        resValue("string", "MAPS_API_KEY", "key")
     }
 
     buildTypes {
@@ -48,6 +56,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-common-ktx:20.3.1'
     implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:24.4.4'
+    implementation 'com.google.android.gms:play-services-maps:18.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'

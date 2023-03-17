@@ -12,10 +12,10 @@
         tools:layout="@layout/pagina_home" />
 
     <fragment
-        android:id="@+id/nav_pag2"
-        android:name="com.example.licenta.pagini.Pagina2"
-        android:label="@string/titlu_pag2"
-        tools:layout="@layout/pagina_2" />
+        android:id="@+id/nav_explore"
+        android:name="com.example.licenta.pagini.Explore"
+        android:label="@string/titlu_explore"
+        tools:layout="@layout/pagina_explore" />
 
     <fragment
         android:id="@+id/nav_profil"
