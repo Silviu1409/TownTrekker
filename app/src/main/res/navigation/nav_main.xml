@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.licenta.pagini.PaginaHome"
+        android:name="com.example.towntrekker.pagini.PaginaHome"
         android:label="@string/titlu_home"
         tools:layout="@layout/pagina_home" />
 
     <fragment
         android:id="@+id/nav_explore"
-        android:name="com.example.licenta.pagini.Explore"
+        android:name="com.example.towntrekker.pagini.Explore"
         android:label="@string/titlu_explore"
         tools:layout="@layout/pagina_explore" />
 
     <fragment
         android:id="@+id/nav_profil"
-        android:name="com.example.licenta.pagini.Profil"
+        android:name="com.example.towntrekker.pagini.Profil"
         android:label="@string/titlu_profil"
         tools:layout="@layout/pagina_profil" />
 </navigation>

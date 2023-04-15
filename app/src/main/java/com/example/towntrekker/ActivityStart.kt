@@ -1,9 +1,9 @@
-package com.example.licenta
+package com.example.towntrekker
 
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AppCompatActivity
-import com.example.licenta.databinding.ActivityStartBinding
+import com.example.towntrekker.databinding.ActivityStartBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ActivityStart : AppCompatActivity() {

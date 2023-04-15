@@ -1,4 +1,4 @@
-package com.example.licenta
+package com.example.towntrekker
 
 import org.junit.Test
 

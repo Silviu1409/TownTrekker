@@ -1,4 +1,4 @@
-package com.example.licenta
+package com.example.towntrekker
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4

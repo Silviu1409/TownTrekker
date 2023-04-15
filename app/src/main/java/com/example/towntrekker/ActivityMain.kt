@@ -1,4 +1,4 @@
-package com.example.licenta
+package com.example.towntrekker
 
 import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -7,8 +7,8 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.example.licenta.databinding.ActivityMainBinding
-import com.example.licenta.datatypes.User
+import com.example.towntrekker.databinding.ActivityMainBinding
+import com.example.towntrekker.datatypes.User
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ActivityMain : AppCompatActivity() {

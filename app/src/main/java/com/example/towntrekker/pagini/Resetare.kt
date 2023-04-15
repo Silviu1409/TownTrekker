@@ -1,4 +1,4 @@
-package com.example.licenta.pagini
+package com.example.towntrekker.pagini
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -10,9 +10,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.licenta.ActivityStart
-import com.example.licenta.R
-import com.example.licenta.databinding.PaginaResetareBinding
+import com.example.towntrekker.ActivityStart
+import com.example.towntrekker.R
+import com.example.towntrekker.databinding.PaginaResetareBinding
 import com.google.firebase.auth.FirebaseAuth
 
 class Resetare : Fragment(){

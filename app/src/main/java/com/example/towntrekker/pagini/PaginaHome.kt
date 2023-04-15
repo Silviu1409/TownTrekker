@@ -1,11 +1,11 @@
-package com.example.licenta.pagini
+package com.example.towntrekker.pagini
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.licenta.databinding.PaginaHomeBinding
+import com.example.towntrekker.databinding.PaginaHomeBinding
 
 class PaginaHome : Fragment() {
     private var _binding: PaginaHomeBinding? = null

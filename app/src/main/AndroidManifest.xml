@@ -10,7 +10,7 @@
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Licenta">
+        android:theme="@style/Theme.TownTrekker">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${MAPS_API_KEY}" />
@@ -18,7 +18,7 @@
         <activity
             android:name=".ActivityStart"
             android:exported="true"
-            android:theme="@style/Theme.Licenta.NoActionBarStart">
+            android:theme="@style/Theme.TownTrekker.NoActionBarStart">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

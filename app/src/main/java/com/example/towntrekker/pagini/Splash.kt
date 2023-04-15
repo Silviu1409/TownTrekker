@@ -1,4 +1,4 @@
-package com.example.licenta.pagini
+package com.example.towntrekker.pagini
 
 import android.content.Context
 import android.content.Intent
@@ -11,11 +11,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.licenta.ActivityMain
-import com.example.licenta.ActivityStart
-import com.example.licenta.R
-import com.example.licenta.databinding.PaginaSplashBinding
-import com.example.licenta.datatypes.User
+import com.example.towntrekker.ActivityMain
+import com.example.towntrekker.ActivityStart
+import com.example.towntrekker.R
+import com.example.towntrekker.databinding.PaginaSplashBinding
+import com.example.towntrekker.datatypes.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
