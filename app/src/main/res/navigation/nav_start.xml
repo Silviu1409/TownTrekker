@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splash"
-        android:name="com.example.towntrekker.pagini.Splash"
+        android:name="com.example.towntrekker.pagini.auth.Splash"
         android:label="@string/label_splash"
         tools:layout="@layout/pagina_splash" >
         <action
@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/login"
-        android:name="com.example.towntrekker.pagini.Logare"
+        android:name="com.example.towntrekker.pagini.auth.Logare"
         android:label="@string/logare_titlu"
         tools:layout="@layout/pagina_logare" >
         <action
@@ -30,7 +30,7 @@
 
     <fragment
         android:id="@+id/auth"
-        android:name="com.example.towntrekker.pagini.Autentificare"
+        android:name="com.example.towntrekker.pagini.auth.Autentificare"
         android:label="@string/auth_titlu"
         tools:layout="@layout/pagina_autentificare" >
         <action
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/reset"
-        android:name="com.example.towntrekker.pagini.Resetare"
+        android:name="com.example.towntrekker.pagini.auth.Resetare"
         android:label="@string/resetare_titlu"
         tools:layout="@layout/pagina_resetare" >
         <action

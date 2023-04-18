@@ -5,7 +5,7 @@
     android:id="@+id/pagina_profil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pagini.Profil">
+    tools:context=".pagini.main.Profil">
 
     <TextView
         android:id="@+id/titlu_profil"

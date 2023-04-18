@@ -47,7 +47,7 @@ class ActivityMain : AppCompatActivity() {
     private fun exitAplicatie() {
         MaterialAlertDialogBuilder(this)
             .setMessage("Vrei să închizi aplicația?")
-            //finishAffinity închide activitățile începute anterior (în acest caz ActivityStart și ActivityMain)
+            //finishAffinity închide activitățile începute anterior (în acest caz ActivityAuth și ActivityMain)
             .setPositiveButton("Da") { _, _ -> finishAffinity() }
             .setNegativeButton("Nu", null)
             .show()

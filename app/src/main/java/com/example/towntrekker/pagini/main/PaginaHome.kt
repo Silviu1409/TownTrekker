@@ -1,4 +1,4 @@
-package com.example.towntrekker.pagini
+package com.example.towntrekker.pagini.main
 
 import android.os.Bundle
 import android.view.LayoutInflater

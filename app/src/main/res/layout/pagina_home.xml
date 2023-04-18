@@ -5,7 +5,7 @@
     android:id="@+id/pagina_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pagini.PaginaHome">
+    tools:context=".pagini.main.PaginaHome">
 
     <TextView
         android:id="@+id/titlu_home"
