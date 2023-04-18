@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "941801411431-7nr3t20ifktkuuoe0s93e3l50vrgkg77.apps.googleusercontent.com",
+          "client_id": "941801411431-ltoju7jv4ju43m1setssr94qpu7o3a1o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.towntrekker",
+            "certificate_hash": "668908604aebf0994fac14ccf69b8c9c042db1ad"
+          }
+        },
+        {
+          "client_id": "941801411431-428gjjva2ertlnmvf609abkokfopk258.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,7 +35,7 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "941801411431-7nr3t20ifktkuuoe0s93e3l50vrgkg77.apps.googleusercontent.com",
+              "client_id": "941801411431-428gjjva2ertlnmvf609abkokfopk258.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -52,6 +52,10 @@ class Logare : Fragment() {
         val conectatInternet = capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 
 
+        binding.LoginGoogle.setOnClickListener {
+            authActivityContext.logareGoogle()
+        }
+
         binding.LoginButon.setOnClickListener {
             val email = binding.LoginEmail.text.toString()
             val parola = binding.LoginParola.text.toString()
@@ -68,7 +72,7 @@ class Logare : Fragment() {
             requireActivity().let { activity ->
                 FirebaseAuth.getInstance().signInWithEmailAndPassword(email, parola)
                     .addOnCompleteListener(activity) { task ->
-                        if (task.isSuccessful) { // logarea s-a făcut cu succes
+                        if (task.isSuccessful) {    // logarea s-a făcut cu succes
                             val user = FirebaseAuth.getInstance().currentUser
                             val db = FirebaseFirestore.getInstance()
 

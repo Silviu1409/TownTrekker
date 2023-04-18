@@ -16,8 +16,10 @@ import com.google.firebase.auth.FirebaseAuth
 
 class Profil : Fragment() {
     private var _binding: PaginaProfilBinding? = null
-
     private val binding get() = _binding!!
+
+    private lateinit var mainActivityContext: ActivityMain
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,25 +27,28 @@ class Profil : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = PaginaProfilBinding.inflate(inflater, container, false)
+
+        mainActivityContext = activity as ActivityMain
+
+        binding.emailProfil.text = getString(R.string.email_profil_user, mainActivityContext.getUser().email)
+        binding.aliasProfil.text = getString(R.string.alias_profil_user, mainActivityContext.getUser().alias)
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val act = activity as ActivityMain
-
-        binding.emailProfil.text = getString(R.string.email_profil_user, act.getUser().email)
-        binding.aliasProfil.text = getString(R.string.alias_profil_user, act.getUser().alias)
 
         binding.logoutProfil.setOnClickListener {
             FirebaseAuth.getInstance().signOut()
 
-            Log.w(tag, "Delogare făcută cu succes.")
-            Toast.makeText(activity, "Delogare făcută cu succes.", Toast.LENGTH_SHORT).show()
+            Log.d(mainActivityContext.getTag(), "Delogare făcută cu succes.")
+            Toast.makeText(activity, "Delogare făcută cu succes!", Toast.LENGTH_SHORT).show()
 
 
             val intent = Intent(activity, ActivityAuth::class.java)
+            intent.putExtra("logout", true)
             startActivity(intent)
         }
     }

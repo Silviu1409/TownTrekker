@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Licență</string>
+    <string name="app_name">TownTrekker</string>
 
     <string name="titlu_home">Pagina Home</string>
     <string name="titlu_explore">Explorează</string>
@@ -15,6 +15,8 @@
     <string name="to_auth"><u>Nu ai cont? Înregistrează-te aici.</u></string>
 
     <string name="logare_titlu">Logare</string>
+    <string name="login_button_google">Continuă cu contul Google</string>
+    <string name="login_other_login_method">sau loghează-te folosind emailul</string>
     <string name="logare_buton">Log in</string>
     <string name="to_login"><u>Ai deja cont? Loghează-te aici.</u></string>
 

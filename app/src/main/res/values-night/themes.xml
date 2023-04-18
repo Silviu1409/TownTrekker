@@ -16,6 +16,11 @@
         <item name="android:windowBackground">#212121</item>
     </style>
 
+    <style name="ButtonStyle">
+        <item name="colorButtonNormal">@color/white</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Theme.TownTrekker.NoActionBarStart">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

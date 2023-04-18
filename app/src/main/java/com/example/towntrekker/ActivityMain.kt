@@ -13,7 +13,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class ActivityMain : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private val tag = "test"    // tag folosit pentru testare in cazurile de debug/warning
+    private val err = "err"    // tag folosit pentru testare pentru erori
+
     private lateinit var user: User
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,5 +59,13 @@ class ActivityMain : AppCompatActivity() {
 
     fun getUser(): User {
         return user
+    }
+
+    fun getTag(): String {
+        return tag
+    }
+
+    fun getErrTag(): String {
+        return err
     }
 }
