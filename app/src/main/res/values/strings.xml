@@ -30,10 +30,8 @@
     <string name="img_splash">Logo SplashScreen</string>
     <string name="label_splash">SplashScreen</string>
 
+    <string name="profil_icon_desc">icon profil</string>
     <string name="email_profil">Email: </string>
-    <string name="alias_profil">Alias: </string>
+    <string name="alias_profil">alias</string>
     <string name="logout_profil">Log out </string>
-
-    <string name="email_profil_user">Email: %1$s</string>
-    <string name="alias_profil_user">Alias: %1$s</string>
 </resources>

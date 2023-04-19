@@ -5,6 +5,6 @@
     android:layout_height="match_parent"
     tools:context=".ActivityAuth">
 
-    <include layout="@layout/content_start" />
+    <include layout="@layout/content_auth" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

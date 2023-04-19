@@ -1,7 +1,11 @@
 package com.example.towntrekker
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
@@ -9,6 +13,10 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.example.towntrekker.databinding.ActivityAuthBinding
 import com.example.towntrekker.datatypes.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -20,6 +28,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import java.io.ByteArrayOutputStream
 
 
 class ActivityAuth : AppCompatActivity() {
@@ -31,11 +43,15 @@ class ActivityAuth : AppCompatActivity() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var auth: FirebaseAuth
     private lateinit var db: FirebaseFirestore
+    private lateinit var storage: StorageReference
 
     private var user: FirebaseUser? = null  // date despre user-ul logat, dacă acesta există
 
     private var logatAnterior = true        // utilizatorul s-a mai logat anterior cu contul Google în această aplicație ?
     private var delogare: Boolean = false   // utilizatorul ajunge aici prin delogare ?
+
+    private lateinit var sharedPreferencesUser: SharedPreferences   // fișierul din shared preferences ce conține date despre user
+
 
     // launcher pentru intent-ul de logare, folosind contul Google
     private val launcher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){ res ->
@@ -82,6 +98,8 @@ class ActivityAuth : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        storage = Firebase.storage.reference
+        sharedPreferencesUser = getSharedPreferences("user", Context.MODE_PRIVATE)
 
         creareGoogleSignInClient()
 
@@ -118,13 +136,46 @@ class ActivityAuth : AppCompatActivity() {
                                 .document(user.uid)
                                 .set(date)
                                 .addOnSuccessListener {
-                                    Log.d(tag, "User înregistrat cu succes!")
+                                    val glide = Glide.with(this)
 
-                                    // schimbă activitatea și transmite datele despre user ca parametru
-                                    val dateUser = User(user.uid, user.email ?: "", user.displayName ?: "")
-                                    val intent = Intent(this@ActivityAuth, ActivityMain::class.java)
-                                    intent.putExtra("user", dateUser)
-                                    startActivity(intent)
+                                    val requestBuilder = glide.asBitmap()
+                                        .load(user.photoUrl.toString())
+                                        .apply(RequestOptions().override(75, 75))
+                                    requestBuilder.into(object : CustomTarget<Bitmap>() {
+                                        override fun onResourceReady(
+                                            resource: Bitmap,
+                                            transition: Transition<in Bitmap>?
+                                        ) {
+                                            val folderRef = storage.child(user.uid)
+                                            val imageRef = folderRef.child("icon.jpg")
+
+                                            val baos = ByteArrayOutputStream()
+                                            resource.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                                            val data = baos.toByteArray()
+
+                                            val uploadTask = imageRef.putBytes(data)
+                                            uploadTask
+                                                .addOnSuccessListener {
+                                                    Log.d(tag, "User înregistrat cu succes!")
+
+                                                    // schimbă activitatea și transmite datele despre user ca parametru
+                                                    val userNou = User(user.uid, date["email"].toString(), date["alias"].toString())
+                                                    val intent = Intent(this@ActivityAuth, ActivityMain::class.java)
+                                                    intent.putExtra("user", userNou)
+                                                    startActivity(intent)
+                                                }
+                                                .addOnFailureListener { e ->
+                                                    Log.e(err, "Eroare creare folder user: ${e.message}")
+                                                    Toast.makeText(this@ActivityAuth, "Nu s-a putut crea folder!", Toast.LENGTH_SHORT).show()
+                                                }
+                                        }
+
+                                        override fun onLoadCleared(placeholder: Drawable?) {
+                                            Log.w(tag, "Cancelled load")
+                                        }
+                                    })
+
+
                                 }
                                 .addOnFailureListener { e ->
                                     Log.e(err, "Eroare preluare document: ${e.message}")
@@ -224,5 +275,9 @@ class ActivityAuth : AppCompatActivity() {
 
     fun getDelogare(): Boolean {
         return delogare
+    }
+
+    fun getSharedPreferencesUser(): SharedPreferences {
+        return sharedPreferencesUser
     }
 }

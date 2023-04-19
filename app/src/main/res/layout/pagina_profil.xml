@@ -1,55 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pagina_profil"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pagini.main.Profil">
+    tools:context=".pagini.main.Profil" >
 
-    <TextView
-        android:id="@+id/titlu_profil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="200dp"
-        android:text="@string/titlu_profil"
-        android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Profil"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_marginVertical="25dp" >
 
-    <TextView
-        android:id="@+id/email_profil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="125dp"
-        android:text="@string/email_profil"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/titlu_profil" />
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/Profil_Icon"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="#00000000"
+            android:contentDescription="@string/profil_icon_desc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_profil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/alias_profil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="50dp"
-        android:text="@string/alias_profil"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/email_profil" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/Profil_Icon_Edit"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginTop="-8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:foregroundTint="#00FFFFFF"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintStart_toEndOf="@+id/Profil_Icon"
+            app:layout_constraintTop_toTopOf="@+id/Profil_Icon"
+            tools:ignore="ImageContrastCheck" />
 
-    <Button
-        android:id="@+id/logout_profil"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="@string/logout_profil"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/alias_profil" />
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/Profil_Alias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/alias_profil"
+            android:textSize="22sp"
+            android:singleLine="true"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Profil_Icon" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/Profil_Alias_Edit"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="-5dp"
+            android:layout_marginTop="5dp"
+            android:backgroundTint="#00FFFFFF"
+            android:foregroundTint="#00FFFFFF"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintStart_toEndOf="@+id/Profil_Alias"
+            app:layout_constraintTop_toTopOf="@+id/Profil_Alias"
+            tools:ignore="ImageContrastCheck" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/Profil_Email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="50dp"
+            android:text="@string/email_profil"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Profil_Alias" />
+
+        <Button
+            android:id="@+id/Profil_Logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="100dp"
+            android:text="@string/logout_profil"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Profil_Email" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
