@@ -9,9 +9,10 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/Profil"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
-        android:layout_marginVertical="25dp" >
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="15dp">
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/Profil_Icon"
@@ -30,7 +31,7 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginStart="-10dp"
-            android:layout_marginTop="-8dp"
+            android:layout_marginTop="-2dp"
             android:backgroundTint="#00FFFFFF"
             android:foregroundTint="#00FFFFFF"
             android:src="@android:drawable/ic_menu_edit"
@@ -42,12 +43,13 @@
             android:id="@+id/Profil_Alias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="@string/alias_profil"
-            android:textSize="22sp"
-            android:singleLine="true"
+            android:layout_marginTop="5dp"
             android:imeOptions="actionDone"
             android:inputType="textNoSuggestions"
+            android:maxEms="8"
+            android:singleLine="true"
+            android:text="@string/alias_profil"
+            android:textSize="22sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Profil_Icon" />
@@ -56,7 +58,7 @@
             android:id="@+id/Profil_Alias_Edit"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_marginStart="-5dp"
+            android:layout_marginStart="-2dp"
             android:layout_marginTop="5dp"
             android:backgroundTint="#00FFFFFF"
             android:foregroundTint="#00FFFFFF"
@@ -65,26 +67,120 @@
             app:layout_constraintTop_toTopOf="@+id/Profil_Alias"
             tools:ignore="ImageContrastCheck" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/Profil_Email"
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/Profil_Email_Layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="75dp"
-            android:layout_marginTop="50dp"
-            android:text="@string/email_profil"
-            android:textSize="16sp"
+            android:layout_marginTop="75dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Profil_Alias" />
+            app:layout_constraintTop_toBottomOf="@+id/Profil_Alias">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/Profil_Email_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="@string/email_profil"
+                android:textSize="18sp" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/Profil_Email_Text" >
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/Profil_Email_User"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxEms="5"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="@string/email_profil_user"
+                    android:textSize="18sp" />
+
+            </HorizontalScrollView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <RelativeLayout
+            android:id="@+id/Profil_Parola"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Profil_Email_Layout">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/Profil_Parola_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="@string/parola_profil"
+                android:textSize="18sp" />
+
+            <FrameLayout
+                android:id="@+id/Profil_Parola_Layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/Profil_Parola_Text">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/Profil_Parola_Edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="actionDone"
+                    android:inputType="text|textPassword|textNoSuggestions"
+                    android:paddingEnd="50dp"
+                    android:singleLine="true"
+                    android:text="@string/parola_profil_edit"
+                    android:textSize="20sp"
+                    tools:ignore="RtlSymmetry" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Profil_Parola_Edit_Icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="end|top"
+                    android:layout_marginEnd="32.5dp"
+                    android:backgroundTint="#00FFFFFF"
+                    android:foregroundTint="#00FFFFFF"
+                    android:src="@android:drawable/ic_menu_edit"
+                    tools:ignore="ImageContrastCheck" />
+
+                <ImageButton
+                    android:id="@+id/Profil_Parola_Toggle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginBottom="2.5dp"
+                    android:background="#00000000"
+                    android:contentDescription="@string/logare_parola_toggle"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_vis_on"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/Profil_Logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="100dp"
+            android:layout_marginTop="50dp"
             android:text="@string/logout_profil"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Profil_Email" />
+            app:layout_constraintTop_toBottomOf="@+id/Profil_Parola" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -14,6 +14,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.example.towntrekker.databinding.ActivityMainBinding
 import com.example.towntrekker.datatypes.User
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
@@ -28,10 +29,11 @@ class ActivityMain : AppCompatActivity() {
 
     private var user: User? = null
 
+    private lateinit var auth: FirebaseAuth
     private lateinit var folderRef: StorageReference
     private lateinit var db: FirebaseFirestore
 
-    private lateinit var sharedPreferencesUser: SharedPreferences   // fișierul din shared preferences ce conține date despre user
+    private lateinit var sharedPrefsUser: SharedPreferences   // fișierul din shared preferences ce conține date despre user
 
 
     // suprascriere a metodei ce este apelată în momentul în care utilizatorul apasă pe butonul "back" din bara de navigație
@@ -47,23 +49,27 @@ class ActivityMain : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        sharedPreferencesUser = getSharedPreferences("user", Context.MODE_PRIVATE)
+        sharedPrefsUser = getSharedPreferences("user", Context.MODE_PRIVATE)
 
-        if (sharedPreferencesUser.contains("uid")) {
-            user = User(sharedPreferencesUser.getString("uid", "")!!,
-                sharedPreferencesUser.getString("email", "")!!,
-                sharedPreferencesUser.getString("alias", "")!!)
+        if (sharedPrefsUser.contains("uid")) {
+            user = User(sharedPrefsUser.getString("uid", "")!!,
+                sharedPrefsUser.getString("email", "")!!,
+                sharedPrefsUser.getString("alias", "")!!,
+                sharedPrefsUser.getString("parola", "")!!
+            )
         }
         else {
             @Suppress("DEPRECATION")
             user = intent.getSerializableExtra("user") as? User     // preiau datele despre utilizator
 
-            sharedPreferencesUser.edit().putString("uid", user!!.uid).apply()
-            sharedPreferencesUser.edit().putString("alias", user!!.alias).apply()
-            sharedPreferencesUser.edit().putString("email", user!!.email).apply()
+            sharedPrefsUser.edit().putString("uid", user!!.uid).apply()
+            sharedPrefsUser.edit().putString("alias", user!!.alias).apply()
+            sharedPrefsUser.edit().putString("email", user!!.email).apply()
+            sharedPrefsUser.edit().putString("parola", user!!.parola).apply()
         }
 
         folderRef = Firebase.storage.reference.child(user!!.uid)    // referință folder Firebase Storage creat pt. fiecare user
+        auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
 
         // configurare navigare pentru secțiunea principală din cadrul aplicației
@@ -88,7 +94,8 @@ class ActivityMain : AppCompatActivity() {
     private fun exitAplicatie() {
         MaterialAlertDialogBuilder(this)
             .setMessage("Vrei să închizi aplicația?")
-            .setPositiveButton("Da") { _, _ -> finishAffinity() }   // finishAffinity închide activitățile începute anterior (în acest caz ActivityAuth și ActivityMain)
+            // finishAffinity închide activitățile începute anterior (în acest caz ActivityAuth și ActivityMain)
+            .setPositiveButton("Da") { _, _ -> finishAffinity() }
             .setNegativeButton("Nu", null)
             .show()
     }
@@ -113,6 +120,14 @@ class ActivityMain : AppCompatActivity() {
         return db
     }
 
+    fun getAuth(): FirebaseAuth {
+        return auth
+    }
+
+    fun getSharedPrefsUser(): SharedPreferences {
+        return sharedPrefsUser
+    }
+
     // funcție pentru ascunderea tastaturii
     fun ascundereTastatura() {
         if(currentFocus != null) {
@@ -122,7 +137,7 @@ class ActivityMain : AppCompatActivity() {
     }
 
     // funcție ce șterge datele legate de Shared Preferences pentru utilizatorul curent
-    fun stergeSharedprefUser(){
-        sharedPreferencesUser.edit().clear().apply()
+    fun stergeSharedPrefsUser(){
+        sharedPrefsUser.edit().clear().apply()
     }
 }

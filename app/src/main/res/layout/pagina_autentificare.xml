@@ -37,19 +37,42 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Auth_Titlu" />
 
-        <EditText
-            android:id="@+id/Auth_Parola"
+        <FrameLayout
+            android:id="@+id/Auth_Parola_Layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
-            android:ems="10"
-            android:hint="@string/hint_parola"
-            android:inputType="textPassword"
-            android:minHeight="50dp"
-            android:autofillHints="password"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Auth_Email" />
+            app:layout_constraintTop_toBottomOf="@+id/Auth_Email" >
+
+            <EditText
+                android:id="@+id/Auth_Parola"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autofillHints="password"
+                android:ems="10"
+                android:hint="@string/hint_parola"
+                android:inputType="text|textPassword"
+                android:minHeight="50dp"
+                android:paddingEnd="42.5dp"
+                android:singleLine="true"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageButton
+                android:id="@+id/Auth_Parola_Toggle"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="end|center_vertical"
+                android:layout_marginEnd="7.5dp"
+                android:layout_marginBottom="2.5dp"
+                android:background="#00000000"
+                android:contentDescription="@string/logare_parola_toggle"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_vis_on"
+                tools:ignore="TouchTargetSizeCheck" />
+
+        </FrameLayout>
 
         <EditText
             android:id="@+id/Auth_Alias"
@@ -63,7 +86,7 @@
             android:autofillHints="username"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Auth_Parola" />
+            app:layout_constraintTop_toBottomOf="@+id/Auth_Parola_Layout" />
 
         <Button
             android:id="@+id/Auth_Buton"

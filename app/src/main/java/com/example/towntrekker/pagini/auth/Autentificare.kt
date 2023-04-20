@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,8 @@ class Autentificare : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var authActivityContext: ActivityAuth
+
+    private var parolaAfisata: Boolean = false
 
 
     override fun onCreateView(
@@ -50,6 +53,19 @@ class Autentificare : Fragment() {
         val conectatInternet = capabilities?.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) == true
 
 
+        binding.AuthParolaToggle.setOnClickListener {
+            if (!parolaAfisata){
+                binding.AuthParola.transformationMethod = null
+                parolaAfisata = true
+                binding.AuthParolaToggle.setImageResource(R.drawable.icon_vis_off)
+            }
+            else {
+                binding.AuthParola.transformationMethod = PasswordTransformationMethod()
+                parolaAfisata = false
+                binding.AuthParolaToggle.setImageResource(R.drawable.icon_vis_on)
+            }
+        }
+
         binding.AuthButon.setOnClickListener {
             val email = binding.AuthEmail.text.toString()
             val parola = binding.AuthParola.text.toString()
@@ -73,7 +89,8 @@ class Autentificare : Fragment() {
 
                             val date = hashMapOf(
                                 "email" to email,
-                                "alias" to alias
+                                "alias" to alias,
+                                "parola" to parola
                             )
 
                             if (user != null) {

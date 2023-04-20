@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.os.Bundle
+import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +29,8 @@ class Logare : Fragment() {
     private val binding get() = _binding!!
 
     private lateinit var authActivityContext: ActivityAuth
+
+    private var parolaAfisata: Boolean = false
 
 
     override fun onCreateView(
@@ -54,6 +57,19 @@ class Logare : Fragment() {
 
         binding.LoginGoogle.setOnClickListener {
             authActivityContext.logareGoogle()
+        }
+
+        binding.LoginParolaToggle.setOnClickListener {
+            if (!parolaAfisata){
+                binding.LoginParola.transformationMethod = null
+                parolaAfisata = true
+                binding.LoginParolaToggle.setImageResource(R.drawable.icon_vis_off)
+            }
+            else {
+                binding.LoginParola.transformationMethod = PasswordTransformationMethod()
+                parolaAfisata = false
+                binding.LoginParolaToggle.setImageResource(R.drawable.icon_vis_on)
+            }
         }
 
         binding.LoginButon.setOnClickListener {
@@ -85,7 +101,8 @@ class Logare : Fragment() {
                                             // documentul cu userul există
                                             val date = User(user.uid,
                                                             "" + document.getString("email"),
-                                                            "" + document.getString("alias"))
+                                                            "" + document.getString("alias"),
+                                                            "" + document.getString("parola"))
 
                                             Log.d(authActivityContext.getTag(), "Logare făcută cu succes")
                                             Toast.makeText(activity, "Logare făcută cu succes", Toast.LENGTH_SHORT).show()
