@@ -55,8 +55,8 @@ class ActivityMain : AppCompatActivity() {
             user = User(sharedPrefsUser.getString("uid", "")!!,
                 sharedPrefsUser.getString("email", "")!!,
                 sharedPrefsUser.getString("alias", "")!!,
-                sharedPrefsUser.getString("parola", "")!!
-            )
+                sharedPrefsUser.getString("bio", "")!!,
+                sharedPrefsUser.getString("parola", "")!!)
         }
         else {
             @Suppress("DEPRECATION")
@@ -65,6 +65,7 @@ class ActivityMain : AppCompatActivity() {
             sharedPrefsUser.edit().putString("uid", user!!.uid).apply()
             sharedPrefsUser.edit().putString("alias", user!!.alias).apply()
             sharedPrefsUser.edit().putString("email", user!!.email).apply()
+            sharedPrefsUser.edit().putString("bio", user!!.bio).apply()
             sharedPrefsUser.edit().putString("parola", user!!.parola).apply()
         }
 
@@ -80,7 +81,7 @@ class ActivityMain : AppCompatActivity() {
 
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_explore, R.id.nav_profil
+                R.id.nav_home, R.id.nav_explore, R.id.nav_mesaje, R.id.nav_cont
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)

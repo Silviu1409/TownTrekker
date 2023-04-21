@@ -1,13 +1,15 @@
 <resources>
     <string name="app_name">TownTrekker</string>
 
-    <string name="titlu_home">Pagina Home</string>
+    <string name="titlu_home">Home</string>
     <string name="titlu_explore">Explorează</string>
-    <string name="titlu_profil">Profil</string>
+    <string name="titlu_mesaje">Mesaje</string>
+    <string name="titlu_cont">Cont</string>
 
     <string name="nav_meniu_home">Home</string>
     <string name="nav_meniu_explore">Explorează</string>
-    <string name="nav_meniu_profil">Profil</string>
+    <string name="nav_meniu_mesaje">Mesaje</string>
+    <string name="nav_meniu_cont">Cont</string>
 
     <string name="auth_titlu">Autentificare</string>
     <string name="auth_buton">Sign up</string>
@@ -31,11 +33,14 @@
     <string name="img_splash">Logo SplashScreen</string>
     <string name="label_splash">SplashScreen</string>
 
-    <string name="profil_icon_desc">icon profil</string>
-    <string name="email_profil">Email: </string>
-    <string name="email_profil_user">email@email.com</string>
-    <string name="alias_profil">alias</string>
-    <string name="parola_profil">Parolă: </string>
-    <string name="parola_profil_edit">parolă</string>
-    <string name="logout_profil">Log out </string>
+    <string name="cont_icon_desc">icon cont</string>
+    <string name="titlu_cont_complet">Contul meu</string>
+    <string name="alias_cont">alias</string>
+    <string name="email_cont">Email: </string>
+    <string name="email_cont_user">email@email.com</string>
+    <string name="bio_cont">Despre mine</string>
+    <string name="bio_cont_user" />
+    <string name="parola_cont">Parolă: </string>
+    <string name="parola_cont_edit">parolă</string>
+    <string name="logout_cont">Log out </string>
 </resources>

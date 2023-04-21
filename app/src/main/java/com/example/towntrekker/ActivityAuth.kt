@@ -130,6 +130,7 @@ class ActivityAuth : AppCompatActivity() {
                         val date = HashMap<String, Any>()
                         date["email"] = user?.email.toString()
                         date["alias"] = user?.displayName.toString()
+                        date["bio"] = ""
 
                         if (user != null) {
                             db.collection("useri")
@@ -196,7 +197,8 @@ class ActivityAuth : AppCompatActivity() {
                                     if (doc != null && doc.exists()) {
                                         val dateUser = User(user.uid,
                                             "" + doc.getString("email"),
-                                            "" + doc.getString("alias"))
+                                            "" + doc.getString("alias"),
+                                            "" + doc.getString("bio"))
 
                                         val intent = Intent(this, ActivityMain::class.java)
                                         intent.putExtra("user", dateUser)

@@ -90,7 +90,8 @@ class Autentificare : Fragment() {
                             val date = hashMapOf(
                                 "email" to email,
                                 "alias" to alias,
-                                "parola" to parola
+                                "parola" to parola,
+                                "bio" to ""
                             )
 
                             if (user != null) {

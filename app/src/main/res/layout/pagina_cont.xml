@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    tools:context=".pagini.main.Cont" >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/Cont"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical" >
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/Cont_Titlu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/titlu_cont_complet"
+            android:textSize="24sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/Cont_Alias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:background="@android:color/transparent"
+            android:imeOptions="actionDone"
+            android:inputType="textNoSuggestions"
+            android:maxEms="6"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:singleLine="true"
+            android:text="@string/alias_cont"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Titlu" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/Cont_Alias_Edit"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="-5dp"
+            android:backgroundTint="#00FFFFFF"
+            android:foregroundTint="#00FFFFFF"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintStart_toEndOf="@+id/Cont_Alias"
+            app:layout_constraintTop_toTopOf="@+id/Cont_Alias"
+            tools:ignore="ImageContrastCheck" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/Cont_Icon"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginTop="15dp"
+            android:background="#00000000"
+            android:contentDescription="@string/cont_icon_desc"
+            android:scaleType="centerCrop"
+            android:src="@drawable/icon_cont"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Alias" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/Cont_Icon_Edit"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="-10dp"
+            android:layout_marginTop="-7.5dp"
+            android:backgroundTint="#00FFFFFF"
+            android:foregroundTint="#00FFFFFF"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintStart_toEndOf="@+id/Cont_Icon"
+            app:layout_constraintTop_toTopOf="@+id/Cont_Icon"
+            tools:ignore="ImageContrastCheck" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/Cont_Bio_Card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Icon">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/Cont_Bio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="5dp"
+                android:text="@string/bio_cont"
+                android:textSize="18sp" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/Cont_Bio_User_Card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="50dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Bio_Card">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/Cont_User_Bio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="15dp"
+                android:layout_marginVertical="15dp"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionDone"
+                android:inputType="text|textNoSuggestions|textMultiLine"
+                android:maxLines="7"
+                android:minHeight="48dp"
+                android:text="@string/bio_cont_user"
+                android:textAlignment="center"
+                android:textSize="16sp"
+                tools:ignore="VisualLintTextFieldSize,SpeakableTextPresentCheck" />
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/Cont_Bio_User_Edit"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="-15dp"
+            android:backgroundTint="#00FFFFFF"
+            android:foregroundTint="#00FFFFFF"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintStart_toEndOf="@+id/Cont_Bio_User_Card"
+            app:layout_constraintTop_toTopOf="@+id/Cont_Bio_User_Card"
+            tools:ignore="ImageContrastCheck" />
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/Cont_Email_Layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="75dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Bio_User_Card">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/Cont_Email_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="@string/email_cont"
+                android:textSize="18sp" />
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/Cont_Email_Text">
+
+                <TextView
+                    android:id="@+id/Cont_Email_User"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scrollHorizontally="true"
+                    android:text="@string/email_cont_user"
+                    android:textSize="18sp" />
+
+            </HorizontalScrollView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <RelativeLayout
+            android:id="@+id/Cont_Parola"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="75dp"
+            android:layout_marginTop="25dp"
+            android:orientation="vertical"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Email_Layout">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/Cont_Parola_Text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="@string/parola_cont"
+                android:textSize="18sp" />
+
+            <FrameLayout
+                android:id="@+id/Cont_Parola_Layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/Cont_Parola_Text">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/Cont_Parola_Edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@android:color/transparent"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword|textNoSuggestions"
+                    android:maxEms="9"
+                    android:paddingEnd="50dp"
+                    android:singleLine="true"
+                    android:text="@string/parola_cont_edit"
+                    android:textSize="20sp"
+                    tools:ignore="RtlSymmetry,TextSizeCheck,TouchTargetSizeCheck" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/Cont_Parola_Edit_Icon"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_gravity="end|top"
+                    android:layout_marginEnd="32.5dp"
+                    android:backgroundTint="#00FFFFFF"
+                    android:foregroundTint="#00FFFFFF"
+                    android:src="@android:drawable/ic_menu_edit"
+                    tools:ignore="ImageContrastCheck" />
+
+                <ImageButton
+                    android:id="@+id/Cont_Parola_Toggle"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="end|center_vertical"
+                    android:layout_marginEnd="2.5dp"
+                    android:background="#00000000"
+                    android:contentDescription="@string/logare_parola_toggle"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_vis_on"
+                    tools:ignore="TouchTargetSizeCheck" />
+
+            </FrameLayout>
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/Cont_Logout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            android:text="@string/logout_cont"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Parola" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

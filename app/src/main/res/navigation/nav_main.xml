@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_home"
-        android:name="com.example.towntrekker.pagini.main.PaginaHome"
+        android:name="com.example.towntrekker.pagini.main.Home"
         android:label="@string/titlu_home"
         tools:layout="@layout/pagina_home" />
 
@@ -18,8 +18,14 @@
         tools:layout="@layout/pagina_explore" />
 
     <fragment
-        android:id="@+id/nav_profil"
-        android:name="com.example.towntrekker.pagini.main.Profil"
-        android:label="@string/titlu_profil"
-        tools:layout="@layout/pagina_profil" />
+        android:id="@+id/nav_mesaje"
+        android:name="com.example.towntrekker.pagini.main.Mesaje"
+        android:label="@string/titlu_mesaje"
+        tools:layout="@layout/pagina_mesaje" />
+
+    <fragment
+        android:id="@+id/nav_cont"
+        android:name="com.example.towntrekker.pagini.main.Cont"
+        android:label="@string/titlu_cont"
+        tools:layout="@layout/pagina_cont" />
 </navigation>

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.towntrekker.databinding.PaginaHomeBinding
 
-class PaginaHome : Fragment() {
+class Home : Fragment() {
     private var _binding: PaginaHomeBinding? = null
 
     private val binding get() = _binding!!

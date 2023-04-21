@@ -13,8 +13,13 @@
         android:title="@string/nav_meniu_explore" />
 
     <item
-        android:id="@+id/nav_profil"
-        android:icon="@drawable/icon_meniu_profil"
-        android:title="@string/nav_meniu_profil" />
+        android:id="@+id/nav_mesaje"
+        android:icon="@drawable/icon_meniu_mesaje"
+        android:title="@string/nav_meniu_mesaje" />
+
+    <item
+        android:id="@+id/nav_cont"
+        android:icon="@drawable/icon_meniu_cont"
+        android:title="@string/nav_meniu_cont" />
 
 </menu>

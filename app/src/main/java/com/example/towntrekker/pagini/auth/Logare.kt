@@ -102,6 +102,7 @@ class Logare : Fragment() {
                                             val date = User(user.uid,
                                                             "" + document.getString("email"),
                                                             "" + document.getString("alias"),
+                                                            "" + document.getString("bio"),
                                                             "" + document.getString("parola"))
 
                                             Log.d(authActivityContext.getTag(), "Logare făcută cu succes")
