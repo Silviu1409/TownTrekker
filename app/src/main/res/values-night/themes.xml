@@ -25,4 +25,14 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
+    <style name="FabAdd">
+        <item name="backgroundTint">@color/white</item>
+        <item name="tint">@color/black</item>
+    </style>
+
+    <style name="StergereMedia">
+        <item name="android:background">@color/white</item>
+        <item name="tint">@color/black</item>
+    </style>
 </resources>

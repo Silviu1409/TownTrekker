@@ -2,10 +2,11 @@ package com.example.towntrekker
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,12 +14,17 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.towntrekker.databinding.ActivityMainBinding
 import com.example.towntrekker.datatypes.User
+import com.example.towntrekker.pagini.main.AdaugaPostare
+import com.google.android.libraries.places.api.Places
+import com.google.android.libraries.places.api.net.PlacesClient
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import java.util.Locale
 
 
 class ActivityMain : AppCompatActivity() {
@@ -32,6 +38,9 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     private lateinit var folderRef: StorageReference
     private lateinit var db: FirebaseFirestore
+    private lateinit var storage: StorageReference
+
+    private lateinit var placesClient: PlacesClient
 
     private lateinit var sharedPrefsUser: SharedPreferences   // fișierul din shared preferences ce conține date despre user
 
@@ -72,6 +81,7 @@ class ActivityMain : AppCompatActivity() {
         folderRef = Firebase.storage.reference.child(user!!.uid)    // referință folder Firebase Storage creat pt. fiecare user
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
+        storage = Firebase.storage.reference
 
         // configurare navigare pentru secțiunea principală din cadrul aplicației
         val navView: BottomNavigationView = binding.navMeniu
@@ -89,6 +99,15 @@ class ActivityMain : AppCompatActivity() {
 
         supportActionBar?.hide()    //ascundere ActionBar
         onBackPressedDispatcher.addCallback(this,onBackPressedCallback)
+
+        @Suppress("DEPRECATION")
+        if (!Places.isInitialized()) {
+            Places.initialize(applicationContext,
+                packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA).metaData.getString("com.google.android.geo.API_KEY")!!,
+                Locale("ro", "RO")
+            )
+        }
+        placesClient = Places.createClient(this)
     }
 
     // funcție ce afișează un AlertDialog, în care utilizatorul este întrebat dacă dorește să închidă aplicația
@@ -99,6 +118,12 @@ class ActivityMain : AppCompatActivity() {
             .setPositiveButton("Da") { _, _ -> finishAffinity() }
             .setNegativeButton("Nu", null)
             .show()
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    fun adaugaPostare(view: View) {
+        val dialog = AdaugaPostare()
+        dialog.show(supportFragmentManager, "Adaugă postare")
     }
 
     fun getUser(): User? {
@@ -127,6 +152,10 @@ class ActivityMain : AppCompatActivity() {
 
     fun getSharedPrefsUser(): SharedPreferences {
         return sharedPrefsUser
+    }
+
+    fun getStorage(): StorageReference {
+        return storage
     }
 
     // funcție pentru ascunderea tastaturii

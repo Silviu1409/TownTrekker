@@ -23,35 +23,45 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <androidx.appcompat.widget.AppCompatEditText
-            android:id="@+id/Cont_Alias"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/Cont_Alias_Card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
-            android:background="@android:color/transparent"
-            android:imeOptions="actionDone"
-            android:inputType="textNoSuggestions"
-            android:maxEms="6"
-            android:minWidth="48dp"
-            android:minHeight="48dp"
-            android:singleLine="true"
-            android:text="@string/alias_cont"
-            android:textSize="22sp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Titlu" />
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Titlu" >
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/Cont_Alias"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="7.5dp"
+                android:background="@android:color/transparent"
+                android:imeOptions="actionDone"
+                android:inputType="textNoSuggestions"
+                android:maxEms="6"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:singleLine="true"
+                android:text="@string/alias_cont"
+                android:textSize="22sp" />
+
+        </androidx.cardview.widget.CardView>
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/Cont_Alias_Edit"
             android:layout_width="15dp"
             android:layout_height="15dp"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="-5dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="-10dp"
             android:backgroundTint="#00FFFFFF"
             android:foregroundTint="#00FFFFFF"
             android:src="@android:drawable/ic_menu_edit"
-            app:layout_constraintStart_toEndOf="@+id/Cont_Alias"
-            app:layout_constraintTop_toTopOf="@+id/Cont_Alias"
+            app:layout_constraintStart_toEndOf="@+id/Cont_Alias_Card"
+            app:layout_constraintTop_toTopOf="@+id/Cont_Alias_Card"
             tools:ignore="ImageContrastCheck" />
 
         <androidx.appcompat.widget.AppCompatImageButton
@@ -65,7 +75,7 @@
             android:src="@drawable/icon_cont"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Alias" />
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Alias_Card" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/Cont_Icon_Edit"
@@ -151,38 +161,63 @@
             android:id="@+id/Cont_Email_Layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="75dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Bio_User_Card">
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Bio_User_Card" >
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/Cont_Email_Text"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Cont_Email_Card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:text="@string/email_cont"
-                android:textSize="18sp" />
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="5dp"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="5dp">
 
-            <HorizontalScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_toEndOf="@+id/Cont_Email_Text">
-
-                <TextView
-                    android:id="@+id/Cont_Email_User"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/Cont_Email_Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:scrollHorizontally="true"
-                    android:text="@string/email_cont_user"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="@string/email_cont"
                     android:textSize="18sp" />
 
-            </HorizontalScrollView>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Cont_Email_User_Card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginVertical="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/Cont_Email_Card"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="5dp">
+
+                <HorizontalScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="5dp">
+
+                    <TextView
+                        android:id="@+id/Cont_Email_User"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:scrollHorizontally="true"
+                        android:text="@string/email_cont_user"
+                        android:textSize="18sp" />
+
+                </HorizontalScrollView>
+
+            </androidx.cardview.widget.CardView>
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -190,69 +225,98 @@
             android:id="@+id/Cont_Parola"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="75dp"
+            android:layout_marginStart="50dp"
             android:layout_marginTop="25dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Email_Layout">
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Email_Layout" >
 
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/Cont_Parola_Text"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Cont_Parola_Card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerInParent="true"
-                android:text="@string/parola_cont"
-                android:textSize="18sp" />
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="5dp"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="5dp" >
 
-            <FrameLayout
-                android:id="@+id/Cont_Parola_Layout"
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/Cont_Parola_Text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:text="@string/parola_cont"
+                    android:textSize="18sp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/Cont_Parola_User_Card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginStart="5dp"
-                android:layout_toEndOf="@+id/Cont_Parola_Text">
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/Cont_Parola_Card"
+                app:cardCornerRadius="6dp"
+                app:cardElevation="5dp" >
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/Cont_Parola_Edit"
+                <FrameLayout
+                    android:id="@+id/Cont_Parola_Layout"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:background="@android:color/transparent"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword|textNoSuggestions"
-                    android:maxEms="9"
-                    android:paddingEnd="50dp"
-                    android:singleLine="true"
-                    android:text="@string/parola_cont_edit"
-                    android:textSize="20sp"
-                    tools:ignore="RtlSymmetry,TextSizeCheck,TouchTargetSizeCheck" />
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_toEndOf="@+id/Cont_Parola_Card">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/Cont_Parola_Edit_Icon"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_gravity="end|top"
-                    android:layout_marginEnd="32.5dp"
-                    android:backgroundTint="#00FFFFFF"
-                    android:foregroundTint="#00FFFFFF"
-                    android:src="@android:drawable/ic_menu_edit"
-                    tools:ignore="ImageContrastCheck" />
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/Cont_Parola_Edit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:background="@android:color/transparent"
+                        android:imeOptions="actionDone"
+                        android:inputType="textPassword|textNoSuggestions"
+                        android:maxEms="8"
+                        android:paddingEnd="40dp"
+                        android:singleLine="true"
+                        android:text="@string/parola_cont_edit"
+                        android:textSize="20sp"
+                        tools:ignore="RtlSymmetry,TextSizeCheck,TouchTargetSizeCheck" />
 
-                <ImageButton
-                    android:id="@+id/Cont_Parola_Toggle"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="end|center_vertical"
-                    android:layout_marginEnd="2.5dp"
-                    android:background="#00000000"
-                    android:contentDescription="@string/logare_parola_toggle"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/icon_vis_on"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    <ImageButton
+                        android:id="@+id/Cont_Parola_Toggle"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="end|center_vertical"
+                        android:layout_marginEnd="2.5dp"
+                        android:background="#00000000"
+                        android:contentDescription="@string/logare_parola_toggle"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/icon_vis_on"
+                        tools:ignore="TouchTargetSizeCheck" />
 
-            </FrameLayout>
+                </FrameLayout>
+
+            </androidx.cardview.widget.CardView>
 
         </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/Cont_Parola_Edit_Icon"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="-8dp"
+            android:backgroundTint="#00FFFFFF"
+            android:foregroundTint="#00FFFFFF"
+            android:src="@android:drawable/ic_menu_edit"
+            app:layout_constraintStart_toEndOf="@+id/Cont_Parola"
+            app:layout_constraintTop_toTopOf="@+id/Cont_Parola"
+            tools:ignore="ImageContrastCheck" />
 
         <Button
             android:id="@+id/Cont_Logout"

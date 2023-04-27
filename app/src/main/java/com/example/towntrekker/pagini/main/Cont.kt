@@ -333,23 +333,24 @@ class Cont : Fragment() {
 
                 }
 
+                @Suppress("KotlinConstantConditions", "UNUSED_VALUE")
                 override fun afterTextChanged(s: Editable?) {
                     val bioNou = s.toString()
-                    var ignoraSchibari = false
+                    var ignoraSchimbari = false
 
                     numarLinii = binding.ContUserBio.lineCount
 
-                    if (numarLinii > 7 && !ignoraSchibari) {
+                    if (numarLinii > 7 && !ignoraSchimbari) {
                         val bioVechi = bioNou.substring(0, (bioNou.length) - 1)
 
-                        ignoraSchibari = true
+                        ignoraSchimbari = true
                         binding.ContUserBio.removeTextChangedListener(this)
 
                         binding.ContUserBio.setText(bioVechi)
                         binding.ContUserBio.setSelection(bioVechi.length)
 
                         binding.ContUserBio.addTextChangedListener(this)
-                        ignoraSchibari = false
+                        ignoraSchimbari = false
                     }
                 }
             })

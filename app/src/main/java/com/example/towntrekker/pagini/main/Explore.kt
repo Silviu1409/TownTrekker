@@ -10,6 +10,7 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
+
 class Explore : Fragment() {
     private lateinit var mapView: MapView
 
@@ -23,6 +24,7 @@ class Explore : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         mapView.getMapAsync { googleMap ->
             val coord_unibuc = LatLng(44.43554044167409, 26.099587545344892)
             googleMap.addMarker(MarkerOptions().position(coord_unibuc).title("Marker la UniBuc"))

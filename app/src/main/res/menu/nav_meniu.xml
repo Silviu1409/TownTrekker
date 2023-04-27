@@ -12,6 +12,8 @@
         android:icon="@drawable/icon_meniu_explore"
         android:title="@string/nav_meniu_explore" />
 
+    <item android:title="@string/nav_meniu_gol" />
+
     <item
         android:id="@+id/nav_mesaje"
         android:icon="@drawable/icon_meniu_mesaje"
