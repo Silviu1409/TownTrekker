@@ -45,6 +45,8 @@ class ActivityAuth : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: StorageReference
 
+    private lateinit var refFolderUseri: StorageReference
+
     private var user: FirebaseUser? = null  // date despre user-ul logat, dacă acesta există
 
     private var logatAnterior = true        // utilizatorul s-a mai logat anterior cu contul Google în această aplicație ?
@@ -101,6 +103,8 @@ class ActivityAuth : AppCompatActivity() {
         storage = Firebase.storage.reference
         sharedPreferencesUser = getSharedPreferences("user", Context.MODE_PRIVATE)
 
+        refFolderUseri = storage.child("useri")
+
         creareGoogleSignInClient()
 
         user = auth.currentUser
@@ -147,7 +151,7 @@ class ActivityAuth : AppCompatActivity() {
                                             resource: Bitmap,
                                             transition: Transition<in Bitmap>?
                                         ) {
-                                            val folderRef = storage.child(user.uid)
+                                            val folderRef = refFolderUseri.child(user.uid)
                                             val imageRef = folderRef.child("icon.jpg")
 
                                             val baos = ByteArrayOutputStream()

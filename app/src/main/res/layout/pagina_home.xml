@@ -1,22 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/pagina_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pagini.main.Home">
+    android:orientation="vertical"
+    tools:context=".pagini.main.Home" >
 
-    <TextView
-        android:id="@+id/titlu_home"
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/home_nu_exista_postari_feed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="225dp"
-        android:text="@string/titlu_home"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="75dp"
+        android:text="@string/home_nu_exista_postari_feed"
         android:textAlignment="center"
-        android:textSize="24sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textSize="20sp"
+        android:visibility="gone" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/home_postari_feed"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</RelativeLayout>

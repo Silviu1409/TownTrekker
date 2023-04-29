@@ -42,7 +42,7 @@
                 android:background="@android:color/transparent"
                 android:imeOptions="actionDone"
                 android:inputType="textNoSuggestions"
-                android:maxEms="6"
+                android:maxLength="15"
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 android:singleLine="true"

@@ -2,6 +2,8 @@ package com.example.towntrekker.pagini.main
 
 import android.app.AlertDialog
 import android.app.Dialog
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
@@ -16,6 +18,7 @@ import android.widget.RelativeLayout
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.towntrekker.ActivityMain
@@ -25,6 +28,7 @@ import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
+import java.io.ByteArrayOutputStream
 import com.google.android.libraries.places.R as PlacesR
 
 
@@ -183,58 +187,89 @@ class AdaugaPostare: DialogFragment() {
             positiveButton.setOnClickListener {
                 Log.d(mainActivityContext.getTag(), numeLocatie + adresaLocatie)
 
-                if (numeLocatie != "" || adresaLocatie != "") {
-                    if (descriereRef.text.toString() != "" || descFisiere.size > 0) {
-                        val datePostare = hashMapOf(
-                            "user" to mainActivityContext.getUser()!!.uid,
-                            "numeLocatie" to numeLocatie,
-                            "adresaLocatie" to adresaLocatie,
-                            "descriere" to descriereRef.text.toString(),
-                            "media" to (descFisiere.size != 0),
-                            "aprecieri" to 0
-                        )
+                if ( (numeLocatie != "" || adresaLocatie != "")
+                    && (descriereRef.text.toString() != "" || descFisiere.isNotEmpty()) ) {
 
-                        val refDocNou = mainActivityContext.getDB().collection("postari").document()
+                    val datePostare = hashMapOf(
+                        "user" to mainActivityContext.getUser()!!.uid,
+                        "numeUser" to mainActivityContext.getUser()!!.alias,
+                        "numeLocatie" to numeLocatie,
+                        "adresaLocatie" to adresaLocatie,
+                        "descriere" to descriereRef.text.toString(),
+                        "media" to (descFisiere.size != 0),
+                        "aprecieri" to 0,
+                        "comentarii" to listOf<Any>(),
+                        "iconUser" to mainActivityContext.getUserIconFile().exists()
+                    )
 
-                        refDocNou.set(datePostare)
-                            .addOnSuccessListener {
-                                Log.d(mainActivityContext.getTag(), "Datalii despre postare adăugate.")
+                    val refDocNou = mainActivityContext.getDB().collection("postari").document()
 
-                                var incarcareFisiere = true
-                                val refPostare = mainActivityContext.getStorage().child(refDocNou.id)
+                    refDocNou.set(datePostare)
+                        .addOnSuccessListener {
+                            Log.d(mainActivityContext.getTag(), "Datalii despre postare adăugate.")
 
-                                for ((idx, uri) in descFisiere.withIndex()){
-                                    val extensie = MimeTypeMap.getSingleton().getExtensionFromMimeType(
-                                        mainActivityContext.contentResolver.getType(uri)).toString().lowercase()
+                            var incarcareFisiere = true
+                            val refPostare = mainActivityContext.getStorage().child("postari").child(refDocNou.id)
 
-                                    val refMedia = refPostare.child("fisier${idx+1}.$extensie")
-                                    val uploadTask = refMedia.putFile(uri)
+                            for ((idx, uri) in descFisiere.withIndex()){
+                                val extensie = MimeTypeMap.getSingleton().getExtensionFromMimeType(
+                                    mainActivityContext.contentResolver.getType(uri)).toString().lowercase()
 
-                                    uploadTask
+                                val refMedia = refPostare.child("fisier${idx+1}.$extensie")
+                                val uploadTask = refMedia.putFile(uri)
+
+                                uploadTask
+                                    .addOnSuccessListener {
+                                        Log.d(mainActivityContext.getTag(), "Fișier incărcat!")
+                                    }
+                                    .addOnFailureListener { e ->
+                                        incarcareFisiere = false
+                                        Log.e(mainActivityContext.getErrTag(), "Eroare încărcare fișier: ${e.message}")
+                                    }
+                            }
+
+                            val userIconRef = refPostare.child("icon.jpg")
+
+                            val userIconLocal = mainActivityContext.getUserIconFile()
+
+                            if (userIconLocal.exists()){
+                                requireActivity().contentResolver.openInputStream(userIconLocal.toUri())?.use { inputStream ->
+                                    val bitmap = BitmapFactory.decodeStream(inputStream)
+
+                                    val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 35, 35, false)
+
+                                    val baos = ByteArrayOutputStream()
+                                    resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+                                    val imgData = baos.toByteArray()
+
+                                    userIconRef.putBytes(imgData)
                                         .addOnSuccessListener {
-                                            Log.d(mainActivityContext.getTag(), "Fișier incărcat!")
+                                            Log.d(mainActivityContext.getTag(), "Icon user încărcat cu succes!")
                                         }
                                         .addOnFailureListener { e ->
+                                            Log.e(mainActivityContext.getErrTag(), "Eroare la încărcarea imaginii: ${e.message}")
                                             incarcareFisiere = false
-                                            Log.e(mainActivityContext.getErrTag(), "Eroare încărcare fișier: ${e.message}")
                                         }
                                 }
-
-                                if (!incarcareFisiere){
-                                    Log.w(mainActivityContext.getTag(), "O parte din fișiere s-au incărcat!")
-                                    Toast.makeText(activity, "O parte din fișiere s-au incărcat!", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    Log.i(mainActivityContext.getTag(), "Postare făcută cu succes!")
-                                    Toast.makeText(activity, "Postare făcută cu succes!", Toast.LENGTH_SHORT).show()
-                                }
-
-                                d.dismiss()
                             }
-                            .addOnFailureListener { e ->
-                                Log.e(mainActivityContext.getErrTag(), "Eroare la crearea postării: ${e.message}")
-                                Toast.makeText(activity, "Eroare la crearea postării.\nMai încearcă!", Toast.LENGTH_SHORT).show()
+
+
+                            if (!incarcareFisiere){
+                                Log.w(mainActivityContext.getTag(), "O parte din fișiere s-au incărcat!")
+                                Toast.makeText(activity, "O parte din fișiere s-au incărcat!", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Log.i(mainActivityContext.getTag(), "Postare făcută cu succes!")
+                                Toast.makeText(activity, "Postare făcută cu succes!", Toast.LENGTH_SHORT).show()
                             }
-                    }
+
+                            d.dismiss()
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e(mainActivityContext.getErrTag(), "Eroare la crearea postării: ${e.message}")
+                            Toast.makeText(activity, "Eroare la crearea postării.\nMai încearcă!", Toast.LENGTH_SHORT).show()
+                        }
+                } else {
+                    Toast.makeText(context, "Trebuie să adaugi o locație, alături de o descriere și/sau fișiere.", Toast.LENGTH_LONG).show()
                 }
             }
 

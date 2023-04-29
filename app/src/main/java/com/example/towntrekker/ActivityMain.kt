@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.activity.OnBackPressedCallback
@@ -24,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import java.io.File
 import java.util.Locale
 
 
@@ -43,6 +45,11 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var placesClient: PlacesClient
 
     private lateinit var sharedPrefsUser: SharedPreferences   // fișierul din shared preferences ce conține date despre user
+
+    private lateinit var userIconFile: File
+
+    private lateinit var sharedPrefsLiked: SharedPreferences
+    private var postariApreciate = mutableSetOf<String>()
 
 
     // suprascriere a metodei ce este apelată în momentul în care utilizatorul apasă pe butonul "back" din bara de navigație
@@ -78,10 +85,11 @@ class ActivityMain : AppCompatActivity() {
             sharedPrefsUser.edit().putString("parola", user!!.parola).apply()
         }
 
-        folderRef = Firebase.storage.reference.child(user!!.uid)    // referință folder Firebase Storage creat pt. fiecare user
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         storage = Firebase.storage.reference
+
+        folderRef = Firebase.storage.reference.child("useri").child(user!!.uid)    // referință folder Firebase Storage creat pt. fiecare user
 
         // configurare navigare pentru secțiunea principală din cadrul aplicației
         val navView: BottomNavigationView = binding.navMeniu
@@ -108,6 +116,48 @@ class ActivityMain : AppCompatActivity() {
             )
         }
         placesClient = Places.createClient(this)
+
+        // preluare poză profil user, dacă nu există deja în cache
+
+        userIconFile = File(applicationContext.cacheDir, "icon.jpg")
+
+        val imageRef = folderRef.child("icon.jpg")
+
+        imageRef.metadata
+            .addOnSuccessListener {  metadata ->
+
+                if(userIconFile.exists() && userIconFile.length() == metadata.sizeBytes){
+                    Log.d(tag, "Poza de profil este deja în cache!")
+                } else {
+                    Log.w(tag, "Poza de profil nu este în cache")
+
+                    imageRef.getFile(userIconFile)
+                        .addOnSuccessListener {
+                            Log.d(tag, "Poza de profil salvată în cache!!")
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e(err, "Salvarea pozei de profil în cache a eșuat: ${e.message}")
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                if (e.message == "Object does not exist at location."){
+                    Log.e(err, "User-ul nu are un icon setat: ${e.message}")
+                }
+                else {
+                    Log.e(err, "Preluarea datelor despre icon a eșuat: ${e.message}")
+                }
+            }
+
+        // preluare/creare fișier ce conține postările apreciate
+
+        sharedPrefsLiked = getSharedPreferences("apreciat${user!!.uid}", Context.MODE_PRIVATE)
+
+        if (sharedPrefsLiked.contains("postari")){
+            postariApreciate = sharedPrefsLiked.getStringSet("postari", mutableSetOf()) ?: mutableSetOf()
+        } else {
+            sharedPrefsLiked.edit().putStringSet("postari", setOf()).apply()
+        }
     }
 
     // funcție ce afișează un AlertDialog, în care utilizatorul este întrebat dacă dorește să închidă aplicația
@@ -158,6 +208,10 @@ class ActivityMain : AppCompatActivity() {
         return storage
     }
 
+    fun getUserIconFile(): File {
+        return userIconFile
+    }
+
     // funcție pentru ascunderea tastaturii
     fun ascundereTastatura() {
         if(currentFocus != null) {
@@ -169,5 +223,13 @@ class ActivityMain : AppCompatActivity() {
     // funcție ce șterge datele legate de Shared Preferences pentru utilizatorul curent
     fun stergeSharedPrefsUser(){
         sharedPrefsUser.edit().clear().apply()
+    }
+
+    fun getSharedPrefsLiked(): SharedPreferences {
+        return sharedPrefsLiked
+    }
+
+    fun getPostariApreciate(): MutableSet<String> {
+        return postariApreciate
     }
 }

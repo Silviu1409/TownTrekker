@@ -12,7 +12,7 @@
     <string name="nav_meniu_mesaje">Mesaje</string>
     <string name="nav_meniu_cont">Cont</string>
 
-    <string name="fab_adaugare">buton adaugare postare</string>
+    <string name="fab_adaugare">buton adăugare postare</string>
 
     <string name="auth_titlu">Autentificare</string>
     <string name="auth_buton">Sign up</string>
@@ -23,11 +23,11 @@
     <string name="login_button_google">Continuă cu contul Google</string>
     <string name="login_other_login_method">sau loghează-te folosind emailul</string>
     <string name="logare_parola_toggle">ascundere/afișare parolă</string>
-    <string name="logare_buton">Log in</string>
+    <string name="logare_buton">Loghează-te</string>
     <string name="to_login"><u>Ai deja cont? Loghează-te aici.</u></string>
 
     <string name="resetare_titlu">Resetare parolă</string>
-    <string name="resetare_buton">Submit</string>
+    <string name="resetare_buton">Resetează</string>
     <string name="resetare_parola"><u>Ai uitat parola?</u></string>
 
     <string name="hint_email">Email</string>
@@ -35,6 +35,27 @@
 
     <string name="img_splash">Logo SplashScreen</string>
     <string name="label_splash">SplashScreen</string>
+
+    <string name="home_nu_exista_postari_feed">Nu există nicio postare în feed</string>
+    <string name="postare_icon_user_desc">logo user</string>
+    <string name="postare_nume_user">alias user test</string>
+    <string name="postare_icon_nume_locatie">icon nume locație</string>
+    <string name="postare_nume_locatie">nume locație test</string>
+    <string name="postare_icon_adresa_locatie">icon adresă locație</string>
+    <string name="postare_adresa_locatie">stradă locație test număr, oraș locație test, cod poștal test, țară locație test</string>
+    <string name="postare_apreciere_desc">apreciere postare</string>
+    <string name="postare_numar_aproecieri">100.24K</string>
+    <string name="postare_descriere">\t\tDescriere postare</string>
+    <string name="postare_descriere_tab">\t\t</string>
+    <string name="postare_media_prev">prev</string>
+    <string name="postare_media_next">next</string>
+    <string name="adaugare_comentariu_hint">Adaugă un comentariu…</string>
+    <string name="comentariu_trimite_desc">trimite comentariu</string>
+
+    <string name="postare_comentarii"><u>Vizualizare comentarii</u></string>
+
+    <string name="media_imagine">imagine</string>
+    <string name="media_video">video</string>
 
     <string name="cont_icon_desc">icon cont</string>
     <string name="titlu_cont_complet">Contul meu</string>

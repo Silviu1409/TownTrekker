@@ -37,7 +37,7 @@ class AdaugaImaginiAdapter(private val context: Context?, private val fragment: 
                 .load(bitmap)
                 .override(80, 80)
                 .centerCrop()
-                .into(holder.mediaView)
+                .into(holder.media)
         }
         else if (mimeType?.startsWith("video/") == true){
             val retriever = MediaMetadataRetriever()
@@ -49,10 +49,10 @@ class AdaugaImaginiAdapter(private val context: Context?, private val fragment: 
                 .load(bitmap)
                 .override(80, 80)
                 .centerCrop()
-                .into(holder.mediaView)
+                .into(holder.media)
         }
 
-        holder.stergereView.setOnClickListener {
+        holder.stergere.setOnClickListener {
             files.remove(uriFisier)
             fragment.stergereDescFisier(uriFisier)
             notifyItemRemoved(position)

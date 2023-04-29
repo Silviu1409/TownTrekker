@@ -21,7 +21,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.towntrekker.ActivityAuth
 import com.example.towntrekker.ActivityMain
@@ -32,7 +31,6 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 
 class Cont : Fragment() {
@@ -61,51 +59,11 @@ class Cont : Fragment() {
             uri?.let { schimbaPozaCont(it) }
         }
 
-        val tempLocalFile = File(requireContext().cacheDir, "icon.jpg")
-
-        val imageRef = mainActivityContext.getFolderRef().child("icon.jpg")
-
-        imageRef.metadata
-            .addOnSuccessListener {  metadata ->
-
-                if(tempLocalFile.exists() && tempLocalFile.length() == metadata.sizeBytes){
-                    Log.d(mainActivityContext.getTag(), "Poza de profil este deja în cache!")
-
-                    Glide.with(this)
-                        .asBitmap()
-                        .load(tempLocalFile)
-                        .circleCrop()
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(binding.ContIcon)
-                } else {
-                    Log.w(mainActivityContext.getTag(), "Poza de profil nu este în cache")
-
-                    Glide.with(this)
-                        .asBitmap()
-                        .load(imageRef)
-                        .circleCrop()
-                        .skipMemoryCache(true)
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .into(binding.ContIcon)
-
-                    imageRef.getFile(tempLocalFile)
-                        .addOnSuccessListener {
-                            Log.d(mainActivityContext.getTag(), "Poza de profil salvată în cache!!")
-                        }
-                        .addOnFailureListener { e ->
-                            Log.e(mainActivityContext.getErrTag(), "Salvarea pozei de profil în cache a eșuat: ${e.message}")
-                        }
-                }
-            }
-            .addOnFailureListener { e ->
-                if (e.message == "Object does not exist at location."){
-                    Log.e(mainActivityContext.getErrTag(), "User-ul nu are un icon setat: ${e.message}")
-                }
-                else {
-                    Log.e(mainActivityContext.getErrTag(), "Preluarea datelor despre icon a eșuat: ${e.message}")
-                }
-            }
+        Glide.with(this)
+            .asBitmap()
+            .load(mainActivityContext.getUserIconFile())
+            .circleCrop()
+            .into(binding.ContIcon)
 
         binding.ContAlias.setText(mainActivityContext.getUser()!!.alias)
         binding.ContEmailUser.text = mainActivityContext.getUser()!!.email
@@ -371,6 +329,7 @@ class Cont : Fragment() {
 
         binding.ContLogout.setOnClickListener {
             mainActivityContext.stergeSharedPrefsUser()
+            mainActivityContext.getUserIconFile().delete()
             FirebaseAuth.getInstance().signOut()
 
             Log.d(mainActivityContext.getTag(), "Delogare făcută cu succes.")
@@ -393,6 +352,7 @@ class Cont : Fragment() {
 
         if (mainActivityContext.getUser()!!.parola == ""){
             binding.ContParola.visibility = View.GONE
+            binding.ContParolaEditIcon.visibility = View.GONE
         }
         else {
             binding.ContParolaEdit.setText(mainActivityContext.getUser()!!.parola)

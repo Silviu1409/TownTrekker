@@ -8,6 +8,6 @@ import com.example.towntrekker.R
 
 
 class AdaugaImaginiViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    val mediaView: ImageView = itemView.findViewById(R.id.media)
-    val stergereView: ImageButton = itemView.findViewById(R.id.stergere)
+    val media: ImageView = itemView.findViewById(R.id.media)
+    val stergere: ImageButton = itemView.findViewById(R.id.stergere)
 }
