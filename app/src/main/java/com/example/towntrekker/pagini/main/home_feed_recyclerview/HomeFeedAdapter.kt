@@ -5,11 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.towntrekker.ActivityMain
 import com.example.towntrekker.R
 import com.example.towntrekker.datatypes.Postare
+import com.example.towntrekker.pagini.main.VizualizareComentarii
 import com.example.towntrekker.pagini.main.postare_media_recyclerview.MediaAdapter
 import com.google.firebase.storage.StorageReference
 import kotlin.collections.ArrayList
@@ -17,6 +19,7 @@ import kotlin.collections.ArrayList
 
 class HomeFeedAdapter(context: Context?, private val lista_postari: ArrayList<Postare>) : RecyclerView.Adapter<HomeFeedViewHolder>(){
     private val mainActivityContext = (context as ActivityMain)
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeFeedViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.home_feed_postare, parent, false)
@@ -113,6 +116,57 @@ class HomeFeedAdapter(context: Context?, private val lista_postari: ArrayList<Po
             holder.adaugaComentariuLayout.visibility = View.VISIBLE
         } else {
             holder.comentarii.visibility = View.VISIBLE
+        }
+
+        holder.comentariuTrimite.setOnClickListener {
+            if (holder.adaugaComentariu.text.toString().isNotEmpty()) {
+                val postareRefDB = mainActivityContext.getDB().collection("postari").document(postare.id)
+                postareRefDB.get()
+                    .addOnSuccessListener { doc ->
+                        @Suppress("UNCHECKED_CAST")
+                        val pairData = doc.get("comentarii") as? List<HashMap<String, String>> ?: listOf()
+                        postare.comentarii = pairData.map { hashMap -> Pair(hashMap["first"] ?: "", hashMap["second"] ?: "") }
+
+                        val aux = postare.comentarii.toMutableList()
+                        aux.add(Pair(mainActivityContext.getUser()!!.alias, holder.adaugaComentariu.text.toString()))
+
+                        postare.comentarii = aux.toList()
+                        postareRefDB.update("comentarii", postare.comentarii)
+                            .addOnSuccessListener {
+                                holder.adaugaComentariu.text!!.clear()
+
+                                Log.d(mainActivityContext.getTag(), "Comentariu adăugat cu succes!")
+                                Toast.makeText(mainActivityContext, "Comentariu adăugat cu succes!", Toast.LENGTH_SHORT).show()
+
+                                holder.adaugaComentariuLayout.visibility = View.GONE
+                                holder.comentarii.visibility = View.VISIBLE
+                            }
+                            .addOnFailureListener { e ->
+                                Log.e(mainActivityContext.getErrTag(), "Eroare la adăugarea comentariului: ${e.message}")
+                                Toast.makeText(mainActivityContext, "Eroare la adăugarea comentariului!", Toast.LENGTH_SHORT).show()
+                            }
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(mainActivityContext.getErrTag(), "Eroare la preluarea comentariilor: ${e.message}")
+                        Toast.makeText(mainActivityContext, "Eroare la adăugarea comentariului!", Toast.LENGTH_SHORT).show()
+                    }
+            }
+        }
+
+        holder.comentarii.setOnClickListener {
+            val docComentarii = mainActivityContext.getSharedPreferences("comentarii", Context.MODE_PRIVATE)
+
+            val setPerechiComentarii = postare.comentarii.map { (key, value) -> "$key:$value" }.toSet()
+
+            docComentarii.edit().putStringSet("comentarii", setPerechiComentarii).apply()
+            docComentarii.edit().putString("refPostare", postare.id).apply()
+            docComentarii.edit().putString("aliasUser", mainActivityContext.getUser()!!.alias).apply()
+
+            val dialog = VizualizareComentarii()
+            dialog.setOnDismissCallback { comentariiNoi ->
+                postare.comentarii = comentariiNoi
+            }
+            dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează comentarii")
         }
     }
 

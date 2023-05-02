@@ -98,7 +98,8 @@
                 android:layout_height="25dp"
                 android:contentDescription="@string/adaugare_postare_media"
                 android:scaleType="centerCrop"
-                android:src="@drawable/icon_adaugare" />
+                android:src="@drawable/icon_adaugare"
+                tools:ignore="TouchTargetSizeCheck" />
 
         </androidx.cardview.widget.CardView>
 

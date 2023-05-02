@@ -68,6 +68,9 @@ class Home : Fragment() {
 
         snapshot.documents.map { doc ->
             @Suppress("UNCHECKED_CAST")
+            val pairData = doc.get("comentarii") as? List<HashMap<String, String>> ?: listOf()
+            val pairs = pairData.map { hashMap -> Pair(hashMap["first"] ?: "", hashMap["second"] ?: "") }
+
             val postare = Postare(doc.id,
                 doc.getString("user") ?: "",
                 doc.getString("numeUser") ?: "",
@@ -75,7 +78,7 @@ class Home : Fragment() {
                 doc.getString("adresaLocatie") ?: "",
                 (doc.getDouble("aprecieri") ?: 0).toInt(),
                 doc.getString("descriere") ?: "",
-                doc.get("comentarii") as? List<Pair<String, String>> ?: emptyList(),
+                pairs,
                 doc.getBoolean("media") ?: false,
                 doc.getBoolean("iconUser") ?: false)
 

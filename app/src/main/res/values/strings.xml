@@ -51,6 +51,7 @@
     <string name="postare_media_next">next</string>
     <string name="adaugare_comentariu_hint">Adaugă un comentariu…</string>
     <string name="comentariu_trimite_desc">trimite comentariu</string>
+    <string name="comentariu_user_test">comentariu test user</string>
 
     <string name="postare_comentarii"><u>Vizualizare comentarii</u></string>
 

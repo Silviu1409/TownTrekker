@@ -296,6 +296,10 @@ class AdaugaPostare: DialogFragment() {
 
             searchView?.setTextColor(searchView.hintTextColors)
         }
+
+        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
+        val height = (resources.displayMetrics.heightPixels * 0.85).toInt()
+        dialog!!.window!!.setLayout(width, height)
     }
 
     private fun adaugaImagini(descFisiere: MutableList<Uri>){

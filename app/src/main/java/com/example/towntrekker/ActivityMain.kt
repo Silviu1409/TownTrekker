@@ -118,7 +118,6 @@ class ActivityMain : AppCompatActivity() {
         placesClient = Places.createClient(this)
 
         // preluare poză profil user, dacă nu există deja în cache
-
         userIconFile = File(applicationContext.cacheDir, "icon.jpg")
 
         val imageRef = folderRef.child("icon.jpg")
@@ -150,7 +149,6 @@ class ActivityMain : AppCompatActivity() {
             }
 
         // preluare/creare fișier ce conține postările apreciate
-
         sharedPrefsLiked = getSharedPreferences("apreciat${user!!.uid}", Context.MODE_PRIVATE)
 
         if (sharedPrefsLiked.contains("postari")){
@@ -210,6 +208,10 @@ class ActivityMain : AppCompatActivity() {
 
     fun getUserIconFile(): File {
         return userIconFile
+    }
+
+    fun deleteUserIconFile() {
+        userIconFile.delete()
     }
 
     // funcție pentru ascunderea tastaturii
