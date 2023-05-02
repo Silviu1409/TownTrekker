@@ -2,19 +2,17 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pagina_mesaje"
+    android:id="@+id/pagina_exploreaza"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".pagini.main.Mesaje">
+    tools:context=".pagini.main.Exploreaza">
 
-    <TextView
-        android:id="@+id/titlu_mesaje"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="225dp"
-        android:text="@string/titlu_mesaje"
-        android:textAlignment="center"
-        android:textSize="24sp"
+    <com.google.android.gms.maps.MapView
+        android:id="@+id/exploreaza_harta"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@string/exploreaza_harta"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

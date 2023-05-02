@@ -1,4 +1,4 @@
-package com.example.towntrekker.pagini.main.home_feed_recyclerview
+package com.example.towntrekker.pagini.main.postari_feed_recyclerview
 
 import android.content.Context
 import android.util.Log
@@ -15,17 +15,17 @@ import com.example.towntrekker.pagini.main.VizualizareComentarii
 import com.example.towntrekker.pagini.main.postare_media_recyclerview.MediaAdapter
 
 
-class HomeFeedAdapter(context: Context?, private val lista_postari: List<Postare>) : RecyclerView.Adapter<HomeFeedViewHolder>(){
+class PostariFeedAdapter(context: Context?, private val lista_postari: List<Postare>) : RecyclerView.Adapter<PostariFeedViewHolder>(){
 
     private val mainActivityContext = (context as ActivityMain)
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeFeedViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.home_feed_postare, parent, false)
-        return HomeFeedViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostariFeedViewHolder {
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.postari_feed_postare, parent, false)
+        return PostariFeedViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: HomeFeedViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: PostariFeedViewHolder, position: Int) {
         val postare = lista_postari[position]
         val postareRef = mainActivityContext.getStorage().child("postari").child(postare.id)
 

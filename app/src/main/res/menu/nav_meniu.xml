@@ -3,21 +3,21 @@
     android:id="@+id/nav_meniu">
 
     <item
-        android:id="@+id/nav_home"
-        android:icon="@drawable/icon_meniu_home"
-        android:title="@string/nav_meniu_home" />
+        android:id="@+id/nav_postari"
+        android:icon="@drawable/icon_meniu_postari"
+        android:title="@string/nav_meniu_postari" />
 
     <item
-        android:id="@+id/nav_explore"
-        android:icon="@drawable/icon_meniu_explore"
-        android:title="@string/nav_meniu_explore" />
+        android:id="@+id/nav_exploreaza"
+        android:icon="@drawable/icon_meniu_exploreaza"
+        android:title="@string/nav_meniu_exploreaza" />
 
     <item android:title="@string/nav_meniu_gol" />
 
     <item
-        android:id="@+id/nav_mesaje"
-        android:icon="@drawable/icon_meniu_mesaje"
-        android:title="@string/nav_meniu_mesaje" />
+        android:id="@+id/nav_descopera"
+        android:icon="@drawable/icon_meniu_descopera"
+        android:title="@string/nav_meniu_descopera" />
 
     <item
         android:id="@+id/nav_cont"

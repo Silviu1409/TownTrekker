@@ -11,12 +11,12 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 
-class Explore : Fragment() {
+class Exploreaza : Fragment() {
     private lateinit var mapView: MapView
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val rootView = inflater.inflate(R.layout.pagina_explore, container, false)
-        mapView = rootView.findViewById(R.id.harta)
+        val rootView = inflater.inflate(R.layout.pagina_exploreaza, container, false)
+        mapView = rootView.findViewById(R.id.exploreaza_harta)
         mapView.onCreate(savedInstanceState)
 
         return rootView

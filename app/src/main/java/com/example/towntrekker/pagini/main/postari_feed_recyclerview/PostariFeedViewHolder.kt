@@ -1,4 +1,4 @@
-package com.example.towntrekker.pagini.main.home_feed_recyclerview
+package com.example.towntrekker.pagini.main.postari_feed_recyclerview
 
 import android.view.View
 import android.widget.ImageButton
@@ -12,7 +12,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.towntrekker.R
 
 
-class HomeFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class PostariFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val iconUser: ImageView = itemView.findViewById(R.id.icon_user)
     val numeUser: AppCompatTextView = itemView.findViewById(R.id.nume_user)
     val numeLocatie: AppCompatTextView = itemView.findViewById(R.id.nume_locatie)

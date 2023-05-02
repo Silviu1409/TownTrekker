@@ -8,45 +8,45 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.towntrekker.ActivityMain
-import com.example.towntrekker.databinding.PaginaHomeBinding
+import com.example.towntrekker.databinding.PaginaPostariBinding
 import com.example.towntrekker.datatypes.Postare
-import com.example.towntrekker.pagini.main.home_feed_recyclerview.HomeFeedAdapter
+import com.example.towntrekker.pagini.main.postari_feed_recyclerview.PostariFeedAdapter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 
-class Home : Fragment() {
-    private var _binding: PaginaHomeBinding? = null
+class Postari : Fragment() {
+    private var _binding: PaginaPostariBinding? = null
     private val binding get() = _binding!!
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var adapter: HomeFeedAdapter
+    private lateinit var adapter: PostariFeedAdapter
 
     private lateinit var mainActivityContext: ActivityMain
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = PaginaHomeBinding.inflate(inflater, container, false)
+        _binding = PaginaPostariBinding.inflate(inflater, container, false)
 
         mainActivityContext = context as ActivityMain
 
-        recyclerView = binding.homePostariFeed
+        recyclerView = binding.postariFeed
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        adapter = HomeFeedAdapter(context, arrayListOf())
+        adapter = PostariFeedAdapter(context, arrayListOf())
         recyclerView.adapter = adapter
 
         CoroutineScope(Dispatchers.Main).launch {
             val listaPostari = preluarePostari()
 
-            adapter = HomeFeedAdapter(context, listaPostari)
+            adapter = PostariFeedAdapter(context, listaPostari)
 
             if  (adapter.itemCount == 0) {
-                binding.homeNuExistaPostariFeed.visibility = View.VISIBLE
+                binding.postariNuExistaPostariFeed.visibility = View.VISIBLE
             } else {
-                binding.homePostariFeed.visibility = View.VISIBLE
+                binding.postariFeed.visibility = View.VISIBLE
             }
 
             recyclerView.adapter = adapter

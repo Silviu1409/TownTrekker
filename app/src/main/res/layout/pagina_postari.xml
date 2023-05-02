@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pagina_home"
+    android:id="@+id/pagina_postari"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".pagini.main.Home" >
+    tools:context=".pagini.main.Postari" >
 
     <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/home_nu_exista_postari_feed"
+        android:id="@+id/postari_nu_exista_postari_feed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_marginTop="75dp"
-        android:text="@string/home_nu_exista_postari_feed"
+        android:text="@string/postari_nu_exista_postari_feed"
         android:textAlignment="center"
         android:textSize="20sp"
         android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/home_postari_feed"
+        android:id="@+id/postari_feed"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

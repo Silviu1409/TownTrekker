@@ -3,25 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_main"
-    app:startDestination="@+id/nav_home">
+    app:startDestination="@+id/nav_postari">
 
     <fragment
-        android:id="@+id/nav_home"
-        android:name="com.example.towntrekker.pagini.main.Home"
-        android:label="@string/titlu_home"
-        tools:layout="@layout/pagina_home" />
+        android:id="@+id/nav_postari"
+        android:name="com.example.towntrekker.pagini.main.Postari"
+        android:label="@string/titlu_postari"
+        tools:layout="@layout/pagina_postari" />
 
     <fragment
-        android:id="@+id/nav_explore"
-        android:name="com.example.towntrekker.pagini.main.Explore"
-        android:label="@string/titlu_explore"
-        tools:layout="@layout/pagina_explore" />
+        android:id="@+id/nav_exploreaza"
+        android:name="com.example.towntrekker.pagini.main.Exploreaza"
+        android:label="@string/titlu_exploreaza"
+        tools:layout="@layout/pagina_exploreaza" />
 
     <fragment
-        android:id="@+id/nav_mesaje"
-        android:name="com.example.towntrekker.pagini.main.Mesaje"
-        android:label="@string/titlu_mesaje"
-        tools:layout="@layout/pagina_mesaje" />
+        android:id="@+id/nav_descopera"
+        android:name="com.example.towntrekker.pagini.main.Descopera"
+        android:label="@string/titlu_descopera"
+        tools:layout="@layout/pagina_descopera" />
 
     <fragment
         android:id="@+id/nav_cont"

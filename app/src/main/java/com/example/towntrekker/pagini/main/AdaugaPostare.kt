@@ -91,7 +91,7 @@ class AdaugaPostare: DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
 
-        val view = layoutInflater.inflate(R.layout.adaugare_postare, null, false)
+        val view = layoutInflater.inflate(R.layout.adauga_postare, null, false)
 
         recyclerView = view.findViewById(R.id.recyclerview_media)
         adapter = AdaugaImaginiAdapter(context, this, arrayListOf())
