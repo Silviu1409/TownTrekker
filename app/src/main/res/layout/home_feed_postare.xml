@@ -71,7 +71,7 @@
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
-                        android:contentDescription="@string/postare_icon_adresa_locatie"
+                        android:contentDescription="@string/postare_icon_nume_locatie"
                         android:src="@drawable/icon_locatie" />
 
                     <androidx.appcompat.widget.AppCompatTextView

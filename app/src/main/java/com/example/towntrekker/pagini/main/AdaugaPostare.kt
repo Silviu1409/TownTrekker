@@ -60,7 +60,7 @@ class AdaugaPostare: DialogFragment() {
                     Toast.makeText(context, "Poți selecta maxim 5 fișiere!", Toast.LENGTH_SHORT).show()
                 }
                 if (descFisiere.size < 5){
-                    @Suppress("CanBeVal") var descFisiereNoi = mutableListOf<Uri>()
+                    val descFisiereNoi = mutableListOf<Uri>()
 
                     for (uri in uris) {
                         if (descFisiere.size < 5){
@@ -185,8 +185,6 @@ class AdaugaPostare: DialogFragment() {
             val positiveButton = d.getButton(Dialog.BUTTON_POSITIVE)
 
             positiveButton.setOnClickListener {
-                Log.d(mainActivityContext.getTag(), numeLocatie + adresaLocatie)
-
                 if ( (numeLocatie != "" || adresaLocatie != "")
                     && (descriereRef.text.toString() != "" || descFisiere.isNotEmpty()) ) {
 
@@ -247,8 +245,9 @@ class AdaugaPostare: DialogFragment() {
                                             Log.d(mainActivityContext.getTag(), "Icon user încărcat cu succes!")
                                         }
                                         .addOnFailureListener { e ->
-                                            Log.e(mainActivityContext.getErrTag(), "Eroare la încărcarea imaginii: ${e.message}")
                                             incarcareFisiere = false
+
+                                            Log.e(mainActivityContext.getErrTag(), "Eroare la încărcarea imaginii: ${e.message}")
                                         }
                                 }
                             }
@@ -296,10 +295,6 @@ class AdaugaPostare: DialogFragment() {
 
             searchView?.setTextColor(searchView.hintTextColors)
         }
-
-        val width = (resources.displayMetrics.widthPixels * 0.85).toInt()
-        val height = (resources.displayMetrics.heightPixels * 0.85).toInt()
-        dialog!!.window!!.setLayout(width, height)
     }
 
     private fun adaugaImagini(descFisiere: MutableList<Uri>){

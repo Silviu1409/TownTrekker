@@ -28,6 +28,5 @@ class HomeFeedViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     val navStanga: ImageButton = itemView.findViewById(R.id.left_nav)
     val navDreapta: ImageButton = itemView.findViewById(R.id.right_nav)
 
-
     val media: ViewPager2 = itemView.findViewById(R.id.media)
 }

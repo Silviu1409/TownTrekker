@@ -5,7 +5,6 @@ import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -17,7 +16,8 @@ import com.google.android.exoplayer2.MediaItem
 import com.google.firebase.storage.StorageReference
 
 
-class MediaAdapter(context: Context?, private val lista_media: ArrayList<StorageReference>) : RecyclerView.Adapter<MediaViewHolder>(){
+class MediaAdapter(context: Context?, private val lista_media: List<StorageReference>) : RecyclerView.Adapter<MediaViewHolder>(){
+
     private val mainActivityContext = (context as ActivityMain)
 
 
@@ -62,7 +62,6 @@ class MediaAdapter(context: Context?, private val lista_media: ArrayList<Storage
                 }
             }
         }
-
     }
 
     override fun getItemCount() = lista_media.size

@@ -1,5 +1,4 @@
 @file:Suppress("DEPRECATION")
-
 package com.example.towntrekker.pagini.main.postare_media_recyclerview
 
 import android.view.View

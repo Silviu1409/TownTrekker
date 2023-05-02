@@ -1,7 +1,6 @@
 package com.example.towntrekker.pagini.main
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -41,7 +40,6 @@ class Home : Fragment() {
 
         CoroutineScope(Dispatchers.Main).launch {
             val listaPostari = preluarePostari()
-            Log.d("test", listaPostari.size.toString())
 
             adapter = HomeFeedAdapter(context, listaPostari)
 
@@ -62,7 +60,7 @@ class Home : Fragment() {
         _binding = null
     }
 
-    private suspend fun preluarePostari(): ArrayList<Postare> {
+    private suspend fun preluarePostari(): List<Postare> {
         val snapshot = mainActivityContext.getDB().collection("postari").get().await()
         val listaPostari = mutableListOf<Postare>()
 
@@ -85,6 +83,6 @@ class Home : Fragment() {
             listaPostari.add(postare)
         }
 
-        return listaPostari as ArrayList<Postare>
+        return listaPostari
     }
 }

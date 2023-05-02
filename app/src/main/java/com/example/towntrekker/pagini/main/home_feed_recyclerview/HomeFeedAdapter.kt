@@ -13,11 +13,10 @@ import com.example.towntrekker.R
 import com.example.towntrekker.datatypes.Postare
 import com.example.towntrekker.pagini.main.VizualizareComentarii
 import com.example.towntrekker.pagini.main.postare_media_recyclerview.MediaAdapter
-import com.google.firebase.storage.StorageReference
-import kotlin.collections.ArrayList
 
 
-class HomeFeedAdapter(context: Context?, private val lista_postari: ArrayList<Postare>) : RecyclerView.Adapter<HomeFeedViewHolder>(){
+class HomeFeedAdapter(context: Context?, private val lista_postari: List<Postare>) : RecyclerView.Adapter<HomeFeedViewHolder>(){
+
     private val mainActivityContext = (context as ActivityMain)
 
 
@@ -84,7 +83,7 @@ class HomeFeedAdapter(context: Context?, private val lista_postari: ArrayList<Po
 
                     Log.d(mainActivityContext.getTag(), "S-au preluat cu succes fișierele media.")
 
-                    holder.media.adapter = MediaAdapter(mainActivityContext, postare.lista_media as ArrayList<StorageReference>)
+                    holder.media.adapter = MediaAdapter(mainActivityContext, postare.lista_media)
                     holder.mediaCard.visibility = View.VISIBLE
                 }
                 .addOnFailureListener { e ->

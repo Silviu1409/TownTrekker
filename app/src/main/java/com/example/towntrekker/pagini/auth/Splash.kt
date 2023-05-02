@@ -24,11 +24,7 @@ class Splash : Fragment() {
     private lateinit var authActivityContext: ActivityAuth
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PaginaSplashBinding.inflate(inflater, container, false)
 
         authActivityContext = (activity as ActivityAuth)
@@ -73,22 +69,15 @@ class Splash : Fragment() {
                                 }
                             }
                             .addOnFailureListener { e ->
-                                Log.e(
-                                    authActivityContext.getErrTag(),
-                                    "Eroare la preluarea documentelor: ${e.message}"
-                                )
-                                Toast.makeText(
-                                    context,
-                                    "Nu s-a putut efectua logarea.",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                                Log.e(authActivityContext.getErrTag(), "Eroare la preluarea documentelor: ${e.message}")
+                                Toast.makeText(context, "Nu s-a putut efectua logarea.", Toast.LENGTH_SHORT).show()
                             }
                     }
                 }
                 else {
-                        findNavController().navigate(R.id.action_splash_to_login)
-                    }
+                    findNavController().navigate(R.id.action_splash_to_login)
                 }
+            }
         })
 
         return binding.root

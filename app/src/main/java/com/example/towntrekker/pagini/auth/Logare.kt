@@ -33,11 +33,7 @@ class Logare : Fragment() {
     private var parolaAfisata: Boolean = false
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PaginaLogareBinding.inflate(inflater, container, false)
 
         authActivityContext = (activity as ActivityAuth)
@@ -132,6 +128,7 @@ class Logare : Fragment() {
                                 Toast.makeText(activity, "Nu ești conectat la internet!", Toast.LENGTH_LONG).show()
                             } else {
                                 // logarea nu s-a facut cu succes
+
                                 try {
                                     throw task.exception!!
                                 } catch (e: FirebaseAuthInvalidUserException) {

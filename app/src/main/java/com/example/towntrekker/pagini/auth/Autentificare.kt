@@ -31,11 +31,7 @@ class Autentificare : Fragment() {
     private var parolaAfisata: Boolean = false
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PaginaAutentificareBinding.inflate(inflater, container, false)
 
         authActivityContext = (activity as ActivityAuth)
@@ -124,6 +120,7 @@ class Autentificare : Fragment() {
                                 Toast.makeText(activity, "Nu ești conectat la internet!", Toast.LENGTH_LONG).show()
                             } else {
                                 // autentificarea nu s-a facut cu succes
+
                                 try {
                                     throw task.exception!!
                                 } catch (e: FirebaseAuthWeakPasswordException) {
@@ -152,7 +149,6 @@ class Autentificare : Fragment() {
         binding.AuthToReset.setOnClickListener{
             findNavController().navigate(R.id.action_auth_to_reset)
         }
-
     }
 
     override fun onDestroyView() {

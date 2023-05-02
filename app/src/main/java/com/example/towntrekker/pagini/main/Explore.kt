@@ -26,9 +26,9 @@ class Explore : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         mapView.getMapAsync { googleMap ->
-            val coord_unibuc = LatLng(44.43554044167409, 26.099587545344892)
-            googleMap.addMarker(MarkerOptions().position(coord_unibuc).title("Marker la UniBuc"))
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(coord_unibuc))
+            val coordUnibuc = LatLng(44.43554044167409, 26.099587545344892)
+            googleMap.addMarker(MarkerOptions().position(coordUnibuc).title("Marker la UniBuc"))
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(coordUnibuc))
         }
     }
 

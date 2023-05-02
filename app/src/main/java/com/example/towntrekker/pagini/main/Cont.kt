@@ -47,11 +47,7 @@ class Cont : Fragment() {
     private lateinit var layoutParamsCont: FrameLayout.LayoutParams
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PaginaContBinding.inflate(inflater, container, false)
 
         mainActivityContext = activity as ActivityMain
@@ -96,7 +92,6 @@ class Cont : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
 
         binding.ContIcon.setOnClickListener {
             preiaProzaCont.launch("image/*")
@@ -337,7 +332,6 @@ class Cont : Fragment() {
 
             Log.d(mainActivityContext.getTag(), "Delogare făcută cu succes.")
             Toast.makeText(activity, "Delogare făcută cu succes!", Toast.LENGTH_SHORT).show()
-
 
             val intent = Intent(activity, ActivityAuth::class.java)
             intent.putExtra("logout", true)

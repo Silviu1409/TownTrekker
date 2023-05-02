@@ -26,11 +26,7 @@ class Resetare : Fragment(){
     private lateinit var authActivityContext: ActivityAuth
 
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PaginaResetareBinding.inflate(inflater, container, false)
 
         authActivityContext = (activity as ActivityAuth)
@@ -78,6 +74,7 @@ class Resetare : Fragment(){
                                 Toast.makeText(activity, "Nu ești conectat la internet!", Toast.LENGTH_LONG).show()
                             } else {
                                 // resetarea nu s-a facut cu succes
+
                                 try {
                                     throw task.exception!!
                                 } catch (e: FirebaseAuthInvalidUserException) {
@@ -103,7 +100,6 @@ class Resetare : Fragment(){
         binding.ResetToLogin.setOnClickListener{
             findNavController().navigate(R.id.action_reset_to_login)
         }
-
     }
 
     override fun onDestroyView() {
