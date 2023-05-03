@@ -62,6 +62,14 @@
 
     <string name="exploreaza_harta">harta din pagina de explorare</string>
 
+    <string name="recomandare_logo_locatie">logo locație</string>
+    <string name="recomandare_icon_nume_locatie">nume locație</string>
+    <string name="recomandare_nume_locatie">icon nume locație</string>
+    <string name="recomandare_icon_adresa_locatie">icon adresa locație</string>
+    <string name="recomandare_adresa_locatie">stradă locație test număr, oraș locație test, cod poștal test, țară locație test</string>
+    <string name="recomandare_descriere">\t\tDescriere locație</string>
+    <string name="recomandare_descriere_tab">\t\t</string>
+
     <string name="cont_icon_desc">icon cont</string>
     <string name="titlu_cont_complet">Contul meu</string>
     <string name="alias_cont">alias</string>
