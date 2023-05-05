@@ -1,10 +1,12 @@
 package com.example.towntrekker.pagini.main.descopera_recomandari_recyclerview
 
 import android.content.Context
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.towntrekker.ActivityMain
@@ -17,29 +19,19 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class DescoperaRecomandariAdapter(context: Context?, private val lista_recomandari: List<Recomandare>) : RecyclerView.Adapter<DescoperaRecomandariViewHolder>(){
     private val mainActivityContext = (context as ActivityMain)
+    private lateinit var context: Context
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DescoperaRecomandariViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.descopera_recomandari_recomandare, parent, false)
+        context = view.context
         return DescoperaRecomandariViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: DescoperaRecomandariViewHolder, position: Int) {
         val recomandare = lista_recomandari[position]
 
-        if (recomandare.logoLocatie.isNotEmpty()){
-            holder.logoLocatieCard.visibility = View.VISIBLE
-
-            Glide.with(mainActivityContext)
-                .load(recomandare.logoLocatie)
-                .override(35, 35)
-                .centerCrop()
-                .into(holder.logoLocatie)
-        } else {
-            holder.logoLocatieCard.visibility = View.GONE
-        }
-
-        when(recomandare.tipLocatie.lowercase()){
+        when(recomandare.tip.lowercase()){
             "bar", "night club" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_bar)
             "cafe" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_cafe)
             "restaurant" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_restaurant)
@@ -66,8 +58,30 @@ class DescoperaRecomandariAdapter(context: Context?, private val lista_recomanda
             "zoo" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_zoo)
         }
 
-        holder.numeLocatie.text = recomandare.numeLocatie
-        holder.adresaLocatie.text = recomandare.adresaLocatie
+        if (recomandare.logo.isNotEmpty()){
+            Glide.with(mainActivityContext)
+                .load(recomandare.logo)
+                .override(35, 35)
+                .centerCrop()
+                .placeholder(holder.iconNumeLocatie.drawable)
+                .into(holder.logoLocatie)
+        } else {
+            holder.logoLocatie.setImageDrawable(holder.iconNumeLocatie.drawable)
+        }
+
+        if (recomandare.rating.isEmpty() or (recomandare.rating == "0")) {
+            holder.ratingLocatieCard.visibility = View.GONE
+
+            if (recomandare.logo.isEmpty()){
+                holder.logoLocatieCard.visibility = View.GONE
+            }
+        } else {
+            holder.ratingLocatieCard.visibility = View.VISIBLE
+            holder.ratingLocatie.text = recomandare.rating
+        }
+
+        holder.numeLocatie.text = recomandare.nume
+        holder.adresaLocatie.text = recomandare.adresa
 
         if (recomandare.descriere.isNotEmpty()){
             holder.descriereLocatie.visibility = View.VISIBLE
@@ -77,18 +91,42 @@ class DescoperaRecomandariAdapter(context: Context?, private val lista_recomanda
         }
 
         holder.hartaLocatie.onCreate(null)
+        holder.hartaLocatie.visibility = View.VISIBLE
         holder.hartaLocatie.getMapAsync { harta ->
+            harta.uiSettings.isMapToolbarEnabled = false
 
             val latLng = recomandare.geoLocatie.split(", ")
             val geolocatie = LatLng(latLng[0].toDoubleOrNull() ?: 0.0, latLng[1].toDoubleOrNull() ?: 0.0)
-            Log.d("locatie", geolocatie.toString())
 
             val markerLocatie = MarkerOptions().position(geolocatie).title(holder.numeLocatie.text.toString())
             harta.addMarker(markerLocatie)
             harta.moveCamera(CameraUpdateFactory.newLatLng(geolocatie))
 
-            holder.hartaLocatie.visibility = View.VISIBLE
+            holder.butonRuta.setOnClickListener {
+                val intentNav = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("google.navigation:q=${geolocatie.latitude},${geolocatie.longitude}"))
+                intentNav.setPackage("com.google.android.apps.maps")
+
+                if (intentNav.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intentNav)
+                } else {
+                    Toast.makeText(context, "Google Maps nu este instalat.", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            holder.butonMaps.setOnClickListener {
+                val intentMaps = Intent(Intent.ACTION_VIEW,
+                    Uri.parse("geo:0,0?q=${geolocatie.latitude},${geolocatie.longitude}"))
+                intentMaps.setPackage("com.google.android.apps.maps")
+
+                if (intentMaps.resolveActivity(context.packageManager) != null) {
+                    context.startActivity(intentMaps)
+                } else {
+                    Toast.makeText(context, "Google Maps nu este instalat.", Toast.LENGTH_SHORT).show()
+                }
+            }
         }
+
     }
 
     override fun getItemCount() = lista_recomandari.size

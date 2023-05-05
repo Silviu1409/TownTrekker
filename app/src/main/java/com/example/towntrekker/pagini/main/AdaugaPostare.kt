@@ -35,6 +35,8 @@ import com.google.android.libraries.places.R as PlacesR
 class AdaugaPostare: DialogFragment() {
     private var numeLocatie = ""
     private var adresaLocatie = ""
+    private var tipLocatie = ""
+    private var categorieLocatie = ""
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: AdaugaImaginiAdapter
@@ -106,14 +108,17 @@ class AdaugaPostare: DialogFragment() {
         autocompleteFragment = childFragmentManager.findFragmentById(R.id.fragment_locatie_autocompletare) as AutocompleteSupportFragment
         autocompleteFragment.setCountries("RO")
         autocompleteFragment.setHint(resources.getString(R.string.adaugare_postare_locatie_hint))
-        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS))
+        autocompleteFragment.setPlaceFields(listOf(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS, Place.Field.TYPES))
 
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                Log.i(mainActivityContext.getTag(), "Place: " + place.name + ", " + place.address)
+                Log.i(mainActivityContext.getTag(), "Place: " + place.name + ", " + place.address+ ", " + place.types)
 
                 numeLocatie = place.name?.toString() ?: ""
                 adresaLocatie = place.address?.toString() ?: ""
+
+                tipLocatie = place.types?.get(0).toString().lowercase()
+                categorieLocatie = preiaCategorieLocatie(tipLocatie)
             }
 
             override fun onError(status: Status) {
@@ -193,6 +198,8 @@ class AdaugaPostare: DialogFragment() {
                         "numeUser" to mainActivityContext.getUser()!!.alias,
                         "numeLocatie" to numeLocatie,
                         "adresaLocatie" to adresaLocatie,
+                        "tipLocatie" to tipLocatie,
+                        "categorieLocatie" to categorieLocatie,
                         "descriere" to descriereRef.text.toString(),
                         "media" to (descFisiere.size != 0),
                         "aprecieri" to 0,
@@ -315,5 +322,19 @@ class AdaugaPostare: DialogFragment() {
 
     fun stergereDescFisier(descFisier: Uri){
         descFisiere.remove(descFisier)
+    }
+
+    private fun preiaCategorieLocatie(tip: String): String{
+        return when(tip){
+            "bar", "night club", "cafe", "restaurant", "bakery" -> "food and drink"
+            "books", "clothing", "electronics", "jewelry", "shoes", "shopping center/mall",
+                "convenience store", "grocery", "supermarket", "pharmacy" -> "retail"
+
+            "lodging" -> "services"
+            "golf", "historic", "movie", "museum", "theater" -> "entertainment"
+            "boating", "camping", "park", "stadium", "zoo" -> "outdoor"
+
+            else -> "other"
+        }
     }
 }

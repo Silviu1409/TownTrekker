@@ -74,6 +74,8 @@ class Postari : Fragment() {
                 doc.getString("numeUser") ?: "",
                 doc.getString("numeLocatie") ?: "",
                 doc.getString("adresaLocatie") ?: "",
+                doc.getString("tipLocatie")?.lowercase() ?: "",
+                doc.getString("categorieLocatie")?.lowercase() ?: "",
                 (doc.getDouble("aprecieri") ?: 0).toInt(),
                 doc.getString("descriere") ?: "",
                 pairs,

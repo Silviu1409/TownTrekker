@@ -64,6 +64,7 @@
 
     <string name="recomandare_logo_locatie">logo locație</string>
     <string name="recomandare_icon_nume_locatie">nume locație</string>
+    <string name="recomandare_rating_locatie">4.25</string>
     <string name="recomandare_nume_locatie">icon nume locație</string>
     <string name="recomandare_icon_adresa_locatie">icon adresa locație</string>
     <string name="recomandare_adresa_locatie">stradă locație test număr, oraș locație test, cod poștal test, țară locație test</string>

@@ -39,6 +39,33 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
                 .into(holder.iconUser)
         }
 
+        when(postare.tipLocatie.lowercase()){
+            "bar", "night club" -> holder.iconLocatie.setImageResource(R.drawable.icon_bar)
+            "cafe" -> holder.iconLocatie.setImageResource(R.drawable.icon_cafe)
+            "restaurant" -> holder.iconLocatie.setImageResource(R.drawable.icon_restaurant)
+            "bakery" -> holder.iconLocatie.setImageResource(R.drawable.icon_bakery)
+
+            "books", "clothing", "electronics", "jewelry",
+            "shoes", "shopping center/mall" -> holder.iconLocatie.setImageResource(R.drawable.icon_mall)
+            "convenience store" -> holder.iconLocatie.setImageResource(R.drawable.icon_store)
+            "grocery", "supermarket" -> holder.iconLocatie.setImageResource(R.drawable.icon_supermarket)
+            "pharmacy" -> holder.iconLocatie.setImageResource(R.drawable.icon_pharmacy)
+
+            "lodging" -> holder.iconLocatie.setImageResource(R.drawable.icon_lodging)
+
+            "golf" -> holder.iconLocatie.setImageResource(R.drawable.icon_boating)
+            "historic" -> holder.iconLocatie.setImageResource(R.drawable.icon_historic)
+            "movie" -> holder.iconLocatie.setImageResource(R.drawable.icon_movie)
+            "museum" -> holder.iconLocatie.setImageResource(R.drawable.icon_museum)
+            "theater" -> holder.iconLocatie.setImageResource(R.drawable.icon_theater)
+
+            "boating" -> holder.iconLocatie.setImageResource(R.drawable.icon_boating)
+            "camping" -> holder.iconLocatie.setImageResource(R.drawable.icon_camping)
+            "park" -> holder.iconLocatie.setImageResource(R.drawable.icon_park)
+            "stadium" -> holder.iconLocatie.setImageResource(R.drawable.icon_stadium)
+            "zoo" -> holder.iconLocatie.setImageResource(R.drawable.icon_zoo)
+        }
+
         holder.numeUser.text = postare.numeUser
         holder.numeLocatie.text = postare.numeLocatie
         holder.adresaLocatie.text = postare.adresaLocatie

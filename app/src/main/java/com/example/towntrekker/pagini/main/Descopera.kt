@@ -60,10 +60,13 @@ class Descopera : Fragment() {
         val listaRecomandari = mutableListOf<Recomandare>()
 
         snapshot.documents.map { doc ->
-            val recomandare = Recomandare(doc.getString("logo") ?: "",
+            val recomandare = Recomandare(doc.id,
+                doc.getString("logo") ?: "",
                 doc.getString("nume") ?: "",
                 doc.getString("adresa") ?: "",
-                doc.getString("tip") ?: "",
+                doc.getString("rating") ?: "",
+                doc.getString("tip")?.lowercase() ?: "",
+                doc.getString("categorie")?.lowercase() ?: "",
                 doc.getString("descriere") ?: "",
                 doc.getString("geolocatie") ?: "")
 
