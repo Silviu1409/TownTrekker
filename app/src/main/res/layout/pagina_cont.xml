@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    app:layout_constraintHeight="wrap_content"
     tools:context=".pagini.main.Cont" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,6 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_marginTop="50dp"
             android:text="@string/titlu_cont_complet"
             android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -27,12 +29,12 @@
             android:id="@+id/Cont_Alias_Card"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="35dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Titlu" >
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Titlu">
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/Cont_Alias"
@@ -90,6 +92,85 @@
             app:layout_constraintTop_toTopOf="@+id/Cont_Icon"
             tools:ignore="ImageContrastCheck" />
 
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/Status_Social"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Icon">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/vizualizare_postari_card"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_margin="5dp"
+                android:text="@string/vizualizare_postari_cont"
+                android:visibility="gone"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                tools:ignore="TextSizeCheck"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/vizualizare_postari_cont"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/vizualizare_urmareste_card"
+                android:layout_width="77.5dp"
+                android:layout_height="77.5dp"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                tools:ignore="TextSizeCheck"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/vizualizare_urmareste"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/vizualizare_urmareste"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/vizualizare_urmaritori_card"
+                android:layout_width="75dp"
+                android:layout_height="75dp"
+                android:layout_margin="5dp"
+                android:visibility="gone"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="4dp"
+                tools:ignore="TextSizeCheck"
+                tools:visibility="visible">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/vizualizare_urmaritori"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/vizualizare_urmaritori"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
         <androidx.cardview.widget.CardView
             android:id="@+id/Cont_Bio_Card"
             android:layout_width="wrap_content"
@@ -99,7 +180,7 @@
             app:cardElevation="5dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Icon">
+            app:layout_constraintTop_toBottomOf="@+id/Status_Social">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/Cont_Bio"
@@ -117,7 +198,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="50dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="5dp"
@@ -134,7 +215,7 @@
                 android:layout_marginVertical="15dp"
                 android:background="@android:color/transparent"
                 android:imeOptions="actionDone"
-                android:inputType="text|textNoSuggestions|textMultiLine"
+                android:inputType="textNoSuggestions|textMultiLine"
                 android:maxLines="7"
                 android:minHeight="48dp"
                 android:text="@string/bio_cont_user"
@@ -162,11 +243,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="75dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Bio_User_Card" >
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Bio_User_Card">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/Cont_Email_Card"
@@ -183,8 +264,8 @@
                     android:id="@+id/Cont_Email_Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
                     android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="5dp"
                     android:text="@string/email_cont"
                     android:textSize="18sp" />
 
@@ -226,10 +307,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="50dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="20dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Cont_Email_Layout" >
+            app:layout_constraintTop_toBottomOf="@+id/Cont_Email_Layout">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/Cont_Parola_Card"
@@ -240,14 +321,14 @@
                 android:layout_marginHorizontal="5dp"
                 android:layout_marginVertical="5dp"
                 app:cardCornerRadius="6dp"
-                app:cardElevation="5dp" >
+                app:cardElevation="5dp">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/Cont_Parola_Text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
                     android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="5dp"
                     android:text="@string/parola_cont"
                     android:textSize="18sp" />
 
@@ -258,19 +339,19 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginVertical="5dp"
                 android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="5dp"
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/Cont_Parola_Card"
                 app:cardCornerRadius="6dp"
-                app:cardElevation="5dp" >
+                app:cardElevation="5dp">
 
                 <FrameLayout
                     android:id="@+id/Cont_Parola_Layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginVertical="5dp"
                     android:layout_marginHorizontal="5dp"
+                    android:layout_marginVertical="5dp"
                     android:layout_toEndOf="@+id/Cont_Parola_Card">
 
                     <androidx.appcompat.widget.AppCompatEditText
@@ -322,7 +403,7 @@
             android:id="@+id/Cont_Logout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="35dp"
             android:text="@string/logout_cont"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

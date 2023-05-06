@@ -23,6 +23,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.towntrekker.ActivityMain
 import com.example.towntrekker.R
+import com.example.towntrekker.datatypes.Postare
 import com.example.towntrekker.pagini.main.adaugare_media_recyclerview.AdaugaImaginiAdapter
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
@@ -200,10 +201,10 @@ class AdaugaPostare: DialogFragment() {
                         "adresaLocatie" to adresaLocatie,
                         "tipLocatie" to tipLocatie,
                         "categorieLocatie" to categorieLocatie,
-                        "descriere" to descriereRef.text.toString(),
-                        "media" to (descFisiere.size != 0),
                         "aprecieri" to 0,
+                        "descriere" to descriereRef.text.toString(),
                         "comentarii" to listOf<Any>(),
+                        "media" to (descFisiere.size != 0),
                         "iconUser" to mainActivityContext.getUserIconFile().exists()
                     )
 
@@ -212,6 +213,21 @@ class AdaugaPostare: DialogFragment() {
                     refDocNou.set(datePostare)
                         .addOnSuccessListener {
                             Log.d(mainActivityContext.getTag(), "Datalii despre postare adăugate.")
+
+                            val postareNoua = Postare(
+                                refDocNou.id,
+                                mainActivityContext.getUser()!!.uid,
+                                mainActivityContext.getUser()!!.alias,
+                                numeLocatie,
+                                adresaLocatie,
+                                tipLocatie,
+                                categorieLocatie,
+                                0,
+                                descriereRef.text.toString(),
+                                listOf(),
+                                (descFisiere.size != 0),
+                                mainActivityContext.getUserIconFile().exists()
+                            )
 
                             var incarcareFisiere = true
                             val refPostare = mainActivityContext.getStorage().child("postari").child(refDocNou.id)
@@ -226,6 +242,10 @@ class AdaugaPostare: DialogFragment() {
                                 uploadTask
                                     .addOnSuccessListener {
                                         Log.d(mainActivityContext.getTag(), "Fișier incărcat!")
+
+                                        val aux = postareNoua.lista_media.toMutableList()
+                                        aux.add(refMedia)
+                                        postareNoua.lista_media = aux
                                     }
                                     .addOnFailureListener { e ->
                                         incarcareFisiere = false

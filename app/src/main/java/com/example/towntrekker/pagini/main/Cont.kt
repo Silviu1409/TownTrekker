@@ -1,11 +1,13 @@
 package com.example.towntrekker.pagini.main
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
@@ -56,17 +58,25 @@ class Cont : Fragment() {
             uri?.let { schimbaPozaCont(it) }
         }
 
-        Glide.with(this)
-            .asBitmap()
-            .load(mainActivityContext.getUserIconFile())
-            .circleCrop()
-            .skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .into(binding.ContIcon)
+        if (mainActivityContext.getUserIconFile().exists()) {
+            Glide.with(this)
+                .asBitmap()
+                .load(mainActivityContext.getUserIconFile())
+                .circleCrop()
+                .skipMemoryCache(true)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .into(binding.ContIcon)
+        }
 
         binding.ContAlias.setText(mainActivityContext.getUser()!!.alias)
         binding.ContEmailUser.text = mainActivityContext.getUser()!!.email
+
+        binding.vizualizareUrmareste.text = binding.vizualizareUrmareste.text.toString().plus(numarTransform(mainActivityContext.getUser()!!.urmareste.size))
+        binding.vizualizareUrmaritori.text = binding.vizualizareUrmaritori.text.toString().plus(numarTransform(mainActivityContext.getUser()!!.urmaritori.size))
+
         binding.ContUserBio.setText(mainActivityContext.getUser()!!.bio)
+        binding.ContUserBio.imeOptions = EditorInfo.IME_ACTION_DONE
+        binding.ContUserBio.setRawInputType(InputType.TYPE_CLASS_TEXT)
 
         if (mainActivityContext.getUser()!!.parola == ""){
             binding.ContParola.visibility = View.GONE
@@ -337,6 +347,61 @@ class Cont : Fragment() {
             intent.putExtra("logout", true)
             startActivity(intent)
         }
+
+        val postariLiveData = mainActivityContext.postari
+        postariLiveData.observe(viewLifecycleOwner) { listaPostari ->
+            val postariUser = listaPostari.filter { it.user == mainActivityContext.getUser()!!.uid }
+
+            if (postariUser.isNotEmpty()){
+                binding.vizualizarePostariCard.visibility = View.VISIBLE
+
+                binding.vizualizarePostariCard.setOnClickListener {
+                    val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
+
+                    docVizUser.edit().putString("refUser", mainActivityContext.getUser()!!.uid).apply()
+
+                    val dialog = VizualizarePostariUser()
+                    dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează postări user")
+                }
+            }
+            else {
+                binding.vizualizarePostariCard.visibility = View.GONE
+            }
+        }
+
+        if (mainActivityContext.getUser()!!.urmareste.isNotEmpty()) {
+            binding.vizualizareUrmaresteCard.visibility = View.VISIBLE
+
+            binding.vizualizareUrmaresteCard.setOnClickListener {
+                val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
+
+                docVizUser.edit().putString("refUser", mainActivityContext.getUser()!!.uid).apply()
+
+                val dialog = VizualizareUrmareste()
+                dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmărește")
+            }
+        }
+        else {
+            binding.vizualizareUrmaresteCard.visibility = View.GONE
+        }
+
+        if (mainActivityContext.getUser()!!.urmaritori.isNotEmpty()) {
+            binding.vizualizareUrmaritoriCard.visibility = View.VISIBLE
+
+            binding.vizualizareUrmaritoriCard.setOnClickListener {
+                mainActivityContext.getDB().collection("useri").document(mainActivityContext.getUser()!!.uid).get()
+                    .addOnSuccessListener { doc ->
+                        @Suppress("UNCHECKED_CAST")
+                        mainActivityContext.getUser()!!.urmaritori = doc.get("urmaritori") as? List<String> ?: listOf()
+
+                        val dialog = VizualizareUrmaritori()
+                        dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmăritori")
+                    }
+            }
+        }
+        else {
+            binding.vizualizareUrmaritoriCard.visibility = View.GONE
+        }
     }
 
     override fun onResume() {
@@ -383,6 +448,14 @@ class Cont : Fragment() {
                 .addOnFailureListener { e ->
                     Log.e(mainActivityContext.getErrTag(), "Eroare la încărcarea imaginii: ${e.message}")
                 }
+        }
+    }
+
+    private fun numarTransform(numar: Int): String{
+        return when {
+            numar < 1000 -> numar.toString()
+            numar < 1000000 -> String.format("%.1fK", numar / 1000)
+            else -> String.format("%.1fM", numar / 1000000)
         }
     }
 }

@@ -76,6 +76,10 @@
     <string name="alias_cont">alias</string>
     <string name="email_cont">Email</string>
     <string name="email_cont_user">email@email.com</string>
+    <string name="vizualizare_postari_cont">Postările mele</string>
+    <string name="vizualizare_postari_user">Postări</string>
+    <string name="vizualizare_urmaritori">Urmăritori\n</string>
+    <string name="vizualizare_urmareste">Urmărește\n</string>
     <string name="bio_cont">Despre mine</string>
     <string name="bio_cont_user" />
     <string name="parola_cont">Parolă</string>

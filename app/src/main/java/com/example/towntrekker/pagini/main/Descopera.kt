@@ -9,12 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.towntrekker.ActivityMain
 import com.example.towntrekker.databinding.PaginaDescoperaBinding
-import com.example.towntrekker.datatypes.Recomandare
 import com.example.towntrekker.pagini.main.descopera_recomandari_recyclerview.DescoperaRecomandariAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 
 class Descopera : Fragment() {
@@ -39,9 +34,8 @@ class Descopera : Fragment() {
         adapter = DescoperaRecomandariAdapter(context, arrayListOf())
         recyclerView.adapter = adapter
 
-        CoroutineScope(Dispatchers.Main).launch {
-            val listaRecomandari = preluareRecomandari()
-
+        val recomandariLiveData = mainActivityContext.recomandari
+        recomandariLiveData.observe(viewLifecycleOwner) { listaRecomandari ->
             adapter = DescoperaRecomandariAdapter(context, listaRecomandari)
 
             recyclerView.adapter = adapter
@@ -53,26 +47,5 @@ class Descopera : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private suspend fun preluareRecomandari(): List<Recomandare> {
-        val snapshot = mainActivityContext.getDB().collection("recomandari").get().await()
-        val listaRecomandari = mutableListOf<Recomandare>()
-
-        snapshot.documents.map { doc ->
-            val recomandare = Recomandare(doc.id,
-                doc.getString("logo") ?: "",
-                doc.getString("nume") ?: "",
-                doc.getString("adresa") ?: "",
-                doc.getString("rating") ?: "",
-                doc.getString("tip")?.lowercase() ?: "",
-                doc.getString("categorie")?.lowercase() ?: "",
-                doc.getString("descriere") ?: "",
-                doc.getString("geolocatie") ?: "")
-
-            listaRecomandari.add(recomandare)
-        }
-
-        return listaRecomandari
     }
 }

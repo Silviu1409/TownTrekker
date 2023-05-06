@@ -86,6 +86,8 @@ class Autentificare : Fragment() {
                             val date = hashMapOf(
                                 "email" to email,
                                 "alias" to alias,
+                                "urmaritori" to listOf<String>(),
+                                "urmareste" to listOf<String>(),
                                 "parola" to parola,
                                 "bio" to ""
                             )

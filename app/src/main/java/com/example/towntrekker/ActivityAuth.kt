@@ -134,6 +134,8 @@ class ActivityAuth : AppCompatActivity() {
                         val date = HashMap<String, Any>()
                         date["email"] = user?.email.toString()
                         date["alias"] = user?.displayName.toString()
+                        date["urmaritori"] = listOf<Any>()
+                        date["urmareste"] = listOf<Any>()
                         date["bio"] = ""
 
                         if (user != null) {
@@ -164,7 +166,7 @@ class ActivityAuth : AppCompatActivity() {
                                                     Log.d(tag, "User înregistrat cu succes!")
 
                                                     // schimbă activitatea și transmite datele despre user ca parametru
-                                                    val userNou = User(user.uid, date["email"].toString(), date["alias"].toString())
+                                                    val userNou = User(user.uid, date["email"].toString(), date["alias"].toString(), listOf(), listOf())
                                                     val intent = Intent(this@ActivityAuth, ActivityMain::class.java)
                                                     intent.putExtra("user", userNou)
                                                     startActivity(intent)
@@ -199,9 +201,12 @@ class ActivityAuth : AppCompatActivity() {
                                 .get()
                                 .addOnSuccessListener { doc ->
                                     if (doc != null && doc.exists()) {
+                                        @Suppress("UNCHECKED_CAST")
                                         val dateUser = User(user.uid,
                                             "" + doc.getString("email"),
                                             "" + doc.getString("alias"),
+                                            doc.get("urmaritori") as? List<String> ?: listOf(),
+                                            doc.get("urmareste") as? List<String> ?: listOf(),
                                             "" + doc.getString("bio"))
 
                                         val intent = Intent(this, ActivityMain::class.java)

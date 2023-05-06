@@ -5,13 +5,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.towntrekker.ActivityMain
 import com.example.towntrekker.R
 import com.example.towntrekker.datatypes.Postare
 import com.example.towntrekker.pagini.main.VizualizareComentarii
+import com.example.towntrekker.pagini.main.VizualizareDetaliiUser
 import com.example.towntrekker.pagini.main.postare_media_recyclerview.MediaAdapter
 
 
@@ -29,14 +29,27 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
         val postare = lista_postari[position]
         val postareRef = mainActivityContext.getStorage().child("postari").child(postare.id)
 
-        if (postare.iconUser){
-            val userIconRef = postareRef.child("icon.jpg")
+        if (postare.user != mainActivityContext.getUser()!!.uid) {
+            holder.iconUserCard.visibility = View.VISIBLE
 
-            Glide.with(mainActivityContext)
-                .load(userIconRef)
-                .override(35, 35)
-                .centerCrop()
-                .into(holder.iconUser)
+            if (postare.iconUser) {
+                val userIconRef = postareRef.child("icon.jpg")
+
+                Glide.with(mainActivityContext)
+                    .load(userIconRef)
+                    .override(35, 35)
+                    .centerCrop()
+                    .into(holder.iconUser)
+            }
+
+            holder.iconUserCard.setOnClickListener {
+                val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
+
+                docVizUser.edit().putString("refUser", postare.user).apply()
+
+                val dialog = VizualizareDetaliiUser()
+                dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează detalii user")
+            }
         }
 
         when(postare.tipLocatie.lowercase()){
@@ -53,7 +66,7 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
 
             "lodging" -> holder.iconLocatie.setImageResource(R.drawable.icon_lodging)
 
-            "golf" -> holder.iconLocatie.setImageResource(R.drawable.icon_boating)
+            "golf" -> holder.iconLocatie.setImageResource(R.drawable.icon_golf)
             "historic" -> holder.iconLocatie.setImageResource(R.drawable.icon_historic)
             "movie" -> holder.iconLocatie.setImageResource(R.drawable.icon_movie)
             "museum" -> holder.iconLocatie.setImageResource(R.drawable.icon_museum)
@@ -70,36 +83,38 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
         holder.numeLocatie.text = postare.numeLocatie
         holder.adresaLocatie.text = postare.adresaLocatie
 
-        if (postare.id in mainActivityContext.getPostariApreciate()){
-            holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_plin)
-        } else {
-            holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_gol)
-        }
+        if (postare.user != mainActivityContext.getUser()!!.uid) {
+            holder.postareApreciereLayout.visibility = View.VISIBLE
 
-        holder.postareApreciere.setOnClickListener {
-            if (postare.id in mainActivityContext.getPostariApreciate()) {
-                holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_gol)
-                holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
-
-                mainActivityContext.getPostariApreciate().remove(postare.id)
-                mainActivityContext.getSharedPrefsLiked().edit().putStringSet("postari", mainActivityContext.getPostariApreciate()).apply()
-            } else {
+            if (mainActivityContext.esteInPostariApreciate(postare.id)) {
                 holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_plin)
-                holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri + 1)
-
-                Log.d(mainActivityContext.getTag(), mainActivityContext.getPostariApreciate().toString())
-                mainActivityContext.getPostariApreciate().add(postare.id)
-                mainActivityContext.getSharedPrefsLiked().edit().putStringSet("postari", mainActivityContext.getPostariApreciate()).apply()
+            } else {
+                holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_gol)
             }
-        }
 
-        holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
+            holder.postareApreciere.setOnClickListener {
+                if (mainActivityContext.esteInPostariApreciate(postare.id)) {
+                    holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_gol)
+                    postare.aprecieri -= 1
+                    holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
+
+                    mainActivityContext.editPostariApreciate(postare.id, "stergere")
+                } else {
+                    holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_plin)
+                    postare.aprecieri += 1
+                    holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
+
+                    mainActivityContext.editPostariApreciate(postare.id, "adaugare")
+                }
+            }
+
+            holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
+
+        }
 
         if (postare.descriere.isNotEmpty()){
             holder.descriere.visibility = View.VISIBLE
             holder.descriere.text = mainActivityContext.getString(R.string.postare_descriere_tab).plus(postare.descriere)
-        } else {
-            holder.descriere.visibility = View.GONE
         }
 
         if (postare.media){
@@ -138,47 +153,6 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
             holder.mediaCard.visibility = View.GONE
         }
 
-        if (postare.comentarii.isEmpty()) {
-            holder.adaugaComentariuLayout.visibility = View.VISIBLE
-        } else {
-            holder.comentarii.visibility = View.VISIBLE
-        }
-
-        holder.comentariuTrimite.setOnClickListener {
-            if (holder.adaugaComentariu.text.toString().isNotEmpty()) {
-                val postareRefDB = mainActivityContext.getDB().collection("postari").document(postare.id)
-                postareRefDB.get()
-                    .addOnSuccessListener { doc ->
-                        @Suppress("UNCHECKED_CAST")
-                        val pairData = doc.get("comentarii") as? List<HashMap<String, String>> ?: listOf()
-                        postare.comentarii = pairData.map { hashMap -> Pair(hashMap["first"] ?: "", hashMap["second"] ?: "") }
-
-                        val aux = postare.comentarii.toMutableList()
-                        aux.add(Pair(mainActivityContext.getUser()!!.alias, holder.adaugaComentariu.text.toString()))
-
-                        postare.comentarii = aux.toList()
-                        postareRefDB.update("comentarii", postare.comentarii)
-                            .addOnSuccessListener {
-                                holder.adaugaComentariu.text!!.clear()
-
-                                Log.d(mainActivityContext.getTag(), "Comentariu adăugat cu succes!")
-                                Toast.makeText(mainActivityContext, "Comentariu adăugat cu succes!", Toast.LENGTH_SHORT).show()
-
-                                holder.adaugaComentariuLayout.visibility = View.GONE
-                                holder.comentarii.visibility = View.VISIBLE
-                            }
-                            .addOnFailureListener { e ->
-                                Log.e(mainActivityContext.getErrTag(), "Eroare la adăugarea comentariului: ${e.message}")
-                                Toast.makeText(mainActivityContext, "Eroare la adăugarea comentariului!", Toast.LENGTH_SHORT).show()
-                            }
-                    }
-                    .addOnFailureListener { e ->
-                        Log.e(mainActivityContext.getErrTag(), "Eroare la preluarea comentariilor: ${e.message}")
-                        Toast.makeText(mainActivityContext, "Eroare la adăugarea comentariului!", Toast.LENGTH_SHORT).show()
-                    }
-            }
-        }
-
         holder.comentarii.setOnClickListener {
             val docComentarii = mainActivityContext.getSharedPreferences("comentarii", Context.MODE_PRIVATE)
 
@@ -186,7 +160,7 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
 
             docComentarii.edit().putStringSet("comentarii", setPerechiComentarii).apply()
             docComentarii.edit().putString("refPostare", postare.id).apply()
-            docComentarii.edit().putString("aliasUser", mainActivityContext.getUser()!!.alias).apply()
+            docComentarii.edit().putString("aliasUser", postare.numeUser).apply()
 
             val dialog = VizualizareComentarii()
             dialog.setOnDismissCallback { comentariiNoi ->

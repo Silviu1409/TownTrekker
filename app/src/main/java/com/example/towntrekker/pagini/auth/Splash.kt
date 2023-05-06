@@ -57,10 +57,15 @@ class Splash : Fragment() {
                             .get()
                             .addOnSuccessListener { document ->
                                 if (document != null && document.exists()) {
+                                    @Suppress("UNCHECKED_CAST")
                                     val dateUser = User(
                                         authActivityContext.getUser()!!.uid,
                                         "" + document.getString("email"),
-                                        "" + document.getString("alias")
+                                        "" + document.getString("alias"),
+                                        document.get("urmaritori") as? List<String> ?: listOf(),
+                                        document.get("urmareste") as? List<String> ?: listOf(),
+                                        "" + document.getString("bio"),
+                                        "" + document.getString("parola")
                                     )
 
                                     val intent = Intent(activity, ActivityMain::class.java)

@@ -95,9 +95,12 @@ class Logare : Fragment() {
                                     .addOnSuccessListener {document ->
                                         if (document != null && document.exists()) {
                                             // documentul cu userul există
+                                            @Suppress("UNCHECKED_CAST")
                                             val date = User(user.uid,
                                                             "" + document.getString("email"),
                                                             "" + document.getString("alias"),
+                                                        document.get("urmaritori") as? List<String> ?: listOf(),
+                                                        document.get("urmareste") as? List<String> ?: listOf(),
                                                             "" + document.getString("bio"),
                                                             "" + document.getString("parola"))
 

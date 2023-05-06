@@ -9,12 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.towntrekker.ActivityMain
 import com.example.towntrekker.databinding.PaginaPostariBinding
-import com.example.towntrekker.datatypes.Postare
 import com.example.towntrekker.pagini.main.postari_feed_recyclerview.PostariFeedAdapter
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 
 
 class Postari : Fragment() {
@@ -38,12 +33,13 @@ class Postari : Fragment() {
         adapter = PostariFeedAdapter(context, arrayListOf())
         recyclerView.adapter = adapter
 
-        CoroutineScope(Dispatchers.Main).launch {
-            val listaPostari = preluarePostari()
+        val postariLiveData = mainActivityContext.postari
+        postariLiveData.observe(viewLifecycleOwner) { listaPostari ->
+            val listaPostariFiltrate = listaPostari.filter { it.user != mainActivityContext.getUser()!!.uid }
 
-            adapter = PostariFeedAdapter(context, listaPostari)
+            adapter = PostariFeedAdapter(context, listaPostariFiltrate)
 
-            if  (adapter.itemCount == 0) {
+            if (adapter.itemCount == 0) {
                 binding.postariNuExistaPostariFeed.visibility = View.VISIBLE
             } else {
                 binding.postariFeed.visibility = View.VISIBLE
@@ -58,33 +54,5 @@ class Postari : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private suspend fun preluarePostari(): List<Postare> {
-        val snapshot = mainActivityContext.getDB().collection("postari").get().await()
-        val listaPostari = mutableListOf<Postare>()
-
-        snapshot.documents.map { doc ->
-            @Suppress("UNCHECKED_CAST")
-            val pairData = doc.get("comentarii") as? List<HashMap<String, String>> ?: listOf()
-            val pairs = pairData.map { hashMap -> Pair(hashMap["first"] ?: "", hashMap["second"] ?: "") }
-
-            val postare = Postare(doc.id,
-                doc.getString("user") ?: "",
-                doc.getString("numeUser") ?: "",
-                doc.getString("numeLocatie") ?: "",
-                doc.getString("adresaLocatie") ?: "",
-                doc.getString("tipLocatie")?.lowercase() ?: "",
-                doc.getString("categorieLocatie")?.lowercase() ?: "",
-                (doc.getDouble("aprecieri") ?: 0).toInt(),
-                doc.getString("descriere") ?: "",
-                pairs,
-                doc.getBoolean("media") ?: false,
-                doc.getBoolean("iconUser") ?: false)
-
-            listaPostari.add(postare)
-        }
-
-        return listaPostari
     }
 }
