@@ -31,6 +31,11 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
 
         if (postare.user != mainActivityContext.getUser()!!.uid) {
             holder.iconUserCard.visibility = View.VISIBLE
+            holder.numeLayout.visibility = View.VISIBLE
+
+            if (postare.user in mainActivityContext.getUser()!!.urmareste) {
+                holder.urmaresteLayout.visibility = View.VISIBLE
+            }
 
             if (postare.iconUser) {
                 val userIconRef = postareRef.child("icon.jpg")

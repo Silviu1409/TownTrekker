@@ -352,9 +352,9 @@ class Cont : Fragment() {
         postariLiveData.observe(viewLifecycleOwner) { listaPostari ->
             val postariUser = listaPostari.filter { it.user == mainActivityContext.getUser()!!.uid }
 
-            if (postariUser.isNotEmpty()){
-                binding.vizualizarePostariCard.visibility = View.VISIBLE
+            binding.vizualizarePostari.text = binding.vizualizarePostari.text.toString().plus(numarTransform(postariUser.size))
 
+            if (postariUser.isNotEmpty()){
                 binding.vizualizarePostariCard.setOnClickListener {
                     val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
 
@@ -364,14 +364,9 @@ class Cont : Fragment() {
                     dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează postări user")
                 }
             }
-            else {
-                binding.vizualizarePostariCard.visibility = View.GONE
-            }
         }
 
         if (mainActivityContext.getUser()!!.urmareste.isNotEmpty()) {
-            binding.vizualizareUrmaresteCard.visibility = View.VISIBLE
-
             binding.vizualizareUrmaresteCard.setOnClickListener {
                 val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
 
@@ -381,26 +376,22 @@ class Cont : Fragment() {
                 dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmărește")
             }
         }
-        else {
-            binding.vizualizareUrmaresteCard.visibility = View.GONE
-        }
 
         if (mainActivityContext.getUser()!!.urmaritori.isNotEmpty()) {
-            binding.vizualizareUrmaritoriCard.visibility = View.VISIBLE
-
             binding.vizualizareUrmaritoriCard.setOnClickListener {
                 mainActivityContext.getDB().collection("useri").document(mainActivityContext.getUser()!!.uid).get()
                     .addOnSuccessListener { doc ->
                         @Suppress("UNCHECKED_CAST")
                         mainActivityContext.getUser()!!.urmaritori = doc.get("urmaritori") as? List<String> ?: listOf()
 
+                        val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
+
+                        docVizUser.edit().putString("refUser", mainActivityContext.getUser()!!.uid).apply()
+
                         val dialog = VizualizareUrmaritori()
                         dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmăritori")
                     }
             }
-        }
-        else {
-            binding.vizualizareUrmaritoriCard.visibility = View.GONE
         }
     }
 

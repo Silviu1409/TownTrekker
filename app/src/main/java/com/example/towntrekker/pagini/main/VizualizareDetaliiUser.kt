@@ -21,6 +21,7 @@ class VizualizareDetaliiUser: DialogFragment() {
     private lateinit var refUser: String
 
     private lateinit var vizualizarePostariCard: CardView
+    private lateinit var vizualizarePostari: AppCompatTextView
     private lateinit var vizualizareUrmaresteCard: CardView
     private lateinit var vizualizareUrmaritoriCard: CardView
 
@@ -36,6 +37,9 @@ class VizualizareDetaliiUser: DialogFragment() {
 
         val profilIcon: AppCompatImageButton = view.findViewById(R.id.Profil_Icon)
         val profilAlias: AppCompatTextView = view.findViewById(R.id.Profil_Alias)
+        val profilUrmareste: AppCompatImageButton = view.findViewById(R.id.Profil_Urmareste)
+
+        vizualizarePostari = view.findViewById(R.id.vizualizare_postari)
         val vizualizareUrmareste: AppCompatTextView = view.findViewById(R.id.vizualizare_urmareste)
         val vizualizareUrmaritori: AppCompatTextView = view.findViewById(R.id.vizualizare_urmaritori)
         val profilBio: AppCompatTextView = view.findViewById(R.id.Profil_Bio)
@@ -43,6 +47,69 @@ class VizualizareDetaliiUser: DialogFragment() {
         vizualizarePostariCard = view.findViewById(R.id.vizualizare_postari_card)
         vizualizareUrmaresteCard = view.findViewById(R.id.vizualizare_urmareste_card)
         vizualizareUrmaritoriCard = view.findViewById(R.id.vizualizare_urmaritori_card)
+
+        if (refUser in mainActivityContext.getUser()!!.urmareste) {
+            profilUrmareste.setImageResource(R.drawable.icon_urmareste_elimina)
+        }
+        else {
+            profilUrmareste.setImageResource(R.drawable.icon_urmareste_adauga)
+        }
+
+        val sharedPrefsUser = requireContext().getSharedPreferences("user", Context.MODE_PRIVATE)
+
+        profilUrmareste.setOnClickListener {
+            if (refUser in mainActivityContext.getUser()!!.urmareste) {
+
+                val aux = mainActivityContext.getUser()!!.urmareste.toMutableList()
+                aux.remove(refUser)
+                mainActivityContext.getUser()!!.urmareste = aux
+                sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
+
+                mainActivityContext.getDB().collection("useri")
+                    .document(mainActivityContext.getUser()!!.uid)
+                    .update("urmareste", mainActivityContext.getUser()!!.urmareste)
+                    .addOnSuccessListener {
+                        val docUser = mainActivityContext.getDB().collection("useri").document(refUser)
+                        docUser.get()
+                            .addOnSuccessListener { doc ->
+                                @Suppress("UNCHECKED_CAST")
+                                val urmaritoriUser = doc.get("urmaritori") as? MutableList<String> ?: mutableListOf()
+                                urmaritoriUser.add(mainActivityContext.getUser()!!.uid)
+
+                                docUser
+                                    .update("urmaritori", urmaritoriUser.toList())
+                                    .addOnSuccessListener {
+                                        profilUrmareste.setImageResource(R.drawable.icon_urmareste_adauga)
+                                    }
+                            }
+                    }
+            }
+            else {
+                val aux = mainActivityContext.getUser()!!.urmareste.toMutableList()
+                aux.add(refUser)
+                mainActivityContext.getUser()!!.urmareste = aux
+                sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
+
+                mainActivityContext.getDB().collection("useri")
+                    .document(mainActivityContext.getUser()!!.uid)
+                    .update("urmareste", mainActivityContext.getUser()!!.urmareste)
+                    .addOnSuccessListener {
+                        val docUser = mainActivityContext.getDB().collection("useri").document(refUser)
+                        docUser.get()
+                            .addOnSuccessListener { doc ->
+                                @Suppress("UNCHECKED_CAST")
+                                val urmaritoriUser = doc.get("urmaritori") as? MutableList<String> ?: mutableListOf()
+                                urmaritoriUser.remove(mainActivityContext.getUser()!!.uid)
+
+                                docUser
+                                    .update("urmaritori", urmaritoriUser.toList())
+                                    .addOnSuccessListener {
+                                        profilUrmareste.setImageResource(R.drawable.icon_urmareste_elimina)
+                                    }
+                            }
+                    }
+            }
+        }
 
         mainActivityContext.getDB().collection("useri")
             .document(refUser)
@@ -70,6 +137,33 @@ class VizualizareDetaliiUser: DialogFragment() {
                     vizualizareUrmareste.text = vizualizareUrmareste.text.toString().plus(numarTransform(urmaresteUser.size))
                     vizualizareUrmaritori.text = vizualizareUrmaritori.text.toString().plus(numarTransform(urmaritoriUser.size))
                     profilBio.text = bioUser
+
+                    if (urmaresteUser.isNotEmpty()) {
+                        vizualizareUrmaresteCard.setOnClickListener {
+                            val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
+
+                            docVizUser.edit().putString("refUser", refUser).apply()
+
+                            val dialog = VizualizareUrmareste()
+                            dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmărește")
+                        }
+                    }
+                    if (urmaritoriUser.isNotEmpty()) {
+                        vizualizareUrmaritoriCard.setOnClickListener {
+                            mainActivityContext.getDB().collection("useri").document(mainActivityContext.getUser()!!.uid).get()
+                                .addOnSuccessListener { doc ->
+                                    @Suppress("UNCHECKED_CAST")
+                                    mainActivityContext.getUser()!!.urmaritori = doc.get("urmaritori") as? List<String> ?: listOf()
+
+                                    val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
+
+                                    docVizUser.edit().putString("refUser", refUser).apply()
+
+                                    val dialog = VizualizareUrmaritori()
+                                    dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmăritori")
+                                }
+                        }
+                    }
                 }
             }
 
@@ -89,41 +183,20 @@ class VizualizareDetaliiUser: DialogFragment() {
         postariLiveData.observe(viewLifecycleOwner) { listaPostari ->
             val postariUser = listaPostari.filter { it.user == refUser }
 
+            vizualizarePostari.post {
+                vizualizarePostari.text = vizualizarePostari.text.toString().plus(numarTransform(postariUser.size))
+            }
+
             if (postariUser.isNotEmpty()){
                 vizualizarePostariCard.post {
-                    vizualizarePostariCard.visibility = View.VISIBLE
-
                     vizualizarePostariCard.setOnClickListener {
+                        val docVizUser = mainActivityContext.getSharedPreferences("vizUser", Context.MODE_PRIVATE)
+
+                        docVizUser.edit().putString("refUser", refUser).apply()
+
                         val dialog = VizualizarePostariUser()
                         dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează postări user")
                     }
-                }
-            }
-        }
-
-        if (mainActivityContext.getUser()!!.urmareste.isNotEmpty()) {
-            vizualizareUrmaresteCard.post {
-                vizualizareUrmaresteCard.visibility = View.VISIBLE
-
-                vizualizareUrmaresteCard.setOnClickListener {
-                    val dialog = VizualizareUrmareste()
-                    dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmărește")
-                }
-            }
-        }
-        if (mainActivityContext.getUser()!!.urmaritori.isNotEmpty()) {
-            vizualizareUrmaritoriCard.post {
-                vizualizareUrmaritoriCard.visibility = View.VISIBLE
-
-                vizualizareUrmaritoriCard.setOnClickListener {
-                    mainActivityContext.getDB().collection("useri").document(mainActivityContext.getUser()!!.uid).get()
-                        .addOnSuccessListener { doc ->
-                            @Suppress("UNCHECKED_CAST")
-                            mainActivityContext.getUser()!!.urmaritori = doc.get("urmaritori") as? List<String> ?: listOf()
-
-                            val dialog = VizualizareUrmaritori()
-                            dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmăritori")
-                        }
                 }
             }
         }

@@ -56,6 +56,25 @@
 
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginEnd="5dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="5dp">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/Profil_Urmareste"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:background="#00000000"
+                    android:contentDescription="@string/user_urmareste_icon"
+                    android:scaleType="centerCrop"
+                    tools:ignore="ImageContrastCheck,TouchTargetSizeCheck" />
+
+            </androidx.cardview.widget.CardView>
+
         </androidx.appcompat.widget.LinearLayoutCompat>
 
         <androidx.appcompat.widget.LinearLayoutCompat
@@ -72,13 +91,12 @@
                 android:layout_height="75dp"
                 android:layout_margin="5dp"
                 android:text="@string/vizualizare_postari_cont"
-                android:visibility="gone"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                tools:ignore="TextSizeCheck"
-                tools:visibility="visible">
+                tools:ignore="TextSizeCheck">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/vizualizare_postari"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -93,11 +111,9 @@
                 android:layout_width="77.5dp"
                 android:layout_height="77.5dp"
                 android:layout_margin="5dp"
-                android:visibility="gone"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                tools:ignore="TextSizeCheck"
-                tools:visibility="visible">
+                tools:ignore="TextSizeCheck">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vizualizare_urmareste"
@@ -115,11 +131,9 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_margin="5dp"
-                android:visibility="gone"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                tools:ignore="TextSizeCheck"
-                tools:visibility="visible">
+                tools:ignore="TextSizeCheck">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vizualizare_urmaritori"

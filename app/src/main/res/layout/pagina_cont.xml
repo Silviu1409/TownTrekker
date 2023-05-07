@@ -109,13 +109,12 @@
                 android:layout_height="75dp"
                 android:layout_margin="5dp"
                 android:text="@string/vizualizare_postari_cont"
-                android:visibility="gone"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                tools:ignore="TextSizeCheck"
-                tools:visibility="visible">
+                tools:ignore="TextSizeCheck">
 
                 <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/vizualizare_postari"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -130,11 +129,9 @@
                 android:layout_width="77.5dp"
                 android:layout_height="77.5dp"
                 android:layout_margin="5dp"
-                android:visibility="gone"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                tools:ignore="TextSizeCheck"
-                tools:visibility="visible">
+                tools:ignore="TextSizeCheck">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vizualizare_urmareste"
@@ -152,11 +149,9 @@
                 android:layout_width="75dp"
                 android:layout_height="75dp"
                 android:layout_margin="5dp"
-                android:visibility="gone"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="4dp"
-                tools:ignore="TextSizeCheck"
-                tools:visibility="visible">
+                tools:ignore="TextSizeCheck">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/vizualizare_urmaritori"

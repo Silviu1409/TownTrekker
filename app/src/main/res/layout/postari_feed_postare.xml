@@ -55,17 +55,51 @@
                 android:layout_toEndOf="@id/icon_user_card"
                 android:orientation="vertical">
 
-                <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/nume_user"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/user_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
                     android:layout_marginBottom="10dp"
-                    android:singleLine="true"
-                    android:text="@string/postare_nume_user"
-                    android:textSize="16sp"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="visible" >
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/nume_user"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/postare_nume_user"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.LinearLayoutCompat
+                        android:id="@+id/user_urmareste_layout"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginStart="10dp"
+                        android:visibility="gone"
+                        tools:visibility="visible" >
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/user_urmareste_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:singleLine="true"
+                            android:text="@string/user_urmareste_text"
+                            android:textSize="11sp" />
+
+                        <ImageView
+                            android:layout_width="11sp"
+                            android:layout_height="11sp"
+                            android:layout_marginStart="5dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="@string/user_urmareste_text_icon_desc"
+                            android:src="@drawable/icon_user_urmareste_poz" />
+
+                    </androidx.appcompat.widget.LinearLayoutCompat>
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
 
                 <androidx.appcompat.widget.LinearLayoutCompat
                     android:layout_width="match_parent"
