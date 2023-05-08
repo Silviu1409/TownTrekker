@@ -21,7 +21,6 @@ import com.example.towntrekker.datatypes.Recomandare
 import com.example.towntrekker.datatypes.User
 import com.example.towntrekker.pagini.main.AdaugaPostare
 import com.google.android.libraries.places.api.Places
-import com.google.android.libraries.places.api.net.PlacesClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.auth.FirebaseAuth
@@ -49,8 +48,6 @@ class ActivityMain : AppCompatActivity() {
     private lateinit var folderRef: StorageReference
     private lateinit var db: FirebaseFirestore
     private lateinit var storage: StorageReference
-
-    private lateinit var placesClient: PlacesClient
 
     private lateinit var sharedPrefsUser: SharedPreferences   // fișierul din shared preferences ce conține date despre user
 
@@ -144,7 +141,7 @@ class ActivityMain : AppCompatActivity() {
                 Locale("ro", "RO")
             )
         }
-        placesClient = Places.createClient(this)
+        Places.createClient(this)
 
         // preluare poză profil user, dacă nu există deja în cache
         userIconFile = File(applicationContext.cacheDir, "icon.jpg")
@@ -245,10 +242,6 @@ class ActivityMain : AppCompatActivity() {
 
     fun deleteUserIconFile() {
         userIconFile.delete()
-    }
-
-    fun getPlacesClient(): PlacesClient {
-        return placesClient
     }
 
     // funcție pentru ascunderea tastaturii

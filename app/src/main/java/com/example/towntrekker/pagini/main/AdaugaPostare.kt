@@ -113,7 +113,7 @@ class AdaugaPostare: DialogFragment() {
 
         autocompleteFragment.setOnPlaceSelectedListener(object : PlaceSelectionListener {
             override fun onPlaceSelected(place: Place) {
-                Log.i(mainActivityContext.getTag(), "Place: " + place.name + ", " + place.address+ ", " + place.types)
+                Log.i(mainActivityContext.getTag(), "Place: " + place.id + ", " + place.name + ", " + place.address+ ", " + place.types)
 
                 numeLocatie = place.name?.toString() ?: ""
                 adresaLocatie = place.address?.toString() ?: ""
@@ -260,9 +260,7 @@ class AdaugaPostare: DialogFragment() {
                             if (userIconLocal.exists()){
                                 requireActivity().contentResolver.openInputStream(userIconLocal.toUri())?.use { inputStream ->
                                     val bitmap = BitmapFactory.decodeStream(inputStream)
-
                                     val resizedBitmap = Bitmap.createScaledBitmap(bitmap, 35, 35, false)
-
                                     val baos = ByteArrayOutputStream()
                                     resizedBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                                     val imgData = baos.toByteArray()
@@ -273,7 +271,6 @@ class AdaugaPostare: DialogFragment() {
                                         }
                                         .addOnFailureListener { e ->
                                             incarcareFisiere = false
-
                                             Log.e(mainActivityContext.getErrTag(), "Eroare la încărcarea imaginii: ${e.message}")
                                         }
                                 }

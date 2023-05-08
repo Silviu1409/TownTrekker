@@ -7,11 +7,10 @@
     tools:context=".pagini.auth.Autentificare" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/Auth"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center_vertical"
-        android:layout_marginVertical="25dp" >
+        android:layout_marginVertical="25dp">
 
         <TextView
             android:id="@+id/Auth_Titlu"
@@ -28,11 +27,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="50dp"
+            android:autofillHints="emailAddress"
             android:ems="10"
             android:hint="@string/hint_email"
             android:inputType="textEmailAddress"
             android:minHeight="50dp"
-            android:autofillHints="emailAddress"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Auth_Titlu" />
@@ -44,7 +43,7 @@
             android:layout_marginTop="25dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/Auth_Email" >
+            app:layout_constraintTop_toBottomOf="@+id/Auth_Email">
 
             <EditText
                 android:id="@+id/Auth_Parola"
@@ -95,6 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:text="@string/auth_buton"
+            app:cornerRadius="8dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/Auth_Alias" />

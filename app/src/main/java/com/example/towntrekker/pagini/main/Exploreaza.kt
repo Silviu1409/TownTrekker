@@ -57,13 +57,13 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        mainActivityContext = context as ActivityMain
+
         MapsInitializer.initialize(requireContext(), MapsInitializer.Renderer.LATEST, this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val rootView = inflater.inflate(R.layout.pagina_exploreaza, container, false)
-
-        mainActivityContext = context as ActivityMain
 
         autocompletare = childFragmentManager.findFragmentById(R.id.cautare_locatie) as AutocompleteSupportFragment
         autocompletare.setCountries("RO")
@@ -95,9 +95,9 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
 
             harta.isMyLocationEnabled = true
 
-            val fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireContext())
+            val clientLocatie = LocationServices.getFusedLocationProviderClient(requireContext())
 
-            fusedLocationClient.lastLocation.addOnSuccessListener { locatie ->
+            clientLocatie.lastLocation.addOnSuccessListener { locatie ->
                 if (locatie != null) {
                     ultimaLocatie = LatLng(locatie.latitude, locatie.longitude)
                 }
@@ -185,14 +185,13 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
 
     override fun onMapsSdkInitialized(renderer: MapsInitializer.Renderer) {
         when (renderer) {
-            MapsInitializer.Renderer.LATEST -> Log.d("MapsDemo", "The latest version of the renderer is used.")
-            MapsInitializer.Renderer.LEGACY -> Log.d("MapsDemo", "The legacy version of the renderer is used.")
+            MapsInitializer.Renderer.LATEST -> Log.d(mainActivityContext.getTag(), "Se folosește ultima versiune la generarea hărții.")
+            MapsInitializer.Renderer.LEGACY -> Log.d(mainActivityContext.getTag(), "Nu se folosește ultima versiune la generarea hărții.")
         }
     }
 
     private fun verificaLocatieActivata() {
-        val managerLocatie =
-            mainActivityContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        val managerLocatie = mainActivityContext.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         val locatieActivata = managerLocatie.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
         if (!locatieActivata) {
