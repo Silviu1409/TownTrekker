@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/pagina_exploreaza"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".pagini.main.Exploreaza">
@@ -12,9 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:contentDescription="@string/exploreaza_harta"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:mapId="@string/id_harta" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_marginHorizontal="15dp"
+        app:cardElevation="8dp"
+        app:cardCornerRadius="8dp">
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/cautare_locatie"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tooltipText="Cauta"
+            tools:layout="@layout/places_autocomplete_fragment" />
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>

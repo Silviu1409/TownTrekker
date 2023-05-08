@@ -99,4 +99,7 @@
     <string name="adaugare_postare_media_fisier">imagine/video</string>
     <string name="adaugare_postare_media_fisier_eliminare">eliminare imagine/video</string>
 
+    <string name="id_harta">4e438cf8a6ba2b9d</string>
+    <string name="cauta_locatie">Caută o locație</string>
+
 </resources>

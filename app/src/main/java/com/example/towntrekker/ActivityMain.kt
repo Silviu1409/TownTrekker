@@ -247,6 +247,10 @@ class ActivityMain : AppCompatActivity() {
         userIconFile.delete()
     }
 
+    fun getPlacesClient(): PlacesClient {
+        return placesClient
+    }
+
     // funcție pentru ascunderea tastaturii
     fun ascundereTastatura() {
         if(currentFocus != null) {
