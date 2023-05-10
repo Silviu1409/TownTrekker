@@ -3,6 +3,7 @@ package com.example.towntrekker.pagini.main.descopera_recomandari_recyclerview
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,27 +33,26 @@ class DescoperaRecomandariAdapter(context: Context?, private val lista_recomanda
         val recomandare = lista_recomandari[position]
 
         when(recomandare.tip.lowercase()){
-            "bar", "night club" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_bar)
+            "bar", "night_club" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_bar)
             "cafe" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_cafe)
             "restaurant" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_restaurant)
             "bakery" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_bakery)
 
-            "books", "clothing", "electronics", "jewelry",
-                "shoes", "shopping center/mall" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_mall)
-            "convenience store" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_store)
-            "grocery", "supermarket" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_supermarket)
+            "book_store", "clothing_store", "electronics_store", "jewelry_store",
+                "shoe_store", "shopping_mall" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_mall)
+            "convenience_store" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_store)
+            "grocery_or_supermarket", "supermarket", "store" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_supermarket)
             "pharmacy" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_pharmacy)
 
             "lodging" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_lodging)
 
-            "golf" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_boating)
-            "historic" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_historic)
-            "movie" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_movie)
+            "amusement_park" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_attraction)
+            "tourist_attraction" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_historic)
+            "movie_theater" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_movie)
             "museum" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_museum)
             "theater" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_theater)
 
-            "boating" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_boating)
-            "camping" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_camping)
+            "campground" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_camping)
             "park" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_park)
             "stadium" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_stadium)
             "zoo" -> holder.iconNumeLocatie.setImageResource(R.drawable.icon_zoo)
@@ -61,8 +61,8 @@ class DescoperaRecomandariAdapter(context: Context?, private val lista_recomanda
         if (recomandare.logo.isNotEmpty()){
             Glide.with(mainActivityContext)
                 .load(recomandare.logo)
-                .override(35, 35)
-                .centerCrop()
+                .override(45, 45)
+                .fitCenter()
                 .placeholder(holder.iconNumeLocatie.drawable)
                 .into(holder.logoLocatie)
         } else {
@@ -96,6 +96,7 @@ class DescoperaRecomandariAdapter(context: Context?, private val lista_recomanda
             harta.uiSettings.isMapToolbarEnabled = false
 
             val latLng = recomandare.geoLocatie.split(", ")
+            Log.d("latlng", latLng.toString())
             val geolocatie = LatLng(latLng[0].toDoubleOrNull() ?: 0.0, latLng[1].toDoubleOrNull() ?: 0.0)
 
             val markerLocatie = MarkerOptions().position(geolocatie).title(holder.numeLocatie.text.toString())

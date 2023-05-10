@@ -28,11 +28,17 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.io.File
+import java.lang.StringBuilder
+import java.time.LocalDate
+import java.time.Period
+import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 
@@ -340,22 +346,96 @@ class ActivityMain : AppCompatActivity() {
     }
 
     private suspend fun preluareRecomandari(): List<Recomandare> {
-        val snapshot = db.collection("recomandari").get().await()
+        val sharedPrefsRecomandari = getSharedPreferences("recomandari", Context.MODE_PRIVATE)
+        val listaId = mutableListOf<String>()
+        var dataModificare = ""
+
         val listaRecomandari = mutableListOf<Recomandare>()
 
-        snapshot.documents.map { doc ->
-            val recomandare = Recomandare(doc.id,
-                doc.getString("logo") ?: "",
-                doc.getString("nume") ?: "",
-                doc.getString("adresa") ?: "",
-                doc.getString("rating") ?: "",
-                doc.getString("tip")?.lowercase() ?: "",
-                doc.getString("categorie")?.lowercase() ?: "",
-                doc.getString("descriere") ?: "",
-                doc.getString("geolocatie") ?: "")
+        for (id in sharedPrefsRecomandari.all.keys) {
+            if (id != "dataModificare") {
+                listaId.add(id)
 
-            listaRecomandari.add(recomandare)
+                val json = sharedPrefsRecomandari.getString(id, "")
+                val type = object : TypeToken<List<String>>() {}.type
+                val valori = Gson().fromJson(json, type) ?: listOf<String>()
+
+                listaRecomandari.add(
+                    Recomandare(
+                        id,
+                        valori[0],
+                        valori[1],
+                        valori[2],
+                        valori[3],
+                        valori[4],
+                        valori[5],
+                        valori[6],
+                        valori[7]
+                    )
+                )
+            }
+            else {
+                dataModificare = sharedPrefsRecomandari.getString("dataModificare", "") ?: ""
+            }
         }
+
+        var diferentaZile = 0
+
+        val dataCurenta = LocalDate.now()
+        val formatData = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+
+        if (dataModificare.isNotEmpty()) {
+            val dataDocument = LocalDate.parse(dataModificare, formatData)
+
+            diferentaZile = Period.between(dataDocument, dataCurenta).days
+        }
+
+        Log.i(tag, "$diferentaZile zi/zile diferență")
+
+        if (listaId.isEmpty() || diferentaZile > 0) {
+            val snapshot = db.collection("recomandari").get().await()
+
+            snapshot.documents.map { doc ->
+                val recomandare = Recomandare(
+                    doc.id,
+                    doc.getString("logo") ?: "",
+                    doc.getString("nume") ?: "",
+                    doc.getString("adresa") ?: "",
+                    doc.getString("rating") ?: "",
+                    doc.getString("tip")?.lowercase() ?: "",
+                    doc.getString("categorie")?.lowercase() ?: "",
+                    doc.getString("descriere") ?: "",
+                    doc.getString("geolocatie") ?: ""
+                )
+
+                listaRecomandari.add(recomandare)
+
+                val campuri = listOf(
+                    recomandare.logo,
+                    recomandare.nume,
+                    recomandare.adresa,
+                    recomandare.rating,
+                    recomandare.tip,
+                    recomandare.categorie,
+                    recomandare.descriere,
+                    recomandare.geoLocatie
+                )
+
+                val json = Gson().toJson(campuri)
+                sharedPrefsRecomandari.edit().putString(recomandare.id, json).apply()
+            }
+
+            sharedPrefsRecomandari.edit().putString("dataModificare", dataCurenta.format(formatData)).apply()
+        }
+
+        val categorii = listaRecomandari.groupBy { it.categorie }.mapValues { it.value.size }
+        val mesaj = StringBuilder("Total recomandări: ${listaRecomandari.size}")
+
+        for ((categorie, numar) in categorii){
+            mesaj.append("; $categorie: $numar")
+        }
+
+        Log.i(tag, mesaj.toString())
 
         return listaRecomandari
     }

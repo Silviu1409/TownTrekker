@@ -118,7 +118,13 @@ class AdaugaPostare: DialogFragment() {
                 numeLocatie = place.name?.toString() ?: ""
                 adresaLocatie = place.address?.toString() ?: ""
 
-                tipLocatie = place.types?.get(0).toString().lowercase()
+                if (numeLocatie.lowercase().contains("teatru")) {
+                    tipLocatie = "theater"
+                }
+                else {
+                    tipLocatie = place.types?.get(0).toString().lowercase()
+                }
+                Log.i(mainActivityContext.getTag(), "Place tip: $tipLocatie")
                 categorieLocatie = preiaCategorieLocatie(tipLocatie)
             }
 
@@ -253,6 +259,10 @@ class AdaugaPostare: DialogFragment() {
                                     }
                             }
 
+                            val listaPostariNoua = mainActivityContext.postari.value?.toMutableList() ?: mutableListOf()
+                            listaPostariNoua.add(postareNoua)
+                            mainActivityContext.postari.value = listaPostariNoua
+
                             val userIconRef = refPostare.child("icon.jpg")
 
                             val userIconLocal = mainActivityContext.getUserIconFile()
@@ -343,13 +353,13 @@ class AdaugaPostare: DialogFragment() {
 
     private fun preiaCategorieLocatie(tip: String): String{
         return when(tip){
-            "bar", "night club", "cafe", "restaurant", "bakery" -> "food and drink"
-            "books", "clothing", "electronics", "jewelry", "shoes", "shopping center/mall",
-                "convenience store", "grocery", "supermarket", "pharmacy" -> "retail"
+            "bar", "night_club", "cafe", "restaurant", "bakery" -> "food and drink"
+            "book_store", "clothing_store", "electronics_store", "jewelry_store", "shoe_store", "shopping_mall",
+                "convenience_store", "grocery_or_supermarket", "supermarket", "store", "pharmacy" -> "retail"
 
             "lodging" -> "services"
-            "golf", "historic", "movie", "museum", "theater" -> "entertainment"
-            "boating", "camping", "park", "stadium", "zoo" -> "outdoor"
+            "amusement_park", "tourist_attraction", "movie_theater", "museum", "theater" -> "entertainment"
+            "campground", "park", "stadium", "zoo" -> "outdoor"
 
             else -> "other"
         }

@@ -58,27 +58,26 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
         }
 
         when(postare.tipLocatie.lowercase()){
-            "bar", "night club" -> holder.iconLocatie.setImageResource(R.drawable.icon_bar)
+            "bar", "night_club" -> holder.iconLocatie.setImageResource(R.drawable.icon_bar)
             "cafe" -> holder.iconLocatie.setImageResource(R.drawable.icon_cafe)
             "restaurant" -> holder.iconLocatie.setImageResource(R.drawable.icon_restaurant)
             "bakery" -> holder.iconLocatie.setImageResource(R.drawable.icon_bakery)
 
-            "books", "clothing", "electronics", "jewelry",
-            "shoes", "shopping center/mall" -> holder.iconLocatie.setImageResource(R.drawable.icon_mall)
-            "convenience store" -> holder.iconLocatie.setImageResource(R.drawable.icon_store)
-            "grocery", "supermarket" -> holder.iconLocatie.setImageResource(R.drawable.icon_supermarket)
+            "book_store", "clothing_store", "electronics_store", "jewelry_store",
+            "shoe_store", "shopping_mall" -> holder.iconLocatie.setImageResource(R.drawable.icon_mall)
+            "convenience_store" -> holder.iconLocatie.setImageResource(R.drawable.icon_store)
+            "grocery_or_supermarket", "supermarket", "store" -> holder.iconLocatie.setImageResource(R.drawable.icon_supermarket)
             "pharmacy" -> holder.iconLocatie.setImageResource(R.drawable.icon_pharmacy)
 
             "lodging" -> holder.iconLocatie.setImageResource(R.drawable.icon_lodging)
 
-            "golf" -> holder.iconLocatie.setImageResource(R.drawable.icon_golf)
-            "historic" -> holder.iconLocatie.setImageResource(R.drawable.icon_historic)
-            "movie" -> holder.iconLocatie.setImageResource(R.drawable.icon_movie)
+            "amusement_park" -> holder.iconLocatie.setImageResource(R.drawable.icon_attraction)
+            "tourist_attraction" -> holder.iconLocatie.setImageResource(R.drawable.icon_historic)
+            "movie_theater" -> holder.iconLocatie.setImageResource(R.drawable.icon_movie)
             "museum" -> holder.iconLocatie.setImageResource(R.drawable.icon_museum)
             "theater" -> holder.iconLocatie.setImageResource(R.drawable.icon_theater)
 
-            "boating" -> holder.iconLocatie.setImageResource(R.drawable.icon_boating)
-            "camping" -> holder.iconLocatie.setImageResource(R.drawable.icon_camping)
+            "campground" -> holder.iconLocatie.setImageResource(R.drawable.icon_camping)
             "park" -> holder.iconLocatie.setImageResource(R.drawable.icon_park)
             "stadium" -> holder.iconLocatie.setImageResource(R.drawable.icon_stadium)
             "zoo" -> holder.iconLocatie.setImageResource(R.drawable.icon_zoo)

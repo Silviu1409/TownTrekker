@@ -26,7 +26,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="7.5dp"
+                android:layout_marginHorizontal="5dp"
                 android:layout_marginVertical="5dp"
                 android:orientation="horizontal">
 
@@ -44,16 +44,16 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:layout_margin="2.5dp"
-                        app:cardCornerRadius="35dp"
+                        app:cardCornerRadius="50dp"
                         app:cardElevation="6dp">
 
                         <ImageView
                             android:id="@+id/logo_locatie"
-                            android:layout_width="35dp"
-                            android:layout_height="35dp"
+                            android:layout_width="45dp"
+                            android:layout_height="45dp"
                             android:background="#00000000"
                             android:contentDescription="@string/recomandare_logo_locatie"
-                            android:scaleType="centerCrop"
+                            android:scaleType="fitCenter"
                             tools:ignore="ImageContrastCheck" />
 
                     </androidx.cardview.widget.CardView>
@@ -80,12 +80,13 @@
                                 android:layout_height="wrap_content"
                                 android:singleLine="true"
                                 android:text="@string/recomandare_rating_locatie"
-                                android:textSize="12sp" />
+                                android:textSize="13sp" />
 
                             <ImageView
                                 android:layout_width="15dp"
                                 android:layout_height="15dp"
                                 android:layout_centerInParent="true"
+                                android:layout_gravity="center"
                                 android:importantForAccessibility="no"
                                 android:src="@drawable/icon_star"
                                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck,ImageContrastCheck" />
@@ -119,14 +120,22 @@
                             android:contentDescription="@string/recomandare_icon_nume_locatie"
                             android:src="@drawable/icon_locatie" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/nume_locatie"
+                        <HorizontalScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:singleLine="true"
-                            android:text="@string/recomandare_nume_locatie"
-                            android:textSize="16sp" />
+                            android:layout_marginStart="2.5dp"
+                            android:scrollbarSize="2dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/nume_locatie"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:singleLine="true"
+                                android:text="@string/recomandare_nume_locatie"
+                                android:textSize="16sp" />
+
+                        </HorizontalScrollView>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -142,14 +151,23 @@
                             android:contentDescription="@string/recomandare_icon_adresa_locatie"
                             android:src="@drawable/icon_adresa" />
 
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:id="@+id/adresa_locatie"
+                        <HorizontalScrollView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:singleLine="true"
-                            android:text="@string/recomandare_adresa_locatie"
-                            android:textSize="12sp" />
+                            android:layout_marginStart="2.5dp"
+                            android:scrollbarSize="2dp">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:id="@+id/adresa_locatie"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:singleLine="true"
+                                android:text="@string/recomandare_adresa_locatie"
+                                android:textSize="14sp"
+                                tools:ignore="VisualLintBounds" />
+
+                        </HorizontalScrollView>
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
