@@ -1,5 +1,9 @@
 package com.example.towntrekker.pagini.main
 
+import ai.onnxruntime.OnnxMap
+import ai.onnxruntime.OnnxTensor
+import ai.onnxruntime.OrtEnvironment
+import ai.onnxruntime.OrtSession
 import android.app.AlertDialog
 import android.app.Dialog
 import android.graphics.Bitmap
@@ -25,12 +29,16 @@ import com.example.towntrekker.ActivityMain
 import com.example.towntrekker.R
 import com.example.towntrekker.datatypes.Postare
 import com.example.towntrekker.pagini.main.adaugare_media_recyclerview.AdaugaImaginiAdapter
+import com.github.pemistahl.lingua.api.LanguageDetector
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import java.io.ByteArrayOutputStream
+import java.text.Normalizer
 import com.google.android.libraries.places.R as PlacesR
+import opennlp.tools.stemmer.snowball.SnowballStemmer
+import opennlp.tools.stemmer.snowball.SnowballStemmer.ALGORITHM
 
 
 class AdaugaPostare: DialogFragment() {
@@ -53,6 +61,7 @@ class AdaugaPostare: DialogFragment() {
 
     private var descFisiere = mutableListOf<Uri>()
 
+    private val stemmerRomana = SnowballStemmer(ALGORITHM.ROMANIAN)
 
     @Suppress("BlockingMethodInNonBlockingContext")
     private val getDocumentContent =
@@ -118,11 +127,10 @@ class AdaugaPostare: DialogFragment() {
                 numeLocatie = place.name?.toString() ?: ""
                 adresaLocatie = place.address?.toString() ?: ""
 
-                if (numeLocatie.lowercase().contains("teatru")) {
-                    tipLocatie = "theater"
-                }
-                else {
-                    tipLocatie = place.types?.get(0).toString().lowercase()
+                tipLocatie = if (numeLocatie.lowercase().contains("teatru")) {
+                    "theater"
+                } else {
+                    place.types?.get(0).toString().lowercase()
                 }
                 Log.i(mainActivityContext.getTag(), "Place tip: $tipLocatie")
                 categorieLocatie = preiaCategorieLocatie(tipLocatie)
@@ -200,6 +208,33 @@ class AdaugaPostare: DialogFragment() {
                 if ( (numeLocatie != "" || adresaLocatie != "")
                     && (descriereRef.text.toString() != "" || descFisiere.isNotEmpty()) ) {
 
+                    var tipRecenzie = "nedefinit"
+                    var scorRecenzie = (-1).toDouble()
+
+                    val descriereInRomana = detecteazaLimbaRomana(descriereRef.text.toString(),
+                                                                    mainActivityContext.getDetectorLimba())
+
+                    if (descriereInRomana) {
+                        val ortEnvironment = OrtEnvironment.getEnvironment()
+                        val ortSession = createORTSession(ortEnvironment)
+
+                        var textPreprocesat = descriereRef.text.toString()
+                        textPreprocesat = eliminaDiacritice(textPreprocesat)
+                        textPreprocesat = eliminaCaractereSpeciale(textPreprocesat)
+                        textPreprocesat = stematizare(textPreprocesat)
+
+                        Log.d(mainActivityContext.getTag(), textPreprocesat)
+
+                        val output = realizeazaPredictie(textPreprocesat , ortSession , ortEnvironment)
+
+                        Log.d(mainActivityContext.getTag(), "Output: ${output.first}, Scor: ${output.second}")
+
+                        tipRecenzie = if (output.first >= 0 && output.first < 0.4) {"negativ"}
+                            else if (output.first >= 0.4 && output.first < 0.6) {"neutru"}
+                            else {"pozitiv"}
+                        scorRecenzie = output.second
+                    }
+
                     val datePostare = hashMapOf(
                         "user" to mainActivityContext.getUser()!!.uid,
                         "numeUser" to mainActivityContext.getUser()!!.alias,
@@ -211,7 +246,9 @@ class AdaugaPostare: DialogFragment() {
                         "descriere" to descriereRef.text.toString(),
                         "comentarii" to listOf<Any>(),
                         "media" to (descFisiere.size != 0),
-                        "iconUser" to mainActivityContext.getUserIconFile().exists()
+                        "iconUser" to mainActivityContext.getUserIconFile().exists(),
+                        "tipRecenzie" to tipRecenzie,
+                        "scorRecenzie" to scorRecenzie
                     )
 
                     val refDocNou = mainActivityContext.getDB().collection("postari").document()
@@ -232,7 +269,9 @@ class AdaugaPostare: DialogFragment() {
                                 descriereRef.text.toString(),
                                 listOf(),
                                 (descFisiere.size != 0),
-                                mainActivityContext.getUserIconFile().exists()
+                                mainActivityContext.getUserIconFile().exists(),
+                                tipRecenzie,
+                                scorRecenzie
                             )
 
                             var incarcareFisiere = true
@@ -363,5 +402,54 @@ class AdaugaPostare: DialogFragment() {
 
             else -> "other"
         }
+    }
+
+    // funcție care detectează dacă textul este scris în Română
+    private fun detecteazaLimbaRomana(input: String, detectorLimba: LanguageDetector): Boolean {
+        val limbaDetectata = detectorLimba.computeLanguageConfidenceValues(text = input).firstKey()
+
+        return limbaDetectata.toString() == "ROMANIAN"
+    }
+
+    // funcție care elimina transformă diacriticile din text
+    private fun eliminaDiacritice(input: String): String {
+        val inputNormalizat = Normalizer.normalize(input, Normalizer.Form.NFD)
+        val regex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
+        return regex.replace(inputNormalizat, "")
+    }
+
+    // funcție care elimină caracterele speciale
+    private fun eliminaCaractereSpeciale(input: String): String {
+        val regex = Regex("[^a-zA-Z]")
+        return input.replace(regex, " ")
+    }
+
+    // funcție care stematizează textul
+    private fun stematizare(input: String): String {
+        val cuvinte = input.split(" ")
+        return cuvinte.joinToString(" ") { cuvant -> stemmerRomana.stem(cuvant) }
+    }
+
+    private fun realizeazaPredictie(input : String, ortSession: OrtSession,
+                                        ortEnvironment: OrtEnvironment): Pair<Int, Double> {
+        val numeInput = ortSession.inputNames.first()
+        val date = listOf(input).toTypedArray()
+
+        val inputTensor = OnnxTensor.createTensor(ortEnvironment, date, longArrayOf(date.size.toLong(), 1))
+        val outputTensors = ortSession.run(mapOf(numeInput to inputTensor), ortSession.outputNames)
+
+        val label = (outputTensors[0].value as LongArray).first().toInt()
+
+        @Suppress("UNCHECKED_CAST")
+        val probabilitati = (outputTensors[1].value as List<OnnxMap>)[0].value as Map<Int, Double>
+
+        val scorRecenzie = probabilitati[probabilitati.keys.last()]!!.toDouble()
+
+        return Pair(label, scorRecenzie)
+    }
+
+    private fun createORTSession( ortEnvironment: OrtEnvironment) : OrtSession {
+        val modelBytes = resources.openRawResource( R.raw.model_ml ).readBytes()
+        return ortEnvironment.createSession(modelBytes, OrtSession.SessionOptions())
     }
 }

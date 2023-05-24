@@ -89,6 +89,7 @@
     <string name="user_urmareste_icon">icon urmareste user</string>
     <string name="user_urmareste_text">Urmărești</string>
     <string name="user_urmareste_text_icon_desc">urmărești userul</string>
+    <string name="postare_tip_recenzie">tip recenzie</string>
 
     <string name="adaugare_postare_titlu">Adaugă o postare</string>
     <string name="adaugare_postare_locatie">Locație</string>

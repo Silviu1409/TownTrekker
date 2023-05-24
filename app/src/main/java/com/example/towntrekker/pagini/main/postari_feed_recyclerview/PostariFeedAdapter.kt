@@ -83,6 +83,16 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
             "zoo" -> holder.iconLocatie.setImageResource(R.drawable.icon_zoo)
         }
 
+        when(postare.tipRecenzie.lowercase()){
+            "negativ" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_negativ)
+            "neutru" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_neutru)
+            "pozitiv" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_pozitiv)
+        }
+
+        if (postare.tipRecenzie.lowercase() != "nedefinit"){
+            holder.tipRecenzieIcon.visibility = View.VISIBLE
+        }
+
         holder.numeUser.text = postare.numeUser
         holder.numeLocatie.text = postare.numeLocatie
         holder.adresaLocatie.text = postare.adresaLocatie

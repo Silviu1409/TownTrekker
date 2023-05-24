@@ -20,6 +20,9 @@ import com.example.towntrekker.datatypes.Postare
 import com.example.towntrekker.datatypes.Recomandare
 import com.example.towntrekker.datatypes.User
 import com.example.towntrekker.pagini.main.AdaugaPostare
+import com.github.pemistahl.lingua.api.Language
+import com.github.pemistahl.lingua.api.LanguageDetector
+import com.github.pemistahl.lingua.api.LanguageDetectorBuilder
 import com.google.android.libraries.places.api.Places
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -64,6 +67,11 @@ class ActivityMain : AppCompatActivity() {
 
     var postari = MutableLiveData<List<Postare>>()
     var recomandari = MutableLiveData<List<Recomandare>>()
+
+    private val detectorLimba = LanguageDetectorBuilder
+        .fromLanguages(Language.ENGLISH, Language.SPANISH, Language.RUSSIAN, Language.GERMAN, Language.FRENCH,
+            Language.JAPANESE, Language.PORTUGUESE, Language.TURKISH, Language.ITALIAN, Language.ROMANIAN)
+        .build()
 
 
     // suprascriere a metodei ce este apelată în momentul în care utilizatorul apasă pe butonul "back" din bara de navigație
@@ -246,6 +254,10 @@ class ActivityMain : AppCompatActivity() {
         return userIconFile
     }
 
+    fun getDetectorLimba(): LanguageDetector {
+        return detectorLimba
+    }
+
     fun deleteUserIconFile() {
         userIconFile.delete()
     }
@@ -337,7 +349,9 @@ class ActivityMain : AppCompatActivity() {
                 doc.getString("descriere") ?: "",
                 pairs,
                 doc.getBoolean("media") ?: false,
-                doc.getBoolean("iconUser") ?: false)
+                doc.getBoolean("iconUser") ?: false,
+                doc.getString("tipRecenzie") ?: "nedefinit",
+                doc.getDouble("scorRecenzie") ?: (-1).toDouble())
 
             listaPostari.add(postare)
         }
@@ -347,37 +361,9 @@ class ActivityMain : AppCompatActivity() {
 
     private suspend fun preluareRecomandari(): List<Recomandare> {
         val sharedPrefsRecomandari = getSharedPreferences("recomandari", Context.MODE_PRIVATE)
-        val listaId = mutableListOf<String>()
-        var dataModificare = ""
+        val dataModificare = sharedPrefsRecomandari.getString("dataModificare", "") ?: ""
 
         val listaRecomandari = mutableListOf<Recomandare>()
-
-        for (id in sharedPrefsRecomandari.all.keys) {
-            if (id != "dataModificare") {
-                listaId.add(id)
-
-                val json = sharedPrefsRecomandari.getString(id, "")
-                val type = object : TypeToken<List<String>>() {}.type
-                val valori = Gson().fromJson(json, type) ?: listOf<String>()
-
-                listaRecomandari.add(
-                    Recomandare(
-                        id,
-                        valori[0],
-                        valori[1],
-                        valori[2],
-                        valori[3],
-                        valori[4],
-                        valori[5],
-                        valori[6],
-                        valori[7]
-                    )
-                )
-            }
-            else {
-                dataModificare = sharedPrefsRecomandari.getString("dataModificare", "") ?: ""
-            }
-        }
 
         var diferentaZile = 0
 
@@ -392,7 +378,9 @@ class ActivityMain : AppCompatActivity() {
 
         Log.i(tag, "$diferentaZile zi/zile diferență")
 
-        if (listaId.isEmpty() || diferentaZile > 0) {
+        if (sharedPrefsRecomandari.all.keys.size >= 2 || diferentaZile > 0) {
+            listaRecomandari.clear()
+
             val snapshot = db.collection("recomandari").get().await()
 
             snapshot.documents.map { doc ->
@@ -426,6 +414,29 @@ class ActivityMain : AppCompatActivity() {
             }
 
             sharedPrefsRecomandari.edit().putString("dataModificare", dataCurenta.format(formatData)).apply()
+        }
+        else {
+            for (id in sharedPrefsRecomandari.all.keys) {
+                if (id != "dataModificare") {
+                    val json = sharedPrefsRecomandari.getString(id, "")
+                    val type = object : TypeToken<List<String>>() {}.type
+                    val valori = Gson().fromJson(json, type) ?: listOf<String>()
+
+                    listaRecomandari.add(
+                        Recomandare(
+                            id,
+                            valori[0],
+                            valori[1],
+                            valori[2],
+                            valori[3],
+                            valori[4],
+                            valori[5],
+                            valori[6],
+                            valori[7]
+                        )
+                    )
+                }
+            }
         }
 
         val categorii = listaRecomandari.groupBy { it.categorie }.mapValues { it.value.size }
