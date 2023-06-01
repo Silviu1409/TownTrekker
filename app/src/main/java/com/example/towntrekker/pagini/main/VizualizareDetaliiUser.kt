@@ -65,6 +65,8 @@ class VizualizareDetaliiUser: DialogFragment() {
                 mainActivityContext.getUser()!!.urmareste = aux
                 sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
 
+                mainActivityContext.preiaPostarileUrmaritorilor()
+
                 mainActivityContext.getDB().collection("useri")
                     .document(mainActivityContext.getUser()!!.uid)
                     .update("urmareste", mainActivityContext.getUser()!!.urmareste)
@@ -74,7 +76,7 @@ class VizualizareDetaliiUser: DialogFragment() {
                             .addOnSuccessListener { doc ->
                                 @Suppress("UNCHECKED_CAST")
                                 val urmaritoriUser = doc.get("urmaritori") as? MutableList<String> ?: mutableListOf()
-                                urmaritoriUser.add(mainActivityContext.getUser()!!.uid)
+                                urmaritoriUser.remove(mainActivityContext.getUser()!!.uid)
 
                                 docUser
                                     .update("urmaritori", urmaritoriUser.toList())
@@ -90,6 +92,8 @@ class VizualizareDetaliiUser: DialogFragment() {
                 mainActivityContext.getUser()!!.urmareste = aux
                 sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
 
+                mainActivityContext.preiaPostarileUrmaritorilor()
+
                 mainActivityContext.getDB().collection("useri")
                     .document(mainActivityContext.getUser()!!.uid)
                     .update("urmareste", mainActivityContext.getUser()!!.urmareste)
@@ -99,7 +103,7 @@ class VizualizareDetaliiUser: DialogFragment() {
                             .addOnSuccessListener { doc ->
                                 @Suppress("UNCHECKED_CAST")
                                 val urmaritoriUser = doc.get("urmaritori") as? MutableList<String> ?: mutableListOf()
-                                urmaritoriUser.remove(mainActivityContext.getUser()!!.uid)
+                                urmaritoriUser.add(mainActivityContext.getUser()!!.uid)
 
                                 docUser
                                     .update("urmaritori", urmaritoriUser.toList())

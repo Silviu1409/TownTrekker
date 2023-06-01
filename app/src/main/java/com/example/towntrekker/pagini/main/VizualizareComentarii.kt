@@ -11,36 +11,46 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.towntrekker.ActivityMain
 import com.example.towntrekker.R
 import com.example.towntrekker.pagini.main.vizualizare_comentarii_recyclerview.ComentariiAdapter
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.gson.Gson
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class VizualizareComentarii: DialogFragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ComentariiAdapter
 
+    private lateinit var mainActivityContext: ActivityMain
+
     private lateinit var comentarii: List<Pair<String, String>>
     private lateinit var refPostare: String
     private lateinit var aliasUser: String
+    private lateinit var categorieLocatie: String
 
     private var onDismissCallback: ((List<Pair<String, String>>) -> Unit)? = null
 
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val sharedPreferences = requireContext().getSharedPreferences("comentarii", Context.MODE_PRIVATE)
+        val builder = AlertDialog.Builder(requireContext())
 
-        comentarii = sharedPreferences?.getStringSet("comentarii", setOf())?.map { serializedPair ->
+        val view = layoutInflater.inflate(R.layout.vizualizare_comentarii, null, false)
+
+        mainActivityContext = activity as ActivityMain
+
+        val sharedPrefsComentarii = requireContext().getSharedPreferences("comentarii", Context.MODE_PRIVATE)
+
+        comentarii = sharedPrefsComentarii?.getStringSet("comentarii", setOf())?.map { serializedPair ->
             val pairList = serializedPair.split(":")
             Pair(pairList[0], pairList[1])
         } ?: emptyList()
 
-        refPostare = sharedPreferences?.getString("refPostare", "") ?: ""
-        aliasUser = sharedPreferences?.getString("aliasUser", "") ?: ""
-
-        val builder = AlertDialog.Builder(requireContext())
-
-        val view = layoutInflater.inflate(R.layout.vizualizare_comentarii, null, false)
+        refPostare = sharedPrefsComentarii?.getString("refPostare", "") ?: ""
+        aliasUser = sharedPrefsComentarii?.getString("aliasUser", "") ?: ""
+        categorieLocatie = sharedPrefsComentarii?.getString("categorieLocatie", "") ?: ""
 
         recyclerView = view.findViewById(R.id.rwcyclerview_comentarii)
         adapter = ComentariiAdapter(comentarii)
@@ -68,6 +78,48 @@ class VizualizareComentarii: DialogFragment() {
                             .addOnSuccessListener {
                                 adapter.adaugaItem(Pair(aliasUser, adaugareComentariu.text.toString()))
                                 adaugareComentariu.text!!.clear()
+
+                                if (!mainActivityContext.postariInteractionateUser.containsKey(refPostare)){
+                                    val dataActuala = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
+                                    mainActivityContext.postariInteractionateUser[refPostare] = Triple(categorieLocatie, 0, dataActuala)
+                                }
+
+                                // adaug 1 la sistemul de scor al postarilor de interes pentru fiecare comentariu
+                                mainActivityContext.categoriiPostariInteresUser[categorieLocatie] = mainActivityContext.categoriiPostariInteresUser[categorieLocatie]!! + 1
+                                mainActivityContext.sharedPrefsPostariInteres.edit().putInt(categorieLocatie, mainActivityContext.categoriiPostariInteresUser[categorieLocatie]!!).apply()
+
+                                mainActivityContext.postariInteractionateUser[refPostare] = Triple(categorieLocatie, mainActivityContext.postariInteractionateUser[refPostare]!!.second + 1, mainActivityContext.postariInteractionateUser[refPostare]!!.third)
+
+                                if (mainActivityContext.postariInteractionateUser.containsKey(refPostare)){
+                                    if (mainActivityContext.postariInteractionateUser.size > mainActivityContext.getMumarMaximPostariInteractionate()) {
+                                        // preiau id-ul celei mai vechi locatii
+                                        val idCeaMaiVechePostare = mainActivityContext.preiaCeaMaiVechePostare()!!
+
+                                        // iau detaliile acesteia
+                                        val detaliiPostare = mainActivityContext.postariInteractionateUser[idCeaMaiVechePostare]
+
+                                        // apoi elimin detaliile asociate acesteia si recalculez scorul
+                                        mainActivityContext.postariInteractionateUser.remove(idCeaMaiVechePostare)
+                                        mainActivityContext.sharedPrefsPostariInteres.edit().remove(idCeaMaiVechePostare).apply()
+
+                                        mainActivityContext.categoriiPostariInteresUser[detaliiPostare!!.first] = mainActivityContext.categoriiPostariInteresUser[detaliiPostare.first]!! - detaliiPostare.second
+                                        mainActivityContext.sharedPrefsPostariInteres.edit().putInt(detaliiPostare.first, mainActivityContext.categoriiPostariInteresUser[detaliiPostare.first]!!).apply()
+                                    }
+
+                                    val json = Gson().toJson(mainActivityContext.postariInteractionateUser[refPostare]!!.toList())
+                                    mainActivityContext.sharedPrefsPostariInteres.edit().putString(refPostare, json).apply()
+                                }
+
+                                if (mainActivityContext.postariInteractionateUser.isNotEmpty()){
+                                    mainActivityContext.procentPostariInteresUser = mainActivityContext.transformaCategoriiPostariInteresProcentual()
+                                } else {
+                                    mainActivityContext.procentPostariInteresUser = hashMapOf()
+                                }
+
+                                Log.d("testPostari", mainActivityContext.categoriiPostariInteresUser.toString())
+                                Log.d("testPostari", mainActivityContext.procentPostariInteresUser.toString())
+                                Log.d("testPostari", mainActivityContext.postariInteractionateUser.toString())
 
                                 Log.d("test", "Comentariu adăugat cu succes!")
                                 Toast.makeText(requireContext(), "Comentariu adăugat cu succes!", Toast.LENGTH_SHORT).show()

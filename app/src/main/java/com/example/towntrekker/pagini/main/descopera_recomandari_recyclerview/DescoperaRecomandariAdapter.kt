@@ -18,7 +18,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 
 
-class DescoperaRecomandariAdapter(context: Context?, private val lista_recomandari: List<Recomandare>) : RecyclerView.Adapter<DescoperaRecomandariViewHolder>(){
+class DescoperaRecomandariAdapter(context: Context?, private val lista_recomandari: MutableList<Recomandare>) : RecyclerView.Adapter<DescoperaRecomandariViewHolder>(){
     private val mainActivityContext = (context as ActivityMain)
     private lateinit var context: Context
 
@@ -128,6 +128,13 @@ class DescoperaRecomandariAdapter(context: Context?, private val lista_recomanda
             }
         }
 
+    }
+
+    fun adaugaRecomandari(recomandariNoi: List<Recomandare>) {
+        for (recomandare in recomandariNoi){
+            lista_recomandari.add(recomandare)
+            notifyItemInserted(lista_recomandari.size - 1)
+        }
     }
 
     override fun getItemCount() = lista_recomandari.size

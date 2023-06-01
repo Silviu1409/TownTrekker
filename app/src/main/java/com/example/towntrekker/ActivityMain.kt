@@ -40,9 +40,11 @@ import kotlinx.coroutines.tasks.await
 import java.io.File
 import java.lang.StringBuilder
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.Period
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import kotlin.math.roundToInt
 
 
 class ActivityMain : AppCompatActivity() {
@@ -62,11 +64,21 @@ class ActivityMain : AppCompatActivity() {
 
     private lateinit var userIconFile: File
 
-    private var sharedPrefsLiked: SharedPreferences? = null
+    private lateinit var sharedPrefsLiked: SharedPreferences
     private var postariApreciate = mutableSetOf<String>()
 
     var postari = MutableLiveData<List<Postare>>()
     var recomandari = MutableLiveData<List<Recomandare>>()
+
+    lateinit var sharedPrefsPostariInteres: SharedPreferences
+    lateinit var categoriiPostariInteresUser: HashMap<String, Int>
+
+    private val numarMaximPostariInteractionate = 3
+    lateinit var postariInteractionateUser: HashMap<String, Triple<String, Int, String>>
+    lateinit var procentPostariInteresUser: HashMap<String, Double>
+
+    private var postariUrmareste = listOf<Postare>()
+    var categoriiPostariUrmareste: HashMap<String, Double> = hashMapOf()    // lista cu categoriile de postari ale urmaritorilor
 
     private val detectorLimba = LanguageDetectorBuilder
         .fromLanguages(Language.ENGLISH, Language.SPANISH, Language.RUSSIAN, Language.GERMAN, Language.FRENCH,
@@ -165,9 +177,10 @@ class ActivityMain : AppCompatActivity() {
         imageRef.metadata
             .addOnSuccessListener {  metadata ->
 
-                if(userIconFile.exists() && userIconFile.length() == metadata.sizeBytes){
+                if (userIconFile.exists() && userIconFile.length() == metadata.sizeBytes){
                     Log.d(tag, "Poza de profil este deja în cache!")
-                } else {
+                }
+                else {
                     Log.w(tag, "Poza de profil nu este în cache")
 
                     imageRef.getFile(userIconFile)
@@ -190,15 +203,57 @@ class ActivityMain : AppCompatActivity() {
 
         // preluare/creare fișier ce conține postările apreciate
         sharedPrefsLiked = getSharedPreferences("apreciat${user!!.uid}", Context.MODE_PRIVATE)
+        sharedPrefsPostariInteres = getSharedPreferences("postariinteres${user!!.uid}", Context.MODE_PRIVATE)
 
-        if (sharedPrefsLiked!!.contains("postari")){
-            postariApreciate = sharedPrefsLiked!!.getStringSet("postari", mutableSetOf()) ?: mutableSetOf()
-            sharedPrefsLiked = null
+        if (sharedPrefsLiked.contains("postari")){
+            postariApreciate = sharedPrefsLiked.getStringSet("postari", mutableSetOf()) ?: mutableSetOf()
         }
+
+        categoriiPostariInteresUser = hashMapOf("food and drink" to 0, "retail" to 0, "services" to 0, "entertainment" to 0, "outdoor" to 0)
+        postariInteractionateUser = hashMapOf()
+        procentPostariInteresUser = hashMapOf()
+
+        if (sharedPrefsPostariInteres.contains("food and drink")){
+            categoriiPostariInteresUser = hashMapOf(
+                "food and drink" to sharedPrefsPostariInteres.getInt("food and drink", 0),
+                "retail" to sharedPrefsPostariInteres.getInt("retail", 0),
+                "services" to sharedPrefsPostariInteres.getInt("services", 0),
+                "entertainment" to sharedPrefsPostariInteres.getInt("entertainment", 0),
+                "outdoor" to sharedPrefsPostariInteres.getInt("outdoor", 0)
+            )
+
+            for (id in sharedPrefsPostariInteres.all.keys) {
+                if (id !in listOf("food and drink", "retail", "services", "entertainment", "outdoor")) {
+                    val json = sharedPrefsPostariInteres.getString(id, "")
+                    val type = object : TypeToken<List<String>>() {}.type
+                    val valori = Gson().fromJson(json, type) ?: listOf<String>()
+
+                    postariInteractionateUser[id] = Triple(valori[0], valori[1].toInt(), valori[2])
+                }
+
+                if(postariInteractionateUser.isNotEmpty()){
+                    procentPostariInteresUser = transformaCategoriiPostariInteresProcentual()
+                }
+            }
+        } else {
+            sharedPrefsPostariInteres.edit().putInt("food and drink", 0).apply()
+            sharedPrefsPostariInteres.edit().putInt("retail", 0).apply()
+            sharedPrefsPostariInteres.edit().putInt("services", 0).apply()
+            sharedPrefsPostariInteres.edit().putInt("entertainment", 0).apply()
+            sharedPrefsPostariInteres.edit().putInt("outdoor", 0).apply()
+        }
+
+        Log.d("testPostari", categoriiPostariInteresUser.toString())
+        Log.d("testPostari", procentPostariInteresUser.toString())
+        Log.d("testPostari", postariInteractionateUser.toString())
 
         CoroutineScope(Dispatchers.Main).launch {
             postari.value = preluarePostari()
             recomandari.value = preluareRecomandari()
+        }
+
+        postari.observe(this) {
+            preiaPostarileUrmaritorilor()
         }
     }
 
@@ -260,6 +315,10 @@ class ActivityMain : AppCompatActivity() {
 
     fun deleteUserIconFile() {
         userIconFile.delete()
+    }
+
+    fun getMumarMaximPostariInteractionate(): Int {
+        return numarMaximPostariInteractionate
     }
 
     // funcție pentru ascunderea tastaturii
@@ -324,9 +383,8 @@ class ActivityMain : AppCompatActivity() {
                 }
         }
 
-        sharedPrefsLiked!!.edit().remove("postari").apply()
-        sharedPrefsLiked!!.edit().putStringSet("postari", postariApreciate.toSet()).apply()
-        sharedPrefsLiked = null
+        sharedPrefsLiked.edit().remove("postari").apply()
+        sharedPrefsLiked.edit().putStringSet("postari", postariApreciate.toSet()).apply()
     }
 
     private suspend fun preluarePostari(): List<Postare> {
@@ -378,7 +436,7 @@ class ActivityMain : AppCompatActivity() {
 
         Log.i(tag, "$diferentaZile zi/zile diferență")
 
-        if (sharedPrefsRecomandari.all.keys.size >= 2 || diferentaZile > 0) {
+        if (sharedPrefsRecomandari.all.keys.size < 2 || diferentaZile > 0) {
             listaRecomandari.clear()
 
             val snapshot = db.collection("recomandari").get().await()
@@ -449,5 +507,62 @@ class ActivityMain : AppCompatActivity() {
         Log.i(tag, mesaj.toString())
 
         return listaRecomandari
+    }
+
+    fun preiaCeaMaiVechePostare(): String? {
+        var ceaMaiVecheData: LocalDateTime? = null
+        var ceaMaiVecheCheie: String? = null
+
+        for ((cheie, valoare) in postariInteractionateUser){
+            val dataPostareCurenta = LocalDateTime.parse(valoare.third, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
+            if (ceaMaiVecheData == null || dataPostareCurenta.isBefore(ceaMaiVecheData)) {
+                ceaMaiVecheData = dataPostareCurenta
+                ceaMaiVecheCheie = cheie
+            }
+        }
+
+        return ceaMaiVecheCheie
+    }
+
+    fun transformaCategoriiPostariInteresProcentual(): HashMap<String, Double> {
+        val scoruriProcentuale = hashMapOf<String, Double>()
+        val scorTotalPostari = categoriiPostariInteresUser.values.sum()
+
+        // exprim scorurile din categorii procentual
+        for ((categorie, scor) in  categoriiPostariInteresUser) {
+            if (scor != 0) {
+                val procent = scor / scorTotalPostari.toDouble()
+                scoruriProcentuale[categorie] = procent
+            }
+        }
+
+        return scoruriProcentuale
+    }
+
+    // funcție care va returna procentual categoriile de interes ale userilor pe care îi urmăresc
+    private fun preiaCategoriiUrmareste(): HashMap<String, Double> {
+        // fac un Map de tip cheie-valoare unde cheia este categoria si valoarea este numarul de postari din acea categorie
+        val categoriiDistincte = postariUrmareste.groupBy { it.categorieLocatie }.mapValues { it.value.size }
+
+        // apoi, vreau sa transform din cifre în valori procentuale
+        val totalPostariUrmaritori = postariUrmareste.size
+
+        val categoriiDistinceProcentual = hashMapOf<String, Double>()
+
+        categoriiDistincte.forEach { (categorie, numar) ->
+            val procent = (numar.toDouble() * 100.0).roundToInt() / (totalPostariUrmaritori * 100.0)
+            categoriiDistinceProcentual[categorie] = procent
+        }
+
+        return categoriiDistinceProcentual
+    }
+
+    fun preiaPostarileUrmaritorilor() {
+        postariUrmareste = postari.value!!.filter { it.user in user!!.urmareste }
+
+        categoriiPostariUrmareste = preiaCategoriiUrmareste()
+
+        Log.d("testPostariUrmareste", categoriiPostariUrmareste.toString())
     }
 }

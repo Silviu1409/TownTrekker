@@ -13,6 +13,9 @@ import com.example.towntrekker.datatypes.Postare
 import com.example.towntrekker.pagini.main.VizualizareComentarii
 import com.example.towntrekker.pagini.main.VizualizareDetaliiUser
 import com.example.towntrekker.pagini.main.postare_media_recyclerview.MediaAdapter
+import com.google.gson.Gson
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class PostariFeedAdapter(context: Context?, private val lista_postari: List<Postare>) : RecyclerView.Adapter<PostariFeedViewHolder>(){
@@ -107,19 +110,73 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
             }
 
             holder.postareApreciere.setOnClickListener {
+                if (!mainActivityContext.postariInteractionateUser.containsKey(postare.id)){
+                    val dataActuala = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
+                    mainActivityContext.postariInteractionateUser[postare.id] = Triple(postare.categorieLocatie, 0, dataActuala)
+                }
+
                 if (mainActivityContext.esteInPostariApreciate(postare.id)) {
                     holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_gol)
                     postare.aprecieri -= 1
+
+                    mainActivityContext.postariInteractionateUser[postare.id] = Triple(postare.categorieLocatie, maxOf(mainActivityContext.postariInteractionateUser[postare.id]!!.second - 2, 0), mainActivityContext.postariInteractionateUser[postare.id]!!.third)
+                    mainActivityContext.categoriiPostariInteresUser[postare.categorieLocatie] = maxOf(mainActivityContext.categoriiPostariInteresUser[postare.categorieLocatie]!! - 2, 0)
+
                     holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
 
                     mainActivityContext.editPostariApreciate(postare.id, "stergere")
-                } else {
+                }
+                else {
                     holder.postareApreciere.setImageResource(R.drawable.icon_apreciere_plin)
                     postare.aprecieri += 1
+
+                    mainActivityContext.categoriiPostariInteresUser[postare.categorieLocatie] = mainActivityContext.categoriiPostariInteresUser[postare.categorieLocatie]!! + 2
+                    mainActivityContext.postariInteractionateUser[postare.id] = Triple(postare.categorieLocatie, mainActivityContext.postariInteractionateUser[postare.id]!!.second + 2, mainActivityContext.postariInteractionateUser[postare.id]!!.third)
+
                     holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
 
                     mainActivityContext.editPostariApreciate(postare.id, "adaugare")
                 }
+
+                // adaug/scad 2 la sistemul de scor al postarilor de interes pentru fiecare apreciere/dezapreciere și modific în fișier
+                mainActivityContext.sharedPrefsPostariInteres.edit().putInt(postare.categorieLocatie, mainActivityContext.categoriiPostariInteresUser[postare.categorieLocatie]!!).apply()
+
+                if (mainActivityContext.postariInteractionateUser[postare.id]!!.second == 0){
+                    mainActivityContext.postariInteractionateUser.remove(postare.id)
+                    mainActivityContext.sharedPrefsPostariInteres.edit().remove(postare.id).apply()
+                }
+
+                if (mainActivityContext.postariInteractionateUser.containsKey(postare.id)){
+                    if (mainActivityContext.postariInteractionateUser.size > mainActivityContext.getMumarMaximPostariInteractionate()) {
+                        // preiau id-ul celei mai vechi locatii
+                        val idCeaMaiVechePostare = mainActivityContext.preiaCeaMaiVechePostare()!!
+
+                        // iau detaliile acesteia
+                        val detaliiPostare = mainActivityContext.postariInteractionateUser[idCeaMaiVechePostare]
+
+                        // apoi elimin detaliile asociate acesteia si recalculez scorul
+                        mainActivityContext.postariInteractionateUser.remove(idCeaMaiVechePostare)
+                        mainActivityContext.sharedPrefsPostariInteres.edit().remove(idCeaMaiVechePostare).apply()
+
+                        mainActivityContext.categoriiPostariInteresUser[detaliiPostare!!.first] = mainActivityContext.categoriiPostariInteresUser[detaliiPostare.first]!! - detaliiPostare.second
+                        mainActivityContext.sharedPrefsPostariInteres.edit().putInt(detaliiPostare.first, mainActivityContext.categoriiPostariInteresUser[detaliiPostare.first]!!).apply()
+                    }
+
+                    val json = Gson().toJson(mainActivityContext.postariInteractionateUser[postare.id]!!.toList())
+                    mainActivityContext.sharedPrefsPostariInteres.edit().putString(postare.id, json).apply()
+                }
+
+                if (mainActivityContext.postariInteractionateUser.isNotEmpty()){
+                    mainActivityContext.procentPostariInteresUser = mainActivityContext.transformaCategoriiPostariInteresProcentual()
+                }
+                else {
+                    mainActivityContext.procentPostariInteresUser = hashMapOf()
+                }
+
+                Log.d("testPostari", mainActivityContext.categoriiPostariInteresUser.toString())
+                Log.d("testPostari", mainActivityContext.procentPostariInteresUser.toString())
+                Log.d("testPostari", mainActivityContext.postariInteractionateUser.toString())
             }
 
             holder.nrAprecieri.text = numarAprecieriTransform(postare.aprecieri)
@@ -175,6 +232,7 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
             docComentarii.edit().putStringSet("comentarii", setPerechiComentarii).apply()
             docComentarii.edit().putString("refPostare", postare.id).apply()
             docComentarii.edit().putString("aliasUser", postare.numeUser).apply()
+            docComentarii.edit().putString("categorieLocatie", postare.categorieLocatie).apply()
 
             val dialog = VizualizareComentarii()
             dialog.setOnDismissCallback { comentariiNoi ->

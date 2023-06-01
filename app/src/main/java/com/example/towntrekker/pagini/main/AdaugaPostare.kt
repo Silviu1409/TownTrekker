@@ -227,10 +227,10 @@ class AdaugaPostare: DialogFragment() {
 
                         val output = realizeazaPredictie(textPreprocesat , ortSession , ortEnvironment)
 
-                        Log.d(mainActivityContext.getTag(), "Output: ${output.first}, Scor: ${output.second}")
+                        Log.d(mainActivityContext.getTag(), "Label: ${output.first}, Scor: ${output.second}")
 
-                        tipRecenzie = if (output.first >= 0 && output.first < 0.4) {"negativ"}
-                            else if (output.first >= 0.4 && output.first < 0.6) {"neutru"}
+                        tipRecenzie = if (output.first >= 0 && output.first < 0.3) {"negativ"}
+                            else if (output.first >= 0.3 && output.first < 0.7) {"neutru"}
                             else {"pozitiv"}
                         scorRecenzie = output.second
                     }
@@ -415,13 +415,13 @@ class AdaugaPostare: DialogFragment() {
     private fun eliminaDiacritice(input: String): String {
         val inputNormalizat = Normalizer.normalize(input, Normalizer.Form.NFD)
         val regex = "\\p{InCombiningDiacriticalMarks}+".toRegex()
-        return regex.replace(inputNormalizat, "")
+        return regex.replace(inputNormalizat, "").lowercase()
     }
 
     // funcție care elimină caracterele speciale
     private fun eliminaCaractereSpeciale(input: String): String {
         val regex = Regex("[^a-zA-Z]")
-        return input.replace(regex, " ")
+        return input.replace(regex, " ").replace("\\s+".toRegex(), " ").trim()
     }
 
     // funcție care stematizează textul
