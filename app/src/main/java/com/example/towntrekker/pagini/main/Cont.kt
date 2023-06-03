@@ -352,7 +352,7 @@ class Cont : Fragment() {
         postariLiveData.observe(viewLifecycleOwner) { listaPostari ->
             val postariUser = listaPostari.filter { it.user == mainActivityContext.getUser()!!.uid }
 
-            binding.vizualizarePostari.text = binding.vizualizarePostari.text.toString().plus(numarTransform(postariUser.size))
+            binding.vizualizarePostari.text = mainActivityContext.getString(R.string.vizualizare_postari_cont).plus(numarTransform(postariUser.size))
 
             if (postariUser.isNotEmpty()){
                 binding.vizualizarePostariCard.setOnClickListener {

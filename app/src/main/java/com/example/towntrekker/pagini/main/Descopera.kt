@@ -36,6 +36,8 @@ class Descopera : Fragment() {
 
     private lateinit var mainActivityContext: ActivityMain
 
+    private val tagTestRecomandari = "testRecomandari"
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         _binding = PaginaDescoperaBinding.inflate(inflater, container, false)
@@ -49,7 +51,7 @@ class Descopera : Fragment() {
             categoriiPostariUrmaresteActualizat[categorie] = probabilitate
         }
 
-        Log.d("testPostariPrefs", procentPostariInteresActualizat.toString())
+        Log.d(tagTestRecomandari, procentPostariInteresActualizat.toString())
 
         if (procentPostariInteresActualizat.isEmpty()) {
             procentPostariInteres = 0.0
@@ -91,17 +93,17 @@ class Descopera : Fragment() {
                     preiaAlteRecomandariAleatoare()
 
                 val listaRecomandariNoi = listaRecomandariFiltrate.subtract(listaRecomandariVeche.toSet()).toList()
-                Log.d("testPostari", listaRecomandariNoi.map { it.categorie }.toString())
+                Log.d(tagTestRecomandari, listaRecomandariNoi.map { it.categorie }.toString())
 
                 adapter.adaugaRecomandari(listaRecomandariNoi)
                 recyclerView.adapter = adapter
 
                 listaRecomandariVeche = listaRecomandariFiltrate.toSet().toList()
 
-                Log.d("testPostari", listaRecomandariFiltrate.size.toString())
+                Log.d(tagTestRecomandari, listaRecomandariFiltrate.size.toString())
             }
 
-            Log.d("testPostari", "Refresh recomandari")
+            Log.d(tagTestRecomandari, "Refresh recomandari")
         }
 
         return binding.root

@@ -99,7 +99,7 @@ class Autentificare : Fragment() {
                                     .addOnSuccessListener {
                                         // s-a creat un tabel pentru noul user
                                         Log.d(authActivityContext.getTag(), "Înregistrare făcută cu succes")
-                                        Toast.makeText(activity, "Autentificare făcută cu succes", Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(activity, "Cont creat cu succes", Toast.LENGTH_SHORT).show()
 
                                         // curăț câmpurile completate anterior
                                         binding.AuthEmail.text.clear()

@@ -245,9 +245,9 @@ class ActivityMain : AppCompatActivity() {
             sharedPrefsPostariInteres.edit().putInt("other", 0).apply()
         }
 
-        Log.d("testPostari", categoriiPostariInteresUser.toString())
-        Log.d("testPostari", procentPostariInteresUser.toString())
-        Log.d("testPostari", postariInteractionateUser.toString())
+        Log.d("testCategoriiInteres", categoriiPostariInteresUser.toString())
+        Log.d("testPonderiCategoriiInteres", procentPostariInteresUser.toString())
+        Log.d("testCategoriiInteractionate", postariInteractionateUser.toString())
 
         CoroutineScope(Dispatchers.Main).launch {
             postari.value = preluarePostari()
@@ -565,6 +565,6 @@ class ActivityMain : AppCompatActivity() {
 
         categoriiPostariUrmareste = preiaCategoriiUrmareste()
 
-        Log.d("testPostariUrmareste", categoriiPostariUrmareste.toString())
+        Log.d("testRecomandariUrmareste", categoriiPostariUrmareste.toString())
     }
 }

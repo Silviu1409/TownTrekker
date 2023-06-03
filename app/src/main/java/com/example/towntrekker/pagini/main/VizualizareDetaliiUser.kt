@@ -25,6 +25,8 @@ class VizualizareDetaliiUser: DialogFragment() {
     private lateinit var vizualizareUrmaresteCard: CardView
     private lateinit var vizualizareUrmaritoriCard: CardView
 
+    private var nrurmaritoriUser = 0
+
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(requireContext())
@@ -65,6 +67,10 @@ class VizualizareDetaliiUser: DialogFragment() {
                 mainActivityContext.getUser()!!.urmareste = aux
                 sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
 
+                nrurmaritoriUser -= 1
+
+                vizualizareUrmaritori.text = mainActivityContext.getString(R.string.vizualizare_urmaritori).plus(numarTransform(nrurmaritoriUser))
+
                 mainActivityContext.preiaPostarileUrmaritorilor()
 
                 mainActivityContext.getDB().collection("useri")
@@ -91,6 +97,10 @@ class VizualizareDetaliiUser: DialogFragment() {
                 aux.add(refUser)
                 mainActivityContext.getUser()!!.urmareste = aux
                 sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
+
+                nrurmaritoriUser += 1
+
+                vizualizareUrmaritori.text = mainActivityContext.getString(R.string.vizualizare_urmaritori).plus(numarTransform(nrurmaritoriUser))
 
                 mainActivityContext.preiaPostarileUrmaritorilor()
 
@@ -126,6 +136,8 @@ class VizualizareDetaliiUser: DialogFragment() {
                     val urmaritoriUser = document.get("urmaritori") as? List<String> ?: listOf()
                     val urmaresteUser = document.get("urmareste") as? List<String> ?: listOf()
                     val bioUser = document.getString("bio") ?: ""
+
+                    nrurmaritoriUser = urmaritoriUser.size
 
                     val userIconRef = mainActivityContext.getStorage().child("useri").child(refUser).child("icon.jpg")
 
