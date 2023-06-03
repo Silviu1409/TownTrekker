@@ -84,7 +84,7 @@
     <string name="bio_cont_user" />
     <string name="parola_cont">Parolă</string>
     <string name="parola_cont_edit">parolă</string>
-    <string name="logout_cont">Log out </string>
+    <string name="logout_cont">Ieși din cont</string>
 
     <string name="user_urmareste_icon">icon urmareste user</string>
     <string name="user_urmareste_text">Urmărești</string>

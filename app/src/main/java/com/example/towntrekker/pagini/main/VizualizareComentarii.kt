@@ -71,12 +71,12 @@ class VizualizareComentarii: DialogFragment() {
                         comentarii = pairData.map { hashMap -> Pair(hashMap["first"] ?: "", hashMap["second"] ?: "") }
 
                         val aux = comentarii.toMutableList()
-                        aux.add(Pair(aliasUser, adaugareComentariu.text.toString()))
+                        aux.add(Pair(mainActivityContext.getUser()!!.alias, adaugareComentariu.text.toString()))
 
                         comentarii = aux.toList()
                         postareRefDB.update("comentarii", comentarii)
                             .addOnSuccessListener {
-                                adapter.adaugaItem(Pair(aliasUser, adaugareComentariu.text.toString()))
+                                adapter.adaugaItem(Pair(mainActivityContext.getUser()!!.alias, adaugareComentariu.text.toString()))
                                 adaugareComentariu.text!!.clear()
 
                                 if (!mainActivityContext.postariInteractionateUser.containsKey(refPostare)){

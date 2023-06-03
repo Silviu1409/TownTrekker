@@ -73,7 +73,7 @@ class ActivityMain : AppCompatActivity() {
     lateinit var sharedPrefsPostariInteres: SharedPreferences
     lateinit var categoriiPostariInteresUser: HashMap<String, Int>
 
-    private val numarMaximPostariInteractionate = 3
+    private val numarMaximPostariInteractionate = 10
     lateinit var postariInteractionateUser: HashMap<String, Triple<String, Int, String>>
     lateinit var procentPostariInteresUser: HashMap<String, Double>
 
@@ -209,7 +209,7 @@ class ActivityMain : AppCompatActivity() {
             postariApreciate = sharedPrefsLiked.getStringSet("postari", mutableSetOf()) ?: mutableSetOf()
         }
 
-        categoriiPostariInteresUser = hashMapOf("food and drink" to 0, "retail" to 0, "services" to 0, "entertainment" to 0, "outdoor" to 0)
+        categoriiPostariInteresUser = hashMapOf("food and drink" to 0, "retail" to 0, "services" to 0, "entertainment" to 0, "outdoor" to 0, "other" to 0)
         postariInteractionateUser = hashMapOf()
         procentPostariInteresUser = hashMapOf()
 
@@ -219,11 +219,12 @@ class ActivityMain : AppCompatActivity() {
                 "retail" to sharedPrefsPostariInteres.getInt("retail", 0),
                 "services" to sharedPrefsPostariInteres.getInt("services", 0),
                 "entertainment" to sharedPrefsPostariInteres.getInt("entertainment", 0),
-                "outdoor" to sharedPrefsPostariInteres.getInt("outdoor", 0)
+                "outdoor" to sharedPrefsPostariInteres.getInt("outdoor", 0),
+                "other" to sharedPrefsPostariInteres.getInt("other", 0)
             )
 
             for (id in sharedPrefsPostariInteres.all.keys) {
-                if (id !in listOf("food and drink", "retail", "services", "entertainment", "outdoor")) {
+                if (id !in listOf("food and drink", "retail", "services", "entertainment", "outdoor", "other")) {
                     val json = sharedPrefsPostariInteres.getString(id, "")
                     val type = object : TypeToken<List<String>>() {}.type
                     val valori = Gson().fromJson(json, type) ?: listOf<String>()
@@ -241,6 +242,7 @@ class ActivityMain : AppCompatActivity() {
             sharedPrefsPostariInteres.edit().putInt("services", 0).apply()
             sharedPrefsPostariInteres.edit().putInt("entertainment", 0).apply()
             sharedPrefsPostariInteres.edit().putInt("outdoor", 0).apply()
+            sharedPrefsPostariInteres.edit().putInt("other", 0).apply()
         }
 
         Log.d("testPostari", categoriiPostariInteresUser.toString())

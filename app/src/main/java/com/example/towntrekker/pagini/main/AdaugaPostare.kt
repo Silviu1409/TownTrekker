@@ -393,11 +393,14 @@ class AdaugaPostare: DialogFragment() {
     private fun preiaCategorieLocatie(tip: String): String{
         return when(tip){
             "bar", "night_club", "cafe", "restaurant", "bakery" -> "food and drink"
+
             "book_store", "clothing_store", "electronics_store", "jewelry_store", "shoe_store", "shopping_mall",
                 "convenience_store", "grocery_or_supermarket", "supermarket", "store", "pharmacy" -> "retail"
 
             "lodging" -> "services"
+
             "amusement_park", "tourist_attraction", "movie_theater", "museum", "theater" -> "entertainment"
+
             "campground", "park", "stadium", "zoo" -> "outdoor"
 
             else -> "other"
