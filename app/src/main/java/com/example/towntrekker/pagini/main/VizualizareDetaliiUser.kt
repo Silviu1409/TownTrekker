@@ -66,6 +66,7 @@ class VizualizareDetaliiUser: DialogFragment() {
                 aux.remove(refUser)
                 mainActivityContext.getUser()!!.urmareste = aux
                 sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
+                mainActivityContext.preiaPostariUtilizatoriSferaInteres()
 
                 nrurmaritoriUser -= 1
 
@@ -97,6 +98,7 @@ class VizualizareDetaliiUser: DialogFragment() {
                 aux.add(refUser)
                 mainActivityContext.getUser()!!.urmareste = aux
                 sharedPrefsUser.edit().putStringSet("urmareste", mainActivityContext.getUser()!!.urmareste.toSet()).apply()
+                mainActivityContext.preiaPostariUtilizatoriSferaInteres()
 
                 nrurmaritoriUser += 1
 

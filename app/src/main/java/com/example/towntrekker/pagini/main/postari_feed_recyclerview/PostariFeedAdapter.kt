@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class PostariFeedAdapter(context: Context?, private val lista_postari: List<Postare>) : RecyclerView.Adapter<PostariFeedViewHolder>(){
+class PostariFeedAdapter(context: Context?, private val lista_postari: MutableList<Postare>) : RecyclerView.Adapter<PostariFeedViewHolder>(){
 
     private val mainActivityContext = (context as ActivityMain)
 
@@ -37,7 +37,10 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
             holder.numeLayout.visibility = View.VISIBLE
 
             if (postare.user in mainActivityContext.getUser()!!.urmareste) {
+                Log.d("testUser", postare.user + ", " + mainActivityContext.getUser()!!.urmareste.toString())
                 holder.urmaresteLayout.visibility = View.VISIBLE
+            } else {
+                holder.urmaresteLayout.visibility = View.GONE
             }
 
             if (postare.iconUser) {
@@ -48,6 +51,8 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
                     .override(35, 35)
                     .centerCrop()
                     .into(holder.iconUser)
+            } else {
+                holder.iconUser.setImageResource(R.drawable.icon_cont)
             }
 
             holder.iconUserCard.setOnClickListener {
@@ -239,6 +244,13 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: List<Post
                 postare.comentarii = comentariiNoi
             }
             dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează comentarii")
+        }
+    }
+
+    fun adaugaPostari(postariNoi: List<Postare>) {
+        for (postare in postariNoi){
+            lista_postari.add(postare)
+            notifyItemInserted(lista_postari.size - 1)
         }
     }
 

@@ -36,14 +36,19 @@ import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 import java.io.File
+import java.lang.Exception
 import java.lang.StringBuilder
 import java.time.LocalDate
 import java.time.LocalDateTime
 import java.time.Period
 import java.time.format.DateTimeFormatter
+import java.util.LinkedList
 import java.util.Locale
+import java.util.Queue
 import kotlin.math.roundToInt
 
 
@@ -75,10 +80,13 @@ class ActivityMain : AppCompatActivity() {
 
     private val numarMaximPostariInteractionate = 10
     lateinit var postariInteractionateUser: HashMap<String, Triple<String, Int, String>>
-    lateinit var procentPostariInteresUser: HashMap<String, Double>
+    var procentPostariInteresUser: MutableMap<String, Double> = mutableMapOf()
 
     private var postariUrmareste = listOf<Postare>()
     var categoriiPostariUrmareste: HashMap<String, Double> = hashMapOf()    // lista cu categoriile de postari ale urmaritorilor
+
+    var utilizatoriSferaInteres = MutableLiveData<MutableSet<String>>()
+    private var postariUtilizatoriSferaInteres = listOf<Postare>()
 
     private val detectorLimba = LanguageDetectorBuilder
         .fromLanguages(Language.ENGLISH, Language.SPANISH, Language.RUSSIAN, Language.GERMAN, Language.FRENCH,
@@ -256,6 +264,7 @@ class ActivityMain : AppCompatActivity() {
 
         postari.observe(this) {
             preiaPostarileUrmaritorilor()
+            preiaPostariUtilizatoriSferaInteres()
         }
     }
 
@@ -566,5 +575,65 @@ class ActivityMain : AppCompatActivity() {
         categoriiPostariUrmareste = preiaCategoriiUrmareste()
 
         Log.d("testRecomandariUrmareste", categoriiPostariUrmareste.toString())
+    }
+
+    fun preiaPostariUtilizatoriSferaInteres(adancimeMaxima: Int = 2) {
+        val q: Queue<Pair<String, Int>> = LinkedList()
+        q.add(Pair(user!!.uid, 0))
+        val useriAdaugatiNoi = mutableSetOf<String>()
+
+        while (q.isNotEmpty()) {
+            val (utilizatorCurent, adancimeCurenta) = q.poll()!!
+
+            if (adancimeCurenta > adancimeMaxima) {
+                break
+            }
+
+            if (utilizatorCurent in useriAdaugatiNoi) {
+                continue
+            }
+
+            useriAdaugatiNoi.add(utilizatorCurent)
+
+            if (adancimeCurenta < adancimeMaxima) {
+                val utilizatoriUrmariti = runBlocking { preiaUtilizatoriUrmariti(utilizatorCurent) }
+                Log.d("testUtUrm", "$utilizatorCurent, $adancimeCurenta")
+                Log.d("testUtUrm", utilizatoriUrmariti.toString())
+
+                for (utilizatorUrmarit in utilizatoriUrmariti) {
+                    q.add(Pair(utilizatorUrmarit, adancimeCurenta + 1))
+                }
+            }
+        }
+
+        useriAdaugatiNoi.remove(user!!.uid)
+
+        utilizatoriSferaInteres.value = useriAdaugatiNoi
+        preiaPostariUtilizatori(useriAdaugatiNoi)
+
+        Log.d("testPostariPersonalizate", utilizatoriSferaInteres.value.toString())
+        Log.d("testPostariPersonalizate", postariUtilizatoriSferaInteres.size.toString())
+    }
+
+    private suspend fun preiaUtilizatoriUrmariti(utilizator: String): List<String> = withContext(Dispatchers.IO) {
+        if (utilizator == user!!.uid){
+            return@withContext user!!.urmareste
+        }
+
+        val refDocUtilizator = db.collection("useri").document(utilizator)
+
+        try {
+            val docSnapshot = refDocUtilizator.get().await()
+
+            @Suppress("UNCHECKED_CAST")
+            return@withContext docSnapshot["urmareste"] as? List<String> ?: listOf<String>()
+        }
+        catch (e: Exception) {
+            return@withContext emptyList()
+        }
+    }
+
+    private fun preiaPostariUtilizatori(listaUtilizatori: MutableSet<String>) {
+        postariUtilizatoriSferaInteres = postari.value!!.filter { it.user in listaUtilizatori }
     }
 }

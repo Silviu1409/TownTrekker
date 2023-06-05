@@ -55,7 +55,7 @@ class VizualizarePostariUser: DialogFragment() {
         postariLiveData.observe(viewLifecycleOwner) { listaPostari ->
             val postariUser = listaPostari.filter { it.user == refUser }
 
-            adapter = PostariFeedAdapter(context, postariUser)
+            adapter = PostariFeedAdapter(context, postariUser.toMutableList())
 
             recyclerView.adapter = adapter
         }

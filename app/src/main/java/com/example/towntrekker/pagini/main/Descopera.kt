@@ -23,16 +23,16 @@ class Descopera : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: DescoperaRecomandariAdapter
 
-    private var listaRecomandariFiltrate: MutableList<Recomandare> = mutableListOf()
+    private lateinit var listaRecomandariFiltrate: MutableList<Recomandare>
     private var listaRecomandariRamase: MutableList<Recomandare> = mutableListOf()
 
     private var procentPostariInteresActualizat: HashMap<String, Double> = hashMapOf()
     private var categoriiPostariUrmaresteActualizat: HashMap<String, Double> = hashMapOf()
 
     private val incrementRecomandari = 10
-    private var procentPostariInteres = 0.5
-    private var procentUtilizatoriUrmariti = 0.3
-    private var procentAleator = 0.2
+    private var procentPostariInteres = 0.0
+    private var procentUtilizatoriUrmariti = 0.0
+    private var procentAleator = 0.0
 
     private lateinit var mainActivityContext: ActivityMain
 
@@ -43,6 +43,11 @@ class Descopera : Fragment() {
         _binding = PaginaDescoperaBinding.inflate(inflater, container, false)
 
         mainActivityContext = context as ActivityMain
+
+        listaRecomandariFiltrate = mutableListOf()
+        procentPostariInteres = 0.5
+        procentUtilizatoriUrmariti = 0.3
+        procentAleator = 0.2
 
         for ((categorie, probabilitate) in mainActivityContext.procentPostariInteresUser) {
             procentPostariInteresActualizat[categorie] = probabilitate
@@ -164,11 +169,11 @@ class Descopera : Fragment() {
             if (listaRecomandariRamase.isEmpty())
                 return@repeat
 
-            val indexPostareAleatoare = Random.nextInt(listaRecomandariRamase.size)
-            val recomandareAleatoare = listaRecomandariRamase[indexPostareAleatoare]
+            val indexRecomandareAleatoare = Random.nextInt(listaRecomandariRamase.size)
+            val recomandareAleatoare = listaRecomandariRamase[indexRecomandareAleatoare]
 
             listaRecomandariFiltrate.add(recomandareAleatoare)
-            listaRecomandariRamase.removeAt(indexPostareAleatoare)
+            listaRecomandariRamase.removeAt(indexRecomandareAleatoare)
 
             if (recomandareAleatoare.categorie in procentPostariInteresActualizat) {
                 procentPostariInteresActualizat = actualizeazaProcenteCategorii(procentPostariInteresActualizat)
