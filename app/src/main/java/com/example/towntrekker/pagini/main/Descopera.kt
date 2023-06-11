@@ -69,7 +69,8 @@ class Descopera : Fragment() {
 
             if (procentPostariInteres == 0.0) {
                 procentAleator = 1.0
-            } else {
+            }
+            else {
                 procentPostariInteres = 0.7
                 procentAleator = 0.3
             }
@@ -142,6 +143,7 @@ class Descopera : Fragment() {
         }
     }
 
+    // funcție ce preia recomandări pe baza utilizatorilor urmăriți pe platformă
     private fun preiaRecomandariUtilizatoriUrmariti() {
         repeat((procentUtilizatoriUrmariti * incrementRecomandari).toInt()) {
             if (categoriiPostariUrmaresteActualizat.isEmpty()){
@@ -164,6 +166,7 @@ class Descopera : Fragment() {
         }
     }
 
+    // funcție care preia recomandări în mod aleator
     private fun preiaAlteRecomandariAleatoare() {
         repeat((procentAleator * incrementRecomandari).toInt()) {
             if (listaRecomandariRamase.isEmpty())
@@ -184,6 +187,7 @@ class Descopera : Fragment() {
         }
     }
 
+    // funcția ce actualizează catgeoriile de interes, prin reajustarea ponderilor acestora
     private fun actualizeazaProcenteCategorii(categoriiProb: HashMap<String, Double>): HashMap<String, Double> {
         val iterator = categoriiProb.keys.iterator()
 
@@ -204,6 +208,7 @@ class Descopera : Fragment() {
         return categoriiProb
     }
 
+    // funcție care preia o recomandare în mod aleatoriu, folosind categoriile dintr-un dicționar de probabilități
     private fun preiaRecomandariAleator(categoriiProb: HashMap<String, Double>) {
         val categorieAleasa = preiaCategorieAleator(categoriiProb)
         val recomandariCategorieAleasa = listaRecomandariRamase.filter { it.categorie == categorieAleasa }
@@ -213,6 +218,7 @@ class Descopera : Fragment() {
         listaRecomandariRamase.remove(recomandareAleatoare)
     }
 
+    // funcție care preia o categorie de locație în mod aleatoriu, folosind categoriile dintr-un dicționar de probabilități
     private fun preiaCategorieAleator(categoriiProb: HashMap<String, Double>): String{
         val valoareAleatoare = Random.nextDouble()
 

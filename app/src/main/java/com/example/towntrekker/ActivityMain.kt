@@ -244,7 +244,8 @@ class ActivityMain : AppCompatActivity() {
                     procentPostariInteresUser = transformaCategoriiPostariInteresProcentual()
                 }
             }
-        } else {
+        }
+        else {
             sharedPrefsPostariInteres.edit().putInt("food and drink", 0).apply()
             sharedPrefsPostariInteres.edit().putInt("retail", 0).apply()
             sharedPrefsPostariInteres.edit().putInt("services", 0).apply()
@@ -345,10 +346,12 @@ class ActivityMain : AppCompatActivity() {
         sharedPrefsUser.edit().clear().apply()
     }
 
+    // funcție care verifică dacă o postare cu un id dat se află în lista de postări apreciate
     fun esteInPostariApreciate(idPostare: String): Boolean {
         return idPostare in postariApreciate
     }
 
+    // funcție ce aplică modificările necesare pentru adăugarea/eliminarea unei aprecieri
     fun editPostariApreciate(idPostare: String, actiune: String) {
         sharedPrefsLiked = getSharedPreferences("apreciat${user!!.uid}", Context.MODE_PRIVATE)
         val postareRefDB = db.collection("postari").document(idPostare)
@@ -398,6 +401,7 @@ class ActivityMain : AppCompatActivity() {
         sharedPrefsLiked.edit().putStringSet("postari", postariApreciate.toSet()).apply()
     }
 
+    // funcție ce are ca scop preluarea postărilor de pe platformă, pe care utilizatorul curent nu le-a văzut
     private suspend fun preluarePostari(): List<Postare> {
         val snapshot = db.collection("postari").get().await()
         val listaPostari = mutableListOf<Postare>()
@@ -428,6 +432,7 @@ class ActivityMain : AppCompatActivity() {
         return listaPostari
     }
 
+    // funcție ce are ca scop preluarea recomandărilor de pe platformă
     private suspend fun preluareRecomandari(): List<Recomandare> {
         val sharedPrefsRecomandari = getSharedPreferences("recomandari", Context.MODE_PRIVATE)
         val dataModificare = sharedPrefsRecomandari.getString("dataModificare", "") ?: ""
@@ -520,6 +525,7 @@ class ActivityMain : AppCompatActivity() {
         return listaRecomandari
     }
 
+    // funcție ce returnează cea mai veche postare cu care utilizatorul a interacționat
     fun preiaCeaMaiVechePostare(): String? {
         var ceaMaiVecheData: LocalDateTime? = null
         var ceaMaiVecheCheie: String? = null
@@ -536,6 +542,7 @@ class ActivityMain : AppCompatActivity() {
         return ceaMaiVecheCheie
     }
 
+    // funcție care transformă dicționarul cu valori în dicționar de ponderi
     fun transformaCategoriiPostariInteresProcentual(): HashMap<String, Double> {
         val scoruriProcentuale = hashMapOf<String, Double>()
         val scorTotalPostari = categoriiPostariInteresUser.values.sum()

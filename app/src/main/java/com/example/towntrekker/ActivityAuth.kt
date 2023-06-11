@@ -101,7 +101,7 @@ class ActivityAuth : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         db = FirebaseFirestore.getInstance()
         storage = Firebase.storage.reference
-        sharedPreferencesUser = getSharedPreferences("user", Context.MODE_PRIVATE)
+        sharedPreferencesUser = getSharedPreferences("user", Context.MODE_PRIVATE)  // fișierul datele user-ului curent
 
         refFolderUseri = storage.child("useri")
 
@@ -109,7 +109,7 @@ class ActivityAuth : AppCompatActivity() {
 
         user = auth.currentUser
 
-        val aux = intent.getBooleanExtra("logout", false)
+        val aux = intent.getBooleanExtra("logout", false)   // verific dacă activitatea se deschide din acțiunea de delogare
 
         if (aux){
             delogare = true

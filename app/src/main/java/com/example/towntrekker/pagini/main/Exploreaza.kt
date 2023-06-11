@@ -110,9 +110,7 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
 
         }
         else {
-            reqAccesLocatie.launch(arrayOf(
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION))
+            reqAccesLocatie.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
         }
 
         autocompletare.setOnPlaceSelectedListener(object : PlaceSelectionListener {
@@ -126,9 +124,7 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
 
                     marker?.isVisible = true
 
-                    val updateCamera = CameraUpdateFactory.newLatLngZoom(
-                        LatLng(place.latLng!!.latitude, place.latLng!!.longitude), 19f
-                    )
+                    val updateCamera = CameraUpdateFactory.newLatLngZoom(LatLng(place.latLng!!.latitude, place.latLng!!.longitude), 19f)
 
                     harta.animateCamera(updateCamera)
                 }
@@ -195,12 +191,10 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
         val locatieActivata = managerLocatie.isProviderEnabled(LocationManager.GPS_PROVIDER)
 
         if (!locatieActivata) {
-            Toast.makeText(mainActivityContext, "Locația nu este activată.", Toast.LENGTH_LONG)
-                .show()
-        } else {
-            val updateCamera = CameraUpdateFactory.newLatLngZoom(
-                LatLng(ultimaLocatie.latitude, ultimaLocatie.longitude), 17f
-            )
+            Toast.makeText(mainActivityContext, "Locația nu este activată.", Toast.LENGTH_LONG).show()
+        }
+        else {
+            val updateCamera = CameraUpdateFactory.newLatLngZoom(LatLng(ultimaLocatie.latitude, ultimaLocatie.longitude), 17f)
 
             harta.animateCamera(updateCamera)
         }

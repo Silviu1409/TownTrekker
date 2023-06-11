@@ -88,7 +88,7 @@ class Postari : Fragment() {
                 Log.d(tagTestPostari, "$procentCategoriiInteres, $procentPostariSferaInteres, $procentAleator" )
 
                 if (procentCategoriiInteres != 0.0)
-                    preiaRecomandariCategoriiInteres()
+                    preiaPostariCategoriiInteres()
 
                 if (procentPostariSferaInteres != 0.0 && listaPostariFiltrate.size != postariFiltrate.size) {
                     preiaPostariSferaInteres()
@@ -121,6 +121,7 @@ class Postari : Fragment() {
         _binding = null
     }
 
+    // funcția ce actualizează catgeoriile de interes, prin reajustarea ponderilor acestora
     private fun actualizeazaProcenteCategoriiInteres(categoriiProb: MutableMap<String, Double>): MutableMap<String, Double> {
         val iterator = categoriiProb.keys.iterator()
 
@@ -143,6 +144,7 @@ class Postari : Fragment() {
         return categoriiProb
     }
 
+    // funcție ce verifică dacă există postări ale utilizatorilor din sfera de interes
     private fun verificaUtilizatoriSferaInteres() {
         val iterator = utilizatoriSferaInteres.iterator()
 
@@ -157,7 +159,8 @@ class Postari : Fragment() {
         }
     }
 
-    private fun preiaRecomandariCategoriiInteres() {
+    // funcție ce selectează postări pe baza categoriilor de interes
+    private fun preiaPostariCategoriiInteres() {
         repeat((procentCategoriiInteres * incrementPostari).toInt()) {
             if (procentCategoriiInteresActualizat.isEmpty()){
                 procentCategoriiInteres = 0.0
@@ -173,12 +176,13 @@ class Postari : Fragment() {
                 return@repeat
             }
 
-            preiaRecomandariAleator(procentCategoriiInteresActualizat)
+            preiaPostariAleator(procentCategoriiInteresActualizat)
 
             procentCategoriiInteresActualizat = actualizeazaProcenteCategoriiInteres(procentCategoriiInteresActualizat)
         }
     }
 
+    // funcție ce selectează postări pe baza persoanelor din sfera de interes a utilizatorului
     private fun preiaPostariSferaInteres() {
         repeat((procentPostariSferaInteres * incrementPostari).toInt()) {
             if (utilizatoriSferaInteres.isEmpty()){
@@ -201,7 +205,8 @@ class Postari : Fragment() {
         }
     }
 
-    private fun preiaRecomandariAleator(categoriiProb: MutableMap<String, Double>) {
+    // funcție care preia o postare în mod aleatoriu, folosind categoriile dintr-un dicționar de probabilități
+    private fun preiaPostariAleator(categoriiProb: MutableMap<String, Double>) {
         val categorieAleasa = preiaCategorieAleator(categoriiProb)
         val recomandariCategorieAleasa = listaPostariRamase.filter { it.categorieLocatie == categorieAleasa }
         val recomandareAleatoare = recomandariCategorieAleasa[Random.nextInt(recomandariCategorieAleasa.size)]
@@ -210,6 +215,7 @@ class Postari : Fragment() {
         listaPostariRamase.remove(recomandareAleatoare)
     }
 
+    // funcție care preia o categorie de locație în mod aleatoriu, folosind categoriile dintr-un dicționar de probabilități
     private fun preiaCategorieAleator(categoriiProb: MutableMap<String, Double>): String{
         val valoareAleatoare = Random.nextDouble()
 
@@ -224,6 +230,7 @@ class Postari : Fragment() {
         return categoriiProb.keys.last()
     }
 
+    // funcție care alege o postare pe baza utilizatorilor din sfera de interes
     private fun selecteazaPostareSferaInteres() {
         val postariSferaInteres = listaPostariRamase.filter { it.user in utilizatoriSferaInteres }
 
@@ -240,6 +247,7 @@ class Postari : Fragment() {
         }
     }
 
+    // funcție care preia postări în mod aleator
     private fun preiaAltePostariAleatoare() {
         repeat((procentAleator * incrementPostari).toInt()) {
             if (listaPostariRamase.isEmpty())

@@ -166,6 +166,7 @@ class VizualizareDetaliiUser: DialogFragment() {
                             dialog.show(mainActivityContext.supportFragmentManager, "Vizualizează urmărește")
                         }
                     }
+
                     if (urmaritoriUser.isNotEmpty()) {
                         vizualizareUrmaritoriCard.setOnClickListener {
                             mainActivityContext.getDB().collection("useri").document(mainActivityContext.getUser()!!.uid).get()

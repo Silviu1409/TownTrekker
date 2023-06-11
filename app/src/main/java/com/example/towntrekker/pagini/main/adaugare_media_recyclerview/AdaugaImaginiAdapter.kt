@@ -65,8 +65,7 @@ class AdaugaImaginiAdapter(private val context: Context?, private val fragment: 
 
     fun adaugaItem(itemNou: Uri){
         files.add(itemNou)
-        val index = files.size - 1
-        notifyItemInserted(index)
+        notifyItemInserted(files.size - 1)
     }
 
     override fun getItemCount() = files.size

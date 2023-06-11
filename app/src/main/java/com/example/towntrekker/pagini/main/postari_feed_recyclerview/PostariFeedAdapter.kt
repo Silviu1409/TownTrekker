@@ -225,7 +225,8 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: MutableLi
                     holder.media.currentItem = tab
                 }
             }
-        } else {
+        }
+        else {
             holder.mediaCard.visibility = View.GONE
         }
 

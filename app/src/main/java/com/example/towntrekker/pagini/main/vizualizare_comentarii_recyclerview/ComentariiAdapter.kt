@@ -23,8 +23,8 @@ class ComentariiAdapter(private var comentarii: List<Pair<String, String>>) : Re
         val aux = comentarii.toMutableList()
         aux.add(comentariuNou)
         comentarii = aux.toList()
-        val index = comentarii.size - 1
-        notifyItemInserted(index)
+
+        notifyItemInserted(comentarii.size - 1)
     }
 
     override fun getItemCount() = comentarii.size

@@ -144,29 +144,25 @@ class AdaugaPostare: DialogFragment() {
         descriereRef.addTextChangedListener(object : TextWatcher {
             var numarLinii = 0
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
-            }
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
 
             @Suppress("KotlinConstantConditions", "UNUSED_VALUE")
             override fun afterTextChanged(s: Editable?) {
-                val bioNou = s.toString()
+                val textNou = s.toString()
                 var ignoraSchimbari = false
 
                 numarLinii = descriereRef.lineCount
 
                 if (numarLinii > 10 && !ignoraSchimbari) {
-                    val bioVechi = bioNou.substring(0, (bioNou.length) - 1)
+                    val textVechi = textNou.substring(0, (textNou.length) - 1)
 
                     ignoraSchimbari = true
                     descriereRef.removeTextChangedListener(this)
 
-                    descriereRef.setText(bioVechi)
-                    descriereRef.setSelection(bioVechi.length)
+                    descriereRef.setText(textVechi)
+                    descriereRef.setSelection(textVechi.length)
 
                     descriereRef.addTextChangedListener(this)
                     ignoraSchimbari = false
@@ -211,8 +207,7 @@ class AdaugaPostare: DialogFragment() {
                     var tipRecenzie = "nedefinit"
                     var scorRecenzie = (-1).toDouble()
 
-                    val descriereInRomana = detecteazaLimbaRomana(descriereRef.text.toString(),
-                                                                    mainActivityContext.getDetectorLimba())
+                    val descriereInRomana = detecteazaLimbaRomana(descriereRef.text.toString(), mainActivityContext.getDetectorLimba())
 
                     if (descriereInRomana) {
                         val ortEnvironment = OrtEnvironment.getEnvironment()
@@ -433,6 +428,7 @@ class AdaugaPostare: DialogFragment() {
         return cuvinte.joinToString(" ") { cuvant -> stemmerRomana.stem(cuvant) }
     }
 
+    // funcție ce se ocupă de analizarea textului din recenzie, folosind modelul de AI, rezultând o predicție
     private fun realizeazaPredictie(input : String, ortSession: OrtSession,
                                         ortEnvironment: OrtEnvironment): Pair<Int, Double> {
         val numeInput = ortSession.inputNames.first()
