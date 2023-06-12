@@ -88,6 +88,9 @@ class ActivityMain : AppCompatActivity() {
     var utilizatoriSferaInteres = MutableLiveData<MutableSet<String>>()
     private var postariUtilizatoriSferaInteres = listOf<Postare>()
 
+    lateinit var fisierPostariVizualizate: SharedPreferences
+    var postariVizualizate = mutableSetOf<String>()
+
     private val detectorLimba = LanguageDetectorBuilder
         .fromLanguages(Language.ENGLISH, Language.SPANISH, Language.RUSSIAN, Language.GERMAN, Language.FRENCH,
             Language.JAPANESE, Language.PORTUGUESE, Language.TURKISH, Language.ITALIAN, Language.ROMANIAN)
@@ -257,6 +260,9 @@ class ActivityMain : AppCompatActivity() {
         Log.d("testCategoriiInteres", categoriiPostariInteresUser.toString())
         Log.d("testPonderiCategoriiInteres", procentPostariInteresUser.toString())
         Log.d("testCategoriiInteractionate", postariInteractionateUser.toString())
+
+        fisierPostariVizualizate = getSharedPreferences("postariVizualizate${user!!.uid}", Context.MODE_PRIVATE)
+        postariVizualizate = fisierPostariVizualizate.getStringSet("vizualizate", mutableSetOf()) ?: mutableSetOf()
 
         CoroutineScope(Dispatchers.Main).launch {
             postari.value = preluarePostari()

@@ -1,6 +1,7 @@
 package com.example.towntrekker.pagini.main.postari_feed_recyclerview
 
 import android.content.Context
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -31,6 +32,27 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: MutableLi
     override fun onBindViewHolder(holder: PostariFeedViewHolder, position: Int) {
         val postare = lista_postari[position]
         val postareRef = mainActivityContext.getStorage().child("postari").child(postare.id)
+
+        if (postare.id !in mainActivityContext.postariVizualizate
+            && postare.user != mainActivityContext.getUser()!!.uid) {
+
+            val timer = object : CountDownTimer(7500, 1000) {
+                override fun onTick(millisUntilFinished: Long) {}
+
+                override fun onFinish() {
+                    if(mainActivityContext.postariVizualizate.add(postare.id)) {
+                        mainActivityContext.fisierPostariVizualizate.edit().remove("vizualizate").apply()
+                        mainActivityContext.fisierPostariVizualizate.edit().putStringSet("vizualizate", mainActivityContext.postariVizualizate.toSet()).apply()
+                    }
+                }
+            }.start()
+
+            holder.itemView.addOnAttachStateChangeListener(object : View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) {}
+
+                override fun onViewDetachedFromWindow(v: View) { timer?.cancel() }
+            })
+        }
 
         if (postare.user != mainActivityContext.getUser()!!.uid) {
             holder.iconUserCard.visibility = View.VISIBLE
@@ -119,6 +141,11 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: MutableLi
                     val dataActuala = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
                     mainActivityContext.postariInteractionateUser[postare.id] = Triple(postare.categorieLocatie, 0, dataActuala)
+                }
+
+                if(mainActivityContext.postariVizualizate.add(postare.id)) {
+                    mainActivityContext.fisierPostariVizualizate.edit().remove("vizualizate").apply()
+                    mainActivityContext.fisierPostariVizualizate.edit().putStringSet("vizualizate", mainActivityContext.postariVizualizate.toSet()).apply()
                 }
 
                 if (mainActivityContext.esteInPostariApreciate(postare.id)) {
@@ -231,6 +258,11 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: MutableLi
         }
 
         holder.comentarii.setOnClickListener {
+            if(mainActivityContext.postariVizualizate.add(postare.id)) {
+                mainActivityContext.fisierPostariVizualizate.edit().remove("vizualizate").apply()
+                mainActivityContext.fisierPostariVizualizate.edit().putStringSet("vizualizate", mainActivityContext.postariVizualizate.toSet()).apply()
+            }
+
             val docComentarii = mainActivityContext.getSharedPreferences("comentarii", Context.MODE_PRIVATE)
 
             val setPerechiComentarii = postare.comentarii.map { (key, value) -> "$key:$value" }.toSet()
