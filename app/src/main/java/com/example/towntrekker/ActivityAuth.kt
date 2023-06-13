@@ -255,7 +255,7 @@ class ActivityAuth : AppCompatActivity() {
     private fun exitAplicatie() {
         MaterialAlertDialogBuilder(this)
             .setMessage("Vrei să închizi aplicația?")
-            .setPositiveButton("Da") { _, _ -> finish() }   // închide activitatea curentă (ActivityMain)
+            .setPositiveButton("Da") { _, _ -> finishAffinity() }   // închide activitatea curentă (ActivityMain)
             .setNegativeButton("Nu", null)
             .show()
     }

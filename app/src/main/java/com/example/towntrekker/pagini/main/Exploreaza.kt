@@ -123,6 +123,7 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
                     marker?.snippet = place.address
 
                     marker?.isVisible = true
+                    marker?.showInfoWindow()
 
                     val updateCamera = CameraUpdateFactory.newLatLngZoom(LatLng(place.latLng!!.latitude, place.latLng!!.longitude), 19f)
 
@@ -155,7 +156,9 @@ class Exploreaza : Fragment(), OnMapReadyCallback, OnMapsSdkInitializedCallback 
             marker?.position = latLng
 
             marker?.isVisible = true
-            marker?.showInfoWindow()
+            marker?.hideInfoWindow()
+            marker?.title = latLng.toString()
+            marker?.snippet = ""
         }
     }
 

@@ -212,10 +212,12 @@ class Descopera : Fragment() {
     private fun preiaRecomandariAleator(categoriiProb: HashMap<String, Double>) {
         val categorieAleasa = preiaCategorieAleator(categoriiProb)
         val recomandariCategorieAleasa = listaRecomandariRamase.filter { it.categorie == categorieAleasa }
-        val recomandareAleatoare = recomandariCategorieAleasa[Random.nextInt(recomandariCategorieAleasa.size)]
+        if (recomandariCategorieAleasa.isNotEmpty()) {
+            val recomandareAleatoare = recomandariCategorieAleasa[Random.nextInt(recomandariCategorieAleasa.size)]
 
-        listaRecomandariFiltrate.add(recomandareAleatoare)
-        listaRecomandariRamase.remove(recomandareAleatoare)
+            listaRecomandariFiltrate.add(recomandareAleatoare)
+            listaRecomandariRamase.remove(recomandareAleatoare)
+        }
     }
 
     // funcție care preia o categorie de locație în mod aleatoriu, folosind categoriile dintr-un dicționar de probabilități

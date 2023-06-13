@@ -77,6 +77,7 @@ class Postari : Fragment() {
         val postariLiveData = mainActivityContext.postari
         postariLiveData.observe(viewLifecycleOwner) { date ->
             val postariFiltrate = date.filter { it.user != mainActivityContext.getUser()!!.uid } . filter { it.id !in mainActivityContext.postariVizualizate }
+            listaPostariFiltrate = mutableListOf()
 
             if (postariFiltrate.isEmpty()) {
                 binding.postariNuExistaPostariFeed.visibility = View.VISIBLE

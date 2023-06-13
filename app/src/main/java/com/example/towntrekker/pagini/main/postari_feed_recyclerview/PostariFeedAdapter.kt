@@ -113,14 +113,24 @@ class PostariFeedAdapter(context: Context?, private val lista_postari: MutableLi
             "zoo" -> holder.iconLocatie.setImageResource(R.drawable.icon_zoo)
         }
 
-        when(postare.tipRecenzie.lowercase()){
-            "negativ" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_negativ)
-            "neutru" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_neutru)
-            "pozitiv" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_pozitiv)
-        }
-
-        if (postare.tipRecenzie.lowercase() != "nedefinit"){
+        if (postare.user != mainActivityContext.getUser()!!.uid) {
             holder.tipRecenzieIcon.visibility = View.VISIBLE
+
+            when(postare.tipRecenzie.lowercase()){
+                "negativ" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_negativ)
+                "neutru" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_neutru)
+                "pozitiv" -> holder.tipRecenzieIcon.setImageResource(R.drawable.icon_recenzie_pozitiv)
+                "nedefinit" -> holder.tipRecenzieIcon.visibility = View.VISIBLE
+            }
+        } else {
+            holder.tipRecenzieIcon.visibility = View.GONE
+
+            when(postare.tipRecenzie.lowercase()){
+                "negativ" -> holder.iconUser.setImageResource(R.drawable.icon_recenzie_negativ)
+                "neutru" -> holder.iconUser.setImageResource(R.drawable.icon_recenzie_neutru)
+                "pozitiv" -> holder.iconUser.setImageResource(R.drawable.icon_recenzie_pozitiv)
+                "nedefinit" -> holder.iconUserCard.visibility = View.GONE
+            }
         }
 
         holder.numeUser.text = postare.numeUser
