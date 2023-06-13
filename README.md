@@ -8,4 +8,6 @@ Throughout the paper, I present the development process of this mobile app, in w
 * some filtering algorithms, to identify and show posts and recommendations for relevant categories of locations
 * an interactive map, where the users can explore their surroundings and discover new places
 
-and many more. 
+and many more.
+
+A demo for this app, in Romanian, is available at this link: https://youtu.be/Q7CSjpwwLBQ
